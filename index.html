@@ -9,21 +9,45 @@
 <style>
 
  
-/* Espaçamento entre os cartões */
+/* Cartão base para todos os livros */
 .livro {
-    margin: 20px 0; /* Aumenta a distância entre os livros */
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease; /* Prepara a animação */
-    cursor: pointer;
+    margin: 30px 0;
+    padding: 30px;
+    border-radius: 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     text-decoration: none;
-    color: #333;
     font-weight: bold;
+    font-size: 1.2rem;
+    color: white; /* Letras brancas para destacar no fundo vibrante */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
 }
+
+/* 1. CELESTE DRAGON - Fogo e Azul Profundo */
+.livro:nth-child(1) {
+    background: linear-gradient(45deg, #1e3c72, #2a5298, #ff4b2b); 
+    border-bottom: 5px solid #ffa500;
+}
+
+/* 2. SETE PECADOS - Vinhas e Sangue */
+.livro:nth-child(2) {
+    background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); 
+    border-bottom: 5px solid #2ecc71;
+}
+
+/* 3. VAI DAR TUDO ERRADO - Caos e Alerta */
+.livro:nth-child(3) {
+    background: linear-gradient(45deg, #000000, #434343, #f1c40f); 
+    border-bottom: 5px solid #ffffff;
+}
+
+/* Efeito de balanço ao tocar */
+.livro:active {
+    transform: scale(0.95) rotate(1deg);
+}
+
 
 /* Animação: O livro sobe e brilha ao interagir */
 .livro:hover {
@@ -59,6 +83,16 @@ livros.forEach(livro => {
             <div class="livro">${livro.nome}</div>
         </a>`;
 });
+
+
+
+<div class="container">
+    <h1>Minha Biblioteca 📚</h1>
+    <a href="celeste.html" class="livro">Celeste Dragon 🔥🐉</a>
+    <a href="pecados.html" class="livro">Sete Pecados Capitais 🌿🍎</a>
+    <a href="errado.html" class="livro">Vai dar tudo errado 🌪️🤡</a>
+</div>
+
 
 
     </script>
