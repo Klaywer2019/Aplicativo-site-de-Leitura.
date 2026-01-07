@@ -8,6 +8,27 @@
     
 <style>
 
+
+#estante-principal {
+    display: none; /* Isso garante que ela comece invisível */
+    width: 100%;
+}
+
+#tela-entrada {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa a tela inteira do celular */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Impede de passar para baixo */
+}
+
+
+
+
 #tela-entrada {
   height: 100vh;
   display: flex;
@@ -174,23 +195,33 @@ footer {
 
 <body>
 
-<div id="tela-entrada">
-    <img src="![1767823124956.png](https://github.com/user-attachments/assets/cb444251-7ceb-4820-ac64-569229132292)
-  " alt="Logo" style="width: 150px; margin-bottom: 20px;">
-    
-    <p>Explore histórias incríveis.</p>
-    <button class="btn-roto" onclick="entrar()">Abrir Estante</button>
-</div>
-
-<div id="estante-principal" style="display: none;">
-    <button onclick="voltar()" style="position: absolute; top: 20px; left: 20px; background: #444; color: white; border: none; padding: 10px; border-radius: 10px;">⬅ Voltar</button> </dia>
-
-    <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
+div id="tela-entrada">
+        <h1>Bem-vindo à Minha Biblioteca</h1>
+        <p>Explore histórias incríveis.</p>
+        <button onclick="entrar()">Abrir Estante</button>
     </div>
 
+    <div id="estante-principal">
+        <button onclick="voltar()">⬅ Voltar</button>
+        <h1>Minha Biblioteca 📚</h1>
+        </div>
 
-<div id="estante-principal" style="display: none;">
-  </div>
+    <script>
+        function entrar() {
+            // Esconde a entrada totalmente
+            document.getElementById('tela-entrada').style.display = 'none';
+            // Mostra a estante
+            document.getElementById('estante-principal').style.display = 'block';
+            window.scrollTo(0, 0); // Volta pro topo da página
+        }
+
+        function voltar() {
+            // Esconde a estante
+            document.getElementById('estante-principal').style.display = 'none';
+            // Mostra a entrada centralizada
+            document.getElementById('tela-entrada').style.display = 'flex';
+        }
+    </script>
 
 
 
