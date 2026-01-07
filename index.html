@@ -61,6 +61,24 @@ h1 {
         livros.forEach(livro => {
             listaDiv.innerHTML += `<div class="livro">${livro}</div>`;
         });
+
+
+const livros = [
+    { nome: "Celeste Dragon", link: "celeste.html" },
+    { nome: "Sete pecados capitais", link: "pecados.html" },
+    { nome: "Vai dar tudo errado", link: "errado.html" }
+];
+
+const listaDiv = document.getElementById('lista');
+
+livros.forEach(livro => {
+    listaDiv.innerHTML += `
+        <a href="${livro.link}" style="text-decoration: none; color: inherit;">
+            <div class="livro">${livro.nome}</div>
+        </a>`;
+});
+
+
     </script>
 </body>
 
