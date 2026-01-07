@@ -166,6 +166,11 @@ footer {
   <h1>Bem-vindo à Minha Biblioteca</h1>
   <p>Explore histórias incríveis.</p>
   <button onclick="entrar na biblioteca()">Abrir Estante</button>
+
+<button class="btn-entrar" onclick="entrar()">Abrir Estante</button>
+
+
+
 </div>
 
 <div id="estante-principal" style="display: none;">
@@ -194,8 +199,34 @@ footer {
             // Mostra os livros
             document.getElementById('conteudo-principal').style.display = 'block';
 }
+</script>
 </body>
 
+
+<script>
+  function entrar() {
+    // Esconde a tela de boas-vindas
+    document.getElementById('tela-entrada').style.display = 'none';
+    
+    // Mostra a estante com os livros
+    document.getElementById('estante-principal').style.display = 'block';
+  }
+</script>
+
+
 </body>
+
+
+
+<script>
+  function entrar() {
+    // 1. Esconde a tela de boas-vindas
+    document.getElementById('tela-entrada').style.display = 'none';
+    
+    // 2. Mostra a estante com os livros
+    document.getElementById('conteudo-principal').style.display = 'block';
+  }
+</script>
+
 
 </html>
