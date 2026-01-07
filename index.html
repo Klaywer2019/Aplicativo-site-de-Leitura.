@@ -8,8 +8,7 @@
     
 <style>
 
- 
-/* Cartão base para todos os livros */
+ /* Estilo geral que vale para os três livros */
 .livro {
     margin: 30px 0;
     padding: 30px;
@@ -20,50 +19,34 @@
     text-decoration: none;
     font-weight: bold;
     font-size: 1.2rem;
-    color: white; /* Letras brancas para destacar no fundo vibrante */
+    color: white; /* Cor padrão (branca) para os dois primeiros */
     box-shadow: 0 8px 15px rgba(0,0,0,0.2);
     transition: transform 0.3s;
 }
 
-/* 1. CELESTE DRAGON - Fogo e Azul Profundo */
+/* 1. CELESTE DRAGON */
 .livro:nth-child(1) {
     background: linear-gradient(45deg, #1e3c72, #2a5298, #ff4b2b); 
     border-bottom: 5px solid #ffa500;
 }
 
-/* 2. SETE PECADOS - Vinhas e Sangue */
+/* 2. SETE PECADOS */
 .livro:nth-child(2) {
     background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); 
     border-bottom: 5px solid #2ecc71;
 }
 
-/* 3. VAI DAR TUDO ERRADO - Ajustado para letra preta */
+/* 3. VAI DAR TUDO ERRADO - Com a letra preta que você pediu */
 .livro:nth-child(3) {
     background: linear-gradient(45deg, #000000, #434343, #f1c40f); 
     border-bottom: 5px solid #ffffff;
-    color: black; /* Isso muda a letra apenas deste botão para preto */
-    text-shadow: 0px 0px 5px rgba(255,255,255,0.5); /* Adiciona um leve brilho atrás da letra para ler melhor no preto */
+    color: black; /* Aqui a mágica acontece: muda para preto apenas neste botão */
 }
 
 
-/* Efeito de balanço ao tocar */
-.livro:active {
-    transform: scale(0.95) rotate(1deg);
-}
 
-
-/* Animação: O livro sobe e brilha ao interagir */
-.livro:hover {
-    transform: translateY(-5px); /* Faz o livro "pular" para cima */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    background: white;
-}
-
-/* Arte única para cada livro usando bordas */
-.livro:nth-child(1) { border-left: 10px solid #3498db; } /* Celeste */
-.livro:nth-child(2) { border-left: 10px solid #e74c3c; } /* Pecados */
-.livro:nth-child(3) { border-left: 10px solid #f1c40f; } /* Errado */
-    </style>
+   
+ </style>
 </head>
 
 <body>
