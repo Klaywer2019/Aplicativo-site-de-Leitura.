@@ -241,19 +241,20 @@ footer {
 
 
 <script>
-  function entrar() {
-    // Esconde a entrada e mostra a estante
+function entrar() {
+    // Esconde a entrada e mostra os livros
     document.getElementById('tela-entrada').style.display = 'none';
     document.getElementById('estante-principal').style.display = 'block';
     window.scrollTo(0, 0); // Garante que a página comece no topo
-  }
+}
 
-  function voltar() {
-    // Faz o contrário: esconde a estante e mostra a entrada
+function voltar() {
+    // Esconde os livros e mostra a entrada novamente
     document.getElementById('estante-principal').style.display = 'none';
     document.getElementById('tela-entrada').style.display = 'flex';
-  }
+}
 </script>
+
 
 
 </html>
