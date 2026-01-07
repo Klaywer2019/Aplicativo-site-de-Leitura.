@@ -44,6 +44,14 @@
         
         <p><strong>Sinopse:</strong></p>
         <p>Aqui você escreve a história do seu livro. Como o arquivo se chama "celeste.html", quando você clicar no botão lá na página principal, ele vai abrir exatamente este texto aqui!</p>
+
+<h3>Capítulos:</h3>
+<ul style="list-style: none; padding: 0;">
+    <li><a href="celeste-cap1.html" class="livro" style="display:block; text-decoration:none;">Capítulo 1: O Início</a></li>
+    <li><a href="celeste-cap2.html" class="livro" style="display:block; text-decoration:none;">Capítulo 2: A Jornada</a></li>
+</ul>
+
+
     </div>
 
 </body>
