@@ -102,6 +102,39 @@ footer {
 
 
 
+/* Estilo da Prateleira */
+.livro {
+    position: relative;
+    margin-bottom: 40px; /* Espaço para a prateleira aparecer */
+    z-index: 1;
+}
+
+.livro::after {
+    content: "";
+    position: absolute;
+    bottom: -15px; /* Posiciona logo abaixo do livro */
+    left: -5%;
+    width: 110%; /* Um pouco mais larga que o livro */
+    height: 12px;
+    background: linear-gradient(to bottom, #5d3a1a, #3d2610); /* Cor de madeira */
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5); /* Sombra para dar profundidade */
+    z-index: -1;
+}
+
+/* Ajuste no fundo da página para parecer uma parede */
+body {
+    background: radial-gradient(circle, #2c3e50, #000000); /* Um fundo degradê escuro */
+    font-family: 'Poppins', sans-serif;
+}
+
+
+
+
+
+
+
+
 
 
  </style>
@@ -114,11 +147,16 @@ footer {
     <a href="celeste.html" class="livro">Celeste Dragon 🔥🐉</a>
     <a href="pecados.html" class="livro">Sete Pecados Capitais 🌿🍎</a>
     <a href="errado.html" class="livro">Vai dar tudo errado 🌪️🤡</a>
+
+
+<footer style="color: #888; text-align: center; margin-top: 50px; font-size: 0.8rem;">
+            Desenvolvido por <strong> Jemima Keise Santos Cruz.</strong> © 2026
+        </footer>
+
+
 </div>
 
- <footer>
-        Desenvolvido por <strong> Jemima Keise Santos Cruz.</strong> © 2026
-    </footer>
+
 </body>
 
 </body>
