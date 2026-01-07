@@ -47,10 +47,8 @@
 
 <h3>Capítulos:</h3>
 <ul style="list-style: none; padding: 0;">
-    <li><a href="celeste-cap1.html" class="livro" style="display:block; text-decoration:none;">Capítulo 1: O Início</a></li>
-    <li><a href="celeste-cap2.html" class="livro" style="display:block; text-decoration:none;">Capítulo 2: A Jornada</a></li>
-</ul>
-
+    <li><a href="celeste-cap1.html" class="livro" style="display:block; text-decoration:none;">Capítulo 1</a></li>
+    
 
     </div>
 
