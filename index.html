@@ -102,33 +102,41 @@ footer {
 
 
 
-/* Estilo da Prateleira */
+  <style>
+
 .livro {
+    display: block; /* Essencial para a prateleira aparecer */
+    text-decoration: none;
     position: relative;
-    margin-bottom: 40px; /* Espaço para a prateleira aparecer */
-    z-index: 1;
+    margin: 20px auto 50px auto; /* Aumenta o espaço para a prateleira */
+    width: 80%; /* Ajusta a largura para centralizar bem */
+    z-index: 2;
 }
 
+/* O código da Prateleira (Estante) */
 .livro::after {
     content: "";
     position: absolute;
-    bottom: -15px; /* Posiciona logo abaixo do livro */
+    bottom: -15px; /* Ajusta a altura da madeira */
     left: -5%;
-    width: 110%; /* Um pouco mais larga que o livro */
-    height: 12px;
-    background: linear-gradient(to bottom, #5d3a1a, #3d2610); /* Cor de madeira */
-    border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.5); /* Sombra para dar profundidade */
-    z-index: -1;
-}
-
-/* Ajuste no fundo da página para parecer uma parede */
-body {
-    background: radial-gradient(circle, #2c3e50, #000000); /* Um fundo degradê escuro */
-    font-family: 'Poppins', sans-serif;
+    width: 110%; 
+    height: 15px;
+    background: linear-gradient(to bottom, #5d3a1a, #2b1a0a); /* Madeira realista */
+    border-radius: 4px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.8); /* Sombra pesada da estante */
+    z-index: 1;
 }
 
 
+footer {
+    padding: 40px 0;
+    color: #666;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+
+</style>
 
 
 
