@@ -8,40 +8,75 @@
     
 <style>
 
- /* Estilo geral que vale para os três livros */
-.livro {
-    margin: 30px 0;
-    padding: 30px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: white; /* Cor padrão (branca) para os dois primeiros */
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
-}
+ <style>
+    /* Configuração da página inteira */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
 
-/* 1. CELESTE DRAGON */
-.livro:nth-child(1) {
-    background: linear-gradient(45deg, #1e3c72, #2a5298, #ff4b2b); 
-    border-bottom: 5px solid #ffa500;
-}
+    /* Container principal que segura os livros */
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+    }
 
-/* 2. SETE PECADOS */
-.livro:nth-child(2) {
-    background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); 
-    border-bottom: 5px solid #2ecc71;
-}
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
 
-/* 3. VAI DAR TUDO ERRADO - Com a letra preta que você pediu */
-.livro:nth-child(3) {
-    background: linear-gradient(45deg, #000000, #434343, #f1c40f); 
-    border-bottom: 5px solid #ffffff;
-    color: black; /* Aqui a mágica acontece: muda para preto apenas neste botão */
-}
+    /* Estilo base dos botões/livros */
+    .livro {
+        margin: 25px 0;
+        padding: 25px;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: white; /* Cor padrão branca */
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    /* Efeito ao tocar no livro */
+    .livro:active {
+        transform: scale(0.95);
+    }
+
+    /* 1. CELESTE DRAGON - Fogo e Azul */
+    .livro:nth-of-type(1) {
+        background: linear-gradient(45deg, #1e3c72, #2a5298, #ff4b2b); 
+        border-bottom: 5px solid #ffa500;
+    }
+
+    /* 2. SETE PECADOS - Vinhas e Vermelho */
+    .livro:nth-of-type(2) {
+        background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); 
+        border-bottom: 5px solid #2ecc71;
+    }
+
+    /* 3. VAI DAR TUDO ERRADO - Caos e Amarelo */
+    .livro:nth-of-type(3) {
+        background: linear-gradient(45deg, #000000, #434343, #f1c40f); 
+        border-bottom: 5px solid #ffffff;
+        color: black; /* Letra preta para este livro */
+    }
+</style>
+
 
 
 
