@@ -8,6 +8,34 @@
     
 <style>
 
+#tela-entrada {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+
+button {
+  padding: 15px 30px;
+  background-color: #6a1b9a; /* Um roxo elegante */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
     /* Configuração da página inteira */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -139,6 +167,18 @@ footer {
 </head>
 
 <body>
+
+<div id="tela-entrada">
+  <h1>Bem-vindo à Minha Biblioteca</h1>
+  <p>Explore histórias incríveis.</p>
+  <button onclick="entrar na biblioteca()">Abrir Estante</button>
+</div>
+
+<div id="estante-principal" style="display: none;">
+  </div>
+
+
+
     
     <h1>Minha Biblioteca 📚</h1>
 <div id="lista"></div>
@@ -153,7 +193,12 @@ footer {
 
 
 </div>
-
+<script>
+        function entrar() {
+            // Esconde a entrada
+            document.getElementById('tela-entrada').style.display = 'none';
+            // Mostra os livros
+            document.getElementById('conteudo-principal').style.display = 'block';
 
 </body>
 
