@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Jogos - Biblioteca</title>
+    <style>
+        /* 1. BASE IGUAL À ESTANTE */
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* 2. BARRA DE TOPO */
+        .nav-topo {
+            display: flex;
+            justify-content: space-around;
+            background: #1e1e1e;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+
+        .btn-voltar {
+            background: none;
+            border: none;
+            color: #55efc4; /* Verde neon para jogos */
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* 3. LISTA DE JOGOS (ESTILO PRATELEIRA) */
+        .container-jogos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .item-jogo {
+            width: 85%;
+            max-width: 350px;
+            padding: 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+            /* Degradê estilo Gamer */
+            background: linear-gradient(135deg, #2d3436 0%, #00b894 100%);
+            transition: transform 0.3s;
+        }
+
+        .item-jogo:active {
+            transform: scale(0.95);
+        }
+
+        /* Efeito de prateleira metálica para jogos */
+        .item-jogo::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: -5%;
+            width: 110%;
+            height: 10px;
+            background: linear-gradient(to bottom, #636e72, #2d3436);
+            border-radius: 2px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Cores diferentes para cada jogo */
+        .jogo-aventura { background: linear-gradient(135deg, #0984e3, #00cec9); }
+        .jogo-rpg { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-topo">
+        <a href="index.html" class="btn-voltar">⬅ Voltar para Estante</a>
+        <span style="color: #55efc4; font-weight: bold;">Área Gamer 🎮</span>
+    </div>
+
+    <h1>Meus Projetos de Jogos</h1>
+    <p style="color: #888;">Clique para jogar no navegador</p>
+
+    <div class="container-jogos">
+        <a href="link-do-seu-jogo-1.html" class="item-jogo jogo-aventura">
+            Aventura Dragon Quest 🐉
+        </a>
+
+        <a href="link-do-seu-jogo-2.html" class="item-jogo jogo-rpg">
+            Reino dos Pecados RPG ⚔️
+        </a>
+
+        <a href="link-do-seu-jogo-3.html" class="item-
