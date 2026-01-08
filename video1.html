@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trailers Oficiais - Galeria</title>
+    <style>
+        /* 1. BASE CINEMA */
+        body {
+            background-color: #000; /* Preto absoluto para destacar vídeos */
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* 2. BARRA DE TOPO */
+        .nav-topo {
+            display: flex;
+            justify-content: space-around;
+            background: #1a1a1a;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #ff0000; /* Linha vermelha estilo Netflix */
+        }
+
+        .btn-voltar {
+            background: none;
+            border: none;
+            color: #ff0000;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* 3. GALERIA DE VÍDEOS */
+        .container-videos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .video-card {
+            width: 90%;
+            max-width: 500px;
+            background: #111;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(
