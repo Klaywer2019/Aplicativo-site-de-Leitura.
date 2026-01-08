@@ -147,11 +147,21 @@
         <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
 
         <div id="lista">
-             <a href="celeste.html" class="item livro">Celeste Dragon 🔥🐲</a>
-             <a href="pecados.html" class="item livro">Sete Pecados Capitais 🌿🍎</a>
-             <a href="video1.html" class="item video">Trailer do Livro 🎥</a>
-        </div>
-    </div>
+    <h3 style="color: #a29bfe; margin-top: 20px;">📖 Meus Livros</h3>
+    <a href="celeste.html" class="item livro"     target="_blank">Celeste Dragon 🔥🐲</a>
+    <a href="pecados.html" class="item livro" target="_blank" >Sete Pecados Capitais 🌿🍎</a>
+
+    <h3 style="color: #ff7675; margin-top: 20px;">🎥 Trailers</h3>
+    <a href="video1.html" class="item video">Trailer Oficial - Livro 1 🎬</a>
+
+    <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
+    <a href="game1.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);">Aventura no Reino 🕹️</a>
+</div>
+
+   
+
+
+ </div>
 
     <div id="tela-publicar" style="display: none;">
         <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
@@ -205,6 +215,40 @@
                 alert('Por favor, digite o título da obra.');
             }
         }
+
+// Quando a página carrega, verifica se o usuário já estava na estante
+window.onload = function() {
+    if (localStorage.getItem('logado') === 'true') {
+        document.getElementById('tela-entrada').style.display = 'none';
+        document.getElementById('estante-principal').style.display = 'block';
+    }
+};
+
+// Atualize a sua função entrar() e finalizarCadastro() para salvar esse "estado"
+function entrar() {
+    localStorage.setItem('logado', 'true'); // Salva que entrou
+    document.getElementById('tela-entrada').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'block';
+}
+
+function finalizarCadastro() {
+    localStorage.setItem('logado', 'true'); // Salva que cadastrou
+    alert('Conta criada!');
+    document.getElementById('tela-cadastro').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'block';
+}
+
+// Quando clicar em "Início" na barra, ele pode querer deslogar ou apenas resetar
+function voltarParaEntrada() {
+    localStorage.removeItem('logado'); // Opcional: remove se quiser que ele veja a tela inicial de novo
+    document.getElementById('tela-entrada').style.display = 'flex';
+    document.getElementById('estante-principal').style.display = 'none';
+}
+
+
+
+
+
     </script>
 </body>
 </html>
