@@ -269,6 +269,34 @@ gap: 15px;
 
 
 
+.nav-topo {
+    display: flex;
+    justify-content: space-around;
+    background: #1e1e1e;
+    padding: 10px;
+    width: 100%;
+    position: sticky; /* Faz a barra grudar no topo ao rolar a página */
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #333;
+}
+
+.btn-nav {
+    background: none;
+    border: none;
+    color: #a29bfe;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-nav:hover {
+    color: white;
+}
+
+
+
+
      </style>
 </head>
 
@@ -291,6 +319,26 @@ gap: 15px;
     </div>
 
     <div id="estante-principal" style="display: none;">
+<div id="estante-principal" style="display: none;">
+    <div class="nav-topo">
+        <button onclick="voltarParaEntrada()" class="btn-nav">🏠 Início</button>
+        <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
+    </div>
+
+    <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
+
+    <div class="menu-categorias">
+        <button onclick="filtrar('todos')">Tudo</button>
+        <button onclick="filtrar('livro')">Livros</button>
+        <button onclick="filtrar('video')">Vídeos</button>
+        <button onclick="filtrar('jogo')">Jogos</button>
+    </div>
+
+    <div id="lista">
+        </div>
+</div>
+
+
         <button onclick="voltarParaEntrada()" class="btn-voltar">⬅ Sair</button>
         <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
 
@@ -350,8 +398,13 @@ gap: 15px;
         }
 
         function fecharPainel() {
+            document.getElementById('estante-principal').style.display = 'none';
             document.getElementById('tela-publicar').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
+
+// Mostra a tela inicial
+    document.getElementById('tela-entrada').style.display = 'flex';
+
+
         }
 
         function salvarObra() {
