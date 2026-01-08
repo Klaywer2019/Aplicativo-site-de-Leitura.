@@ -349,7 +349,49 @@ gap: 15px;
         <input type="text" id="titulo-obra" placeholder="Título do seu Livro" class="campo-login">
         <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class
 
+function irParaCadastro() {
+    document.getElementById('tela-entrada').style.display = 'none';
+    document.getElementById('tela-cadastro').style.display = 'flex';
+}
 
+function entrar() {
+    document.getElementById('tela-entrada').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'block';
+}
+
+function finalizarCadastro() {
+    alert('Conta criada com sucesso!');
+    document.getElementById('tela-cadastro').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'block';
+}
+
+function abrirPainelCriacao() {
+    document.getElementById('estante-principal').style.display = 'none';
+    document.getElementById('tela-publicar').style.display = 'flex';
+}
+
+function fecharPainel() {
+    document.getElementById('tela-publicar').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'block';
+}
+
+function voltarParaEntrada() {
+    document.getElementById('tela-entrada').style.display = 'flex';
+    document.getElementById('tela-cadastro').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'none';
+    document.getElementById('tela-publicar').style.display = 'none';
+}
+
+function salvarObra() {
+    const titulo = document.getElementById('titulo-obra').value;
+    if(titulo) {
+        alert('Obra "' + titulo + '" enviada!');
+        fecharPainel();
+    } else {
+        alert('Por favor, digite um título.');
+    }
+}
+</body>
             
 
 
