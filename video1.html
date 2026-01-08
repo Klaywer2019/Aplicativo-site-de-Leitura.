@@ -3,53 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trailers Oficiais - Galeria</title>
+    <title>Trailers Oficiais</title>
     <style>
-        /* 1. BASE CINEMA */
+        /* 1. ESTILO CINEMA (EVITA TELA PRETA VAZIA) */
         body {
-            background-color: #000; /* Preto absoluto para destacar vídeos */
+            background-color: #121212; /* Fundo escuro padrão da sua estante */
             color: white;
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
+            min-height: 100vh;
         }
 
-        /* 2. BARRA DE TOPO */
+        /* 2. BARRA DE NAVEGAÇÃO (LIGAÇÃO COM INDEX) */
         .nav-topo {
             display: flex;
             justify-content: space-around;
-            background: #1a1a1a;
+            align-items: center;
+            background: #1e1e1e;
             padding: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 2px solid #ff0000; /* Linha vermelha estilo Netflix */
+            border-bottom: 2px solid #ff0000; /* Linha vermelha para trailers */
         }
 
         .btn-voltar {
-            background: none;
-            border: none;
-            color: #ff0000;
-            font-weight: bold;
-            cursor: pointer;
+            color: #ff7675;
             text-decoration: none;
+            font-weight: bold;
             font-size: 0.9rem;
         }
 
-        /* 3. GALERIA DE VÍDEOS */
-        .container-videos {
+        /* 3. CONTAINER DE VÍDEOS */
+        .galeria-videos {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 40px;
-            padding: 20px;
+            gap: 25px;
+            padding: 30px 10px;
         }
 
-        .video-card {
+        .card-video {
             width: 90%;
-            max-width: 500px;
-            background: #111;
+            max-width: 400px;
+            background: linear-gradient(to right, #ff0000, #b20000);
+            padding: 20px;
             border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border-bottom: 5px solid white;
+        }
+
+        .card-video:active { transform: scale(0.95); }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-topo">
+        <a href="index.html" class="btn-voltar">⬅ Voltar para Estante</a>
+        <span style="font-weight: bold;">Cine Trailers 🍿</span>
+    </div>
+
+    <h1 style="margin-top: 30px
