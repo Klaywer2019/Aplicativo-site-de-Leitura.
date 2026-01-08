@@ -294,6 +294,18 @@ gap: 15px;
     color: white;
 }
 
+/* Isso vai dar espaço entre o nome, email e senha */
+.campo-login {
+    width: 80%;
+    max-width: 300px;
+    padding: 12px;
+    margin: 8px 0; /* Cria o espaço entre os campos */
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #2a2a2a;
+    color: white;
+    display: block;
+}
 
 
 
@@ -371,28 +383,25 @@ gap: 15px;
             document.getElementById('estante-principal').style.display = 'block';
         }
 
-        function finalizarCadastro() {
-    // 1. Pega os valores (opcional, mas bom para o futuro)
-    const nome = document.querySelector('input[placeholder="Nome de Autor"]').value;
+       function finalizarCadastro() {
+    // 1. Mostra o aviso de sucesso
+    alert('Conta criada com sucesso! Bem-vindo, Autor.');
 
-    if (nome === "") {
-        alert("Por favor, preencha seu nome de autor!");
-        return;
-    }
-
-    // 2. Alerta de boas-vindas
-    alert("Bem-vindo(a), " + nome + "! Sua conta foi criada.");
-
-    // 3. A MÁGICA: Esconde o cadastro e mostra a estante
+    // 2. Esconde a tela de cadastro
     document.getElementById('tela-cadastro').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
 
-    // 4. Garante que a tela comece do topo
+    // 3. Abre a estante principal
+    document.getElementById('estante-principal').style.display = 'block';
+    
+    // 4. Sobe a página para o topo
     window.scrollTo(0, 0);
 }
 
 
-        function abrirPainelCriacao() {
+    
+
+
+     function abrirPainelCriacao() {
             document.getElementById('estante-principal').style.display = 'none';
             document.getElementById('tela-publicar').style.display = 'flex';
         }
