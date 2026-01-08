@@ -159,18 +159,19 @@ footer {
     font-family: sans-serif;
     margin: 0;
     text-align: center;
+display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
 
-#tela-entrada {
-    background-image: url('SUA-IMAGEM-DE-FUNDO.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
+#tela-entrada, #estante-principal, #tela-cadastro {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 /* Configuração da Página Inteira */
@@ -256,74 +257,55 @@ gap: 15px;
 </head>
 
 <body>
-<div id="tela-cadastro" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-    <h2 style="color: #a29bfe;">Crie sua Conta</h2>
-    <p>Junte-se a outros autores!</p>
-    
-    <input type="text" placeholder="Seu Nome" class="campo-login">
-    <input type="email" placeholder="E-mail" class="campo-login">
-    <input type="password" placeholder="Sua Senha" class="campo-login">
-    
-    <button class="btn-entrar" onclick="finalizarCadastro()">Cadastrar e Entrar</button>
-    <p onclick="irParaLogin()" style="font-size: 0.8rem; cursor: pointer; color: #888;">Já tem conta? Clique aqui</p>
-</div>
-
-
     <div id="tela-entrada">
-        <h1>Bem-vindo à Minha Biblioteca</h1>
-        <p>Explore histórias incríveis.</p>
-        <button class="btn-entrar" onclick="entrar()">Abrir Estante</button>
+        <h1>Bem-vindo à Plataforma de Autores</h1>
+        <p>Publique suas histórias e alcance seu público.</p>
+        <button class="btn-entrar" onclick="irParaCadastro()">Criar Conta Grátis</button>
+        <button class="btn-entrar" style="background: #333; margin-top: 10px;" onclick="entrar()">Entrar como Convidado</button>
+    </div>
+
+    <div id="tela-cadastro" style="display: none;">
+        <h2>Crie sua conta de Autor</h2>
+        <input type="text" placeholder="Nome de Autor" class="campo-login">
+        <input type="email" placeholder="Seu melhor E-mail" class="campo-login">
+        <input type="password" placeholder="Crie uma Senha" class="campo-login">
+        <button class="btn-entrar" onclick="finalizarCadastro()">Concluir Cadastro</button>
+        <p onclick="voltarParaEntrada()" style="cursor:pointer; font-size: 0.8rem;">Voltar</p>
     </div>
 
     <div id="estante-principal" style="display: none;">
-        <button onclick="voltar()" class="btn-voltar">⬅ Voltar</button>
-        
-        <div class="menu-categorias">
-            <button onclick="filtrar('todos')">Tudo</button>
-            <button onclick="filtrar('livro')">Livros 📚</button>
-            <button onclick="filtrar('video')">Vídeos 🎬</button>
-            <button onclick="filtrar('jogo')">Jogos 🎮</button>
-        </div>
-
-        <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
-
+        <button onclick="voltarParaEntrada()" class="btn-voltar">⬅ Sair</button>
+        <h1>Minha Biblioteca 📚</h1>
         <div id="lista">
-            <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
-            <a href="pecados.html" class="livro item livro">Sete Pecados Capitais 🌿🍎</a>
-            <a href="errado.html" class="livro item livro">Vai dar tudo errado 🌪️🤡</a>
-
-            <a href="video1.html" class="livro item video" style="background: linear-gradient(to right, #ff0000, #b20000);">Trailer do Livro 📽️</a>
-
-            <a href="jogo1.html" class="livro item jogo" style="background: linear-gradient(to right, #4b0082, #000000);">Quiz de Cristal Draco 🕹️</a>
+            <a href="#" class="item livro">Seu Primeiro Livro Aqui 📖</a>
         </div>
     </div>
 
     <script>
+        function irParaCadastro() {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'flex';
+        }
+
+        function finalizarCadastro() {
+            alert('Conta criada com sucesso! Bem-vindo, Autor.');
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
+
         function entrar() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
-            window.scrollTo(0, 0);
         }
 
-        function voltar() {
+        function voltarParaEntrada() {
             document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('tela-entrada').style.display = 'flex';
-        }
-
-        function filtrar(categoria) {
-            const itens = document.querySelectorAll('.item');
-            itens.forEach(item => {
-                if (categoria === 'todos') {
-                    item.style.display = 'block';
-                } else if (item.classList.contains(categoria)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
         }
     </script>
 </body>
+
 
 
          
