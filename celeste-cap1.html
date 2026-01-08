@@ -8,7 +8,24 @@
         body { font-family: 'Segoe UI', sans-serif; background: #fdfdfd; padding: 20px; color: #333; line-height: 1.8; }
         .texto-leitura { max-width: 600px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .btn-navegacao { display: inline-block; margin-top: 20px; text-decoration: none; color: #3498db; font-weight: bold; }
-    </style>
+   
+/* IMPEDE A SELEÇÃO VISUAL DO TEXTO */
+body {
+    -webkit-user-select: none;  /* Chrome, Safari, Opera */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE/Edge */
+    user-select: none;          /* Padrão */
+    -webkit-touch-callout: none; /* Impede menu de copiar no celular */
+}
+
+
+
+
+ </style>
+
+
+
+
 </head>
 <body>
     <div class="texto-leitura">
@@ -200,16 +217,35 @@ Autora: Jemima Keise Santos Cruz. Livro corrigido 31/12/2025.
 
 
 
-
-
-
-
-
-
 </p>
         
         <hr>
         <a href="celeste-cap2.html" class="btn-navegacao" style="float: right;">Próximo Capítulo →</a>
     </div>
+
+<script>
+    // Bloqueia o clique direito (menu de copiar)
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Bloqueia Ctrl+C, Ctrl+V e outras teclas de inspeção
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 73)) {
+            alert('Conteúdo Protegido! 🚫');
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
+
+
+
+
+
+
+
 </body>
+
+
+
+
 </html>
