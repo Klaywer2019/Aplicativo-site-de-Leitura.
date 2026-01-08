@@ -234,11 +234,41 @@ gap: 15px;
 }
 
 
+.campo-login {
+    width: 80%;
+    max-width: 300px;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background: #1e1e1e;
+    color: white;
+    outline: none;
+}
+
+.campo-login:focus {
+    border-color: #6a1b9a; /* Roxo ao clicar */
+}
+
+
 
      </style>
 </head>
 
 <body>
+<div id="tela-cadastro" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <h2 style="color: #a29bfe;">Crie sua Conta</h2>
+    <p>Junte-se a outros autores!</p>
+    
+    <input type="text" placeholder="Seu Nome" class="campo-login">
+    <input type="email" placeholder="E-mail" class="campo-login">
+    <input type="password" placeholder="Sua Senha" class="campo-login">
+    
+    <button class="btn-entrar" onclick="finalizarCadastro()">Cadastrar e Entrar</button>
+    <p onclick="irParaLogin()" style="font-size: 0.8rem; cursor: pointer; color: #888;">Já tem conta? Clique aqui</p>
+</div>
+
+
     <div id="tela-entrada">
         <h1>Bem-vindo à Minha Biblioteca</h1>
         <p>Explore histórias incríveis.</p>
