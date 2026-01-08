@@ -7,35 +7,33 @@
     <title>Minha Estante</title>
     
     <style>
-        /* 1. RESET E BASE */
+        /* RESET E SEGURANÇA CONTRA CÓPIA */
+        * {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        input, select { -webkit-user-select: text; user-select: text; }
+
         body {
             background-color: #121212;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* 2. PADRONIZAÇÃO DAS TELAS */
         #tela-entrada, #tela-cadastro, #tela-publicar {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            width: 100%;
             text-align: center;
         }
 
-        #estante-principal {
-            display: none;
-            width: 100%;
-            padding-bottom: 50px;
-        }
+        #estante-principal { display: none; width: 100%; padding-bottom: 50px; }
 
-        /* 3. BOTÕES E INPUTS */
         button {
             padding: 15px 30px;
             background-color: #6a1b9a;
@@ -44,11 +42,8 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s;
             margin: 5px;
         }
-
-        button:active { transform: scale(0.95); }
 
         .campo-login {
             width: 80%;
@@ -56,13 +51,11 @@
             padding: 15px;
             margin: 10px 0;
             border-radius: 12px;
-            border: 1px solid #444;
             background: #1e1e1e;
             color: white;
-            outline: none;
+            border: 1px solid #444;
         }
 
-        /* 4. ESTANTE E LIVROS */
         .nav-topo {
             display: flex;
             justify-content: space-around;
@@ -71,13 +64,9 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid #333;
         }
 
-        .btn-nav {
-            background: none;
-            color: #a29bfe;
-        }
+        .btn-nav { background: none; color: #a29bfe; }
 
         #lista {
             display: flex;
@@ -96,10 +85,9 @@
             font-weight: bold;
             color: white;
             position: relative;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
         }
 
-        /* Prateleiras de madeira */
+        /* Prateleiras */
         .item::after {
             content: "";
             position: absolute;
@@ -111,48 +99,16 @@
             border-radius: 4px;
         }
 
-        /* Estilos de cores */
         .livro { background: linear-gradient(135deg, #4B0082, #000000, #00FF00); border-bottom: 5px solid #ffa500; }
         .video { background: linear-gradient(to right, #ff0000, #b20000); border-bottom: 5px solid #fff; }
 
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            border-top: 1px solid #333;
-            width: 100%;
-            text-align: center;
-        }
-
-
-        /* IMPEDE A SELEÇÃO DE TEXTO */
-        * {
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE10+ */
-            user-select: none;         /* Padrão */
-        }
-
-        /* Permite seleção apenas nos campos de entrada (inputs) para não quebrar o login */
-        input, textarea, select {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
-        }
-
-
-
-
-
-
+        footer { text-align: center; padding: 20px; color: #888; font-size: 0.8rem; }
     </style>
 </head>
-
 <body>
 
     <div id="tela-entrada">
         <h1>Bem-vindo à Minha Biblioteca</h1>
-        <p>Explore histórias incríveis.</p>
         <button onclick="irParaCadastro()">Criar Conta Grátis</button>
         <button style="background: #333;" onclick="entrar()">Entrar como Convidado</button>
     </div>
@@ -160,10 +116,7 @@
     <div id="tela-cadastro" style="display: none;">
         <h2>Crie sua conta de Autor</h2>
         <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
-        <input type="email" placeholder="E-mail" class="campo-login">
-        <input type="password" placeholder="Senha" class="campo-login">
         <button onclick="finalizarCadastro()">Concluir Cadastro</button>
-        <p onclick="voltarParaEntrada()" style="cursor:pointer; color: #888; margin-top: 15px;">Voltar</p>
     </div>
 
     <div id="estante-principal">
@@ -172,7 +125,7 @@
             <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
         </div>
 
-        <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
+        <h1>Minha Biblioteca 📚</h1>
 
         <div id="lista">
             <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
@@ -187,66 +140,48 @@
             </div>
 
             <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
-            <a href="jogos.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72); display: block;">
-                Aventura no Reino 🕹️
-                <br>
-                <span style="font-size: 0.7rem; color: #55efc4; font-weight: normal;">Clique para ver todos os projetos</span>
+            <a href="jogos.html" class="item" style="background: #2d3436;">
+                Aventura no Reino 🕹️<br>
+                <span style="font-size: 0.7rem; color: #55efc4;">Clique para ver todos os projetos</span>
             </a>
         </div>
 
-        <footer>
-            <p style="font-size: 0.8rem; color: #888;">
-                Plataforma desenvolvida por <br>
-                <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
-            </p>
-        </footer>
+        <footer>Plataforma desenvolvida por <br><strong>Jemima Keise.</strong> &copy; 2026</footer>
     </div>
 
     <div id="tela-publicar" style="display: none;">
-        <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
-        
+        <h2>Novo Trabalho ✍️</h2>
         <select id="tipo-trabalho" class="campo-login" style="width: 87%;">
-            <option value="livro">📖 Novo Livro</option>
-            <option value="video">🎥 Novo Trailer (Vídeo)</option>
+            <option value="livro">📖 Livro</option>
+            <option value="video">🎥 Trailer</option>
         </select>
-
-        <input type="text" id="titulo-obra" placeholder="Título do seu Trabalho" class="campo-login">
-        <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class="campo-login">
-        
+        <input type="text" id="titulo-obra" placeholder="Título" class="campo-login">
+        <input type="text" id="link-obra" placeholder="URL do Link" class="campo-login">
         <button style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
-        <p onclick="fecharPainel()" style="cursor:pointer; color: #888; margin-top: 10px;">Cancelar</p>
-
-        <footer>
-            <p style="font-size: 0.8rem; color: #888;">
-                Plataforma desenvolvida por <br>
-                <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
-            </p>
-        </footer>
+        <p onclick="fecharPainel()" style="cursor:pointer;">Cancelar</p>
     </div>
 
     <script>
-        window.onload = function() {
-            if (localStorage.getItem('logado') === 'true') {
-                document.getElementById('tela-entrada').style.display = 'none';
-                document.getElementById('estante-principal').style.display = 'block';
+        // Bloqueio de botão direito e atalhos
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85)) {
+                alert('Cópia não permitida! 🚫');
+                e.preventDefault();
             }
-        };
+        });
+
+        function entrar() { 
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
 
         function irParaCadastro() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('tela-cadastro').style.display = 'flex';
         }
 
-        function entrar() {
-            localStorage.setItem('logado', 'true');
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
-
         function finalizarCadastro() {
-            const nome = document.getElementById('nome-autor').value;
-            localStorage.setItem('logado', 'true');
-            alert('Bem-vindo, ' + (nome || 'Autor') + '! Conta criada.');
             document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
@@ -261,15 +196,6 @@
             document.getElementById('estante-principal').style.display = 'block';
         }
 
-        function voltarParaEntrada() {
-            localStorage.removeItem('logado');
-            document.getElementById('tela-entrada').style.display = 'flex';
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'none';
-            document.getElementById('tela-publicar').style.display = 'none';
-        }
-
-        // FUNÇÃO SALVAR ATUALIZADA PARA VÍDEOS E LIVROS
         function salvarObra() {
             const titulo = document.getElementById('titulo-obra').value;
             const link = document.getElementById('link-obra').value;
@@ -280,43 +206,16 @@
                 novoItem.href = link;
                 novoItem.target = "_blank";
                 novoItem.innerText = titulo;
-                novoItem.className = 'item';
+                novoItem.className = 'item ' + tipo;
 
                 if (tipo === 'video') {
-                    novoItem.classList.add('video'); // Aplica a cor vermelha
                     document.getElementById('secao-videos').appendChild(novoItem);
                 } else {
-                    novoItem.classList.add('livro'); // Aplica o degradê roxo/verde
                     document.getElementById('secao-livros').appendChild(novoItem);
                 }
-
-                alert('"' + titulo + '" postado com sucesso!');
                 fecharPainel();
-                
-                // Limpa os campos
-                document.getElementById('titulo-obra').value = '';
-                document.getElementById('link-obra').value = '';
-            } else {
-                alert('Por favor, preencha o título e o link.');
             }
         }
-
-        // BLOQUEIA O BOTÃO DIREITO DO MOUSE
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // BLOQUEIA ATALHOS DE TECLADO (Ctrl+C, Ctrl+U, Ctrl+S, F12)
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 73)) {
-                alert('A cópia de conteúdo não é permitida nesta biblioteca! 🚫');
-                return false;
-            }
-            if (e.keyCode === 123) { // Bloqueia F12 (Inspecionar)
-                return false;
-            }
-        });
-
-
-
     </script>
 </body>
 </html>
