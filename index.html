@@ -194,67 +194,42 @@ footer {
 </head>
 
 <body>
-
-<div id="tela-entrada">
-<img src="dragao.jpg" alt="Logo" style="width: 150px; margin-bottom: 20px;">
+    <div id="tela-entrada" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+        <img src="dragao.jpg" alt="Logo" style="width: 150px; margin-bottom: 20px;">
+        
         <h1>Bem-vindo à Minha Biblioteca</h1>
         <p>Explore histórias incríveis.</p>
-        <button onclick="entrar()">Abrir Estante</button>
+        <button class="btn-roto" onclick="entrar()">Abrir Estante</button>
     </div>
 
-    <div id="estante-principal">
-        <button onclick="voltar()">⬅ Voltar</button>
+    <div id="estante-principal" style="display: none;">
+        <button onclick="voltar()" style="margin: 20px; padding: 10px; cursor: pointer;">⬅ Voltar</button>
+
+        <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
         
+        <div id="lista">
+            <a href="celeste.html" class="livro">Celeste Dragon 🔥🐉</a>
+            <a href="pecados.html" class="livro">Sete Pecados Capitais 🌿🍎</a>
+            <a href="errado.html" class="livro">Vai dar tudo errado 🌪️🤡</a>
         </div>
 
-   
-
-
-
-
-<div id="lista"></div>
-    <a href="celeste.html" class="livro">Celeste Dragon 🔥🐉</a>
-    <a href="pecados.html" class="livro">Sete Pecados Capitais 🌿🍎</a>
-    <a href="errado.html" class="livro">Vai dar tudo errado 🌪️🤡</a>
-
-
-<footer style="color: #888; text-align: center; margin-top: 50px; font-size: 0.8rem;">
-            Desenvolvido por <strong> Jemima Keise Santos Cruz.</strong> © 2026
+        <footer style="margin-top: 50px; font-size: 0.8rem; color: #888;">
+            Desenvolvido por <strong>Jemima Keise Santos Cruz.</strong> © 2026
         </footer>
+    </div>
 
-
-</div>
-<script>
+    <script>
         function entrar() {
-            // Esconde a entrada
             document.getElementById('tela-entrada').style.display = 'none';
-            // Mostra os livros
-            document.getElementById('conteudo-principal').style.display = 'block';
-}
-</script>
+            document.getElementById('estante-principal').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
 
+        function voltar() {
+            document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-entrada').style.display = 'flex';
+        }
+    </script>
 </body>
-
-
-</body>
-
-
-
-<script>
-function entrar() {
-    // Esconde a entrada e mostra os livros
-    document.getElementById('tela-entrada').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
-    window.scrollTo(0, 0); // Garante que a página comece no topo
-}
-
-function voltar() {
-    // Esconde os livros e mostra a entrada novamente
-    document.getElementById('estante-principal').style.display = 'none';
-    document.getElementById('tela-entrada').style.display = 'flex';
-}
-</script>
-
-
 
 </html>
