@@ -224,6 +224,14 @@ body {
     font-weight: bold;
 }
 
+.menu-categorias {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
 
 
 
@@ -232,67 +240,40 @@ body {
 
 <body>
     <div id="tela-entrada">
-       
-        
-        <h1>Bem-vindo à Minha Biblioteca</h1>
-        <p>Explore histórias incríveis.</p>
+        <h1 style="color: white;">Bem-vindo à Minha Biblioteca</h1>
+        <p style="color: white;">Explore histórias incríveis.</p>
         <button class="btn-entrar" onclick="entrar()">Abrir Estante</button>
     </div>
 
     <div id="estante-principal" style="display: none;">
-    <button onclick="voltar()" class="btn-voltar">⬅ Voltar</button>
-    
-    <div class="menu-categorias">
-        <button onclick="filtrar('todos')">Tudo</button>
-        <button onclick="filtrar('livro')">Livros 📚</button>
-        <button onclick="filtrar('video')">Vídeos 🎬</button>
-        <button onclick="filtrar('jogo')">Jogos 🎮</button>
-    </div>
-
-    <div id="lista">
-        <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
-        <a href="video.html" class="livro item video" style="background: red;">Trailer 🎬</a>
-    </div>
-</div>
-
-
-
-<div id="lista">
-    <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
-    <a href="pecados.html" class="livro item livro">Sete Pecados Capitais 🌿🍎</a>
-    
-    <a href="video1.html" class="livro item video" style="background: linear-gradient(to right, #ff0000, #b20000);">Trailer do Livro 📽️</a>
-    <a href="jogo1.html" class="livro item jogo" style="background: linear-gradient(to right, #4b0082, #000000);">Quiz de Cristal Draco 🕹️</a>
-</div>
-
-
-
-        <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
+        <button onclick="voltar()" class="btn-voltar">⬅ Voltar</button>
         
-        <div id="lista">
-            <a href="celeste.html" class="livro">Celeste Dragon 🔥🐉</a>
-            <a href="pecados.html" class="livro">Sete Pecados Capitais 🌿🍎</a>
-            <a href="errado.html" class="livro">Vai dar tudo errado 🌪️🤡</a>
+        <div class="menu-categorias">
+            <button onclick="filtrar('todos')">Tudo</button>
+            <button onclick="filtrar('livro')">Livros 📚</button>
+            <button onclick="filtrar('video')">Vídeos 🎬</button>
+            <button onclick="filtrar('jogo')">Jogos 🎮</button>
         </div>
 
-       
-<script>
+        <h1 class="titulo-estante" style="color: white;">Minha Biblioteca 📚</h1>
 
- <footer style="margin-top: 50px; font-size: 0.8rem; color: #888; text-align: center;">
-            Desenvolvido por <strong>Jemima Keise Santos Cruz.</strong> © 2026
-        </footer>
-</script>
+        <div id="lista">
+            <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
+            <a href="pecados.html" class="livro item livro">Sete Pecados Capitais 🌿🍎</a>
+            <a href="errado.html" class="livro item livro">Vai dar tudo errado 🌪️🤡</a>
+
+            <a href="video1.html" class="livro item video" style="background: linear-gradient(to right, #ff0000, #b20000);">Trailer do Livro 📽️</a>
+
+            <a href="jogo1.html" class="livro item jogo" style="background: linear-gradient(to right, #4b0082, #000000);">Quiz de Cristal Draco 🕹️</a>
+        </div>
     </div>
 
-       
-<script>
+    <script>
         function entrar() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
             window.scrollTo(0, 0);
         }
-
-
 
         function voltar() {
             document.getElementById('estante-principal').style.display = 'none';
@@ -314,11 +295,6 @@ body {
     </script>
 </body>
 
-   
- 
-    
-     
-
-
+         
 
 </html>
