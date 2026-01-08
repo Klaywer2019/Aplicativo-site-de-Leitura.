@@ -162,6 +162,18 @@
     </div>
 
     <script>
+
+        // Isso garante que, se você já entrou uma vez, o site não peça login de novo ao voltar
+        window.onload = function() {
+            if (localStorage.getItem('logado') === 'true') {
+                document.getElementById('tela-entrada').style.display = 'none';
+                document.getElementById('estante-principal').style.display = 'block';
+            }
+        };
+
+
+
+
         // Bloqueio de botão direito e atalhos
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
