@@ -346,8 +346,12 @@ gap: 15px;
 
     <div id="tela-publicar" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
-        <input type="text" id="titulo-obra" placeholder="Título do seu Livro" class="campo-login">
-        <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class
+        <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class="campo-login">
+        <button class="btn-entrar" style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
+        <p onclick="fecharPainel()" style="cursor:pointer; color: #888; margin-top: 10px;">Cancelar</p>
+    </div>
+
+<script>
 
 function irParaCadastro() {
     document.getElementById('tela-entrada').style.display = 'none';
@@ -384,13 +388,14 @@ function voltarParaEntrada() {
 
 function salvarObra() {
     const titulo = document.getElementById('titulo-obra').value;
-    if(titulo) {
-        alert('Obra "' + titulo + '" enviada!');
-        fecharPainel();
-    } else {
-        alert('Por favor, digite um título.');
-    }
+    alert('Obra "' + titulo + '" enviada com sucesso!');
+    fecharPainel();
 }
+</script>
+
+
+
+
 </body>
             
 
