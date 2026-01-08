@@ -272,7 +272,21 @@ gap: 15px;
      </style>
 </head>
 <body>
-    <div id="tela-entrada">
+    
+<div id="estante-principal" style="display: none;">
+    </div>
+
+<div id="tela-entrada">
+
+<button style="background: #e91e63; color: white; border: none; padding: 10px; border-radius: 10px; margin-bottom: 20px; width: 80%; max-width: 300px; font-weight: bold;">
+    ➕ Publicar Meu Trabalho (Em Breve)
+</button>
+
+
+
+
+
+
         <h1>Bem-vindo à Plataforma de Autores</h1>
         <p>Publique suas histórias e alcance seu público.</p>
         <button class="btn-entrar" onclick="irParaCadastro()">Criar Conta Grátis</button>
@@ -308,10 +322,19 @@ gap: 15px;
         }
 
         function finalizarCadastro() {
-            alert('Conta criada com sucesso!');
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
+    // 1. Pega o nome que o autor digitou (opcional por enquanto)
+    alert('Conta criada com sucesso! Bem-vindo ao time de autores.');
+
+    // 2. Esconde a tela de cadastro
+    document.getElementById('tela-cadastro').style.display = 'none';
+
+    // 3. Mostra a estante com seus livros, vídeos e jogos
+    document.getElementById('estante-principal').style.display = 'block';
+    
+    // 4. Garante que a página comece no topo
+    window.scrollTo(0, 0);
+}
+
 
         function voltarParaEntrada() {
             document.getElementById('tela-entrada').style.display = 'flex';
