@@ -271,22 +271,10 @@ gap: 15px;
 
      </style>
 </head>
-<body>
-    
-<div id="estante-principal" style="display: none;">
-    </div>
-
-<div id="tela-entrada">
-
-<button style="background: #e91e63; color: white; border: none; padding: 10px; border-radius: 10px; margin-bottom: 20px; width: 80%; max-width: 300px; font-weight: bold;">
-    ➕ Publicar Meu Trabalho (Em Breve)
-</button>
 
 
-
-
-
-
+    <body>
+    <div id="tela-entrada">
         <h1>Bem-vindo à Plataforma de Autores</h1>
         <p>Publique suas histórias e alcance seu público.</p>
         <button class="btn-entrar" onclick="irParaCadastro()">Criar Conta Grátis</button>
@@ -304,13 +292,27 @@ gap: 15px;
 
     <div id="estante-principal" style="display: none;">
         <button onclick="voltarParaEntrada()" class="btn-voltar">⬅ Sair</button>
-        <h1>Minha Biblioteca 📚</h1>
+        <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
+
+        <button onclick="abrirPainelCriacao()" class="btn-publicar">
+            ➕ Publicar Meu Trabalho
+        </button>
+
         <div id="lista">
-            <a href="#" class="item livro">Seu Primeiro Livro Aqui 📖</a>
+             <a href="#" class="item livro">Seu Primeiro Livro Aqui 📖</a>
         </div>
     </div>
 
+    <div id="tela-publicar" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
+        <input type="text" id="titulo-obra" placeholder="Título do seu Livro" class="campo-login">
+        <input type="text" id="link-obra" placeholder="Link do seu trabalho (URL)" class="campo-login">
+        <button class="btn-publicar" onclick="salvarObra()">Postar Agora</button>
+        <p onclick="fecharPainel()" style="cursor:pointer; color: #888;">Cancelar</p>
+    </div>
+
     <script>
+        // Funções para navegar entre as telas
         function irParaCadastro() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('tela-cadastro').style.display = 'flex';
@@ -322,19 +324,26 @@ gap: 15px;
         }
 
         function finalizarCadastro() {
-    // 1. Pega o nome que o autor digitou (opcional por enquanto)
-    alert('Conta criada com sucesso! Bem-vindo ao time de autores.');
+            alert('Conta criada com sucesso!');
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
 
-    // 2. Esconde a tela de cadastro
-    document.getElementById('tela-cadastro').style.display = 'none';
+        function abrirPainelCriacao() {
+            document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-publicar').style.display = 'flex';
+        }
 
-    // 3. Mostra a estante com seus livros, vídeos e jogos
-    document.getElementById('estante-principal').style.display = 'block';
-    
-    // 4. Garante que a página comece no topo
-    window.scrollTo(0, 0);
-}
+        function fecharPainel() {
+            document.getElementById('tela-publicar').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
 
+        function salvarObra() {
+            const titulo = document.getElementById('titulo-obra').value;
+            alert('Sucesso! Sua obra "' + titulo + '" foi enviada!');
+            fecharPainel();
+        }
 
         function voltarParaEntrada() {
             document.getElementById('tela-entrada').style.display = 'flex';
@@ -343,6 +352,7 @@ gap: 15px;
         }
     </script>
 </body>
+
 
 
 
