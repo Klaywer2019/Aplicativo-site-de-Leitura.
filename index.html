@@ -173,27 +173,55 @@ footer {
     align-items: center;
 }
 
+/* Configuração da Página Inteira */
+body {
+    background-color: #121212; /* Seu fundo escuro preferido */
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Centraliza a Tela de Entrada */
+#tela-entrada {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Menu de Categorias (Para os botões não ficarem amontoados) */
 .menu-categorias {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 30px;
-    flex-wrap: wrap; /* Para não quebrar no celular */
+    flex-wrap: wrap;
+    margin: 20px auto;
+    width: 90%;
 }
 
 .menu-categorias button {
-    background: #333;
+    background: #6a1b9a; /* Roxo para combinar com o botão principal */
     color: white;
-    border: 1px solid #444;
+    border: none;
     padding: 8px 15px;
     border-radius: 20px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: 0.3s;
 }
 
-.menu-categorias button:hover {
-    background: #6a1b9a; /* Cor roxa para combinar com seu botão Entrar */
+/* Estilo dos seus links de livros/vídeos */
+.item {
+    display: block;
+    text-decoration: none;
+    color: white;
+    margin: 15px auto;
+    width: 85%;
+    padding: 20px;
+    border-radius: 15px;
+    font-weight: bold;
 }
 
 
@@ -212,14 +240,22 @@ footer {
     </div>
 
     <div id="estante-principal" style="display: none;">
-        <button class="btn-voltar" onclick="voltar()">⬅ Voltar</button>
+    <button onclick="voltar()" class="btn-voltar">⬅ Voltar</button>
+    
+    <div class="menu-categorias">
+        <button onclick="filtrar('todos')">Tudo</button>
+        <button onclick="filtrar('livro')">Livros 📚</button>
+        <button onclick="filtrar('video')">Vídeos 🎬</button>
+        <button onclick="filtrar('jogo')">Jogos 🎮</button>
+    </div>
 
-<div class="menu-categorias">
-    <button onclick="filtrar('todos')">Tudo</button>
-    <button onclick="filtrar('livro')">Livros 📚</button>
-    <button onclick="filtrar('video')">Vídeos 🎬</button>
-    <button onclick="filtrar('jogo')">Jogos 🎮</button>
+    <div id="lista">
+        <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
+        <a href="video.html" class="livro item video" style="background: red;">Trailer 🎬</a>
+    </div>
 </div>
+
+
 
 <div id="lista">
     <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
@@ -245,22 +281,39 @@ footer {
  <footer style="margin-top: 50px; font-size: 0.8rem; color: #888; text-align: center;">
             Desenvolvido por <strong>Jemima Keise Santos Cruz.</strong> © 2026
         </footer>
-    </div>
-function filtrar(categoria) {
-    const itens = document.querySelectorAll('.item');
-    
-    itens.forEach(item => {
-        if (categoria === 'todos') {
-            item.style.display = 'block';
-        } else if (item.classList.contains(categoria)) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-}
 </script>
+    </div>
+
+       
+<script>
+        function entrar() {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+
+
+        function voltar() {
+            document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-entrada').style.display = 'flex';
+        }
+
+        function filtrar(categoria) {
+            const itens = document.querySelectorAll('.item');
+            itens.forEach(item => {
+                if (categoria === 'todos') {
+                    item.style.display = 'block';
+                } else if (item.classList.contains(categoria)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
+
    
  
     
