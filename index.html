@@ -17,7 +17,7 @@
             margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
         }
 
-        /* 2. MENU LATERAL (NOVO) */
+        /* 2. MENU LATERAL */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000;
             top: 0; right: 0; background-color: #1e1e1e;
@@ -182,19 +182,29 @@
             return listaNegra.some(palavra => t.includes(palavra));
         }
 
+        // PERSISTÊNCIA DE LOGIN
         window.onload = function() {
             const autorLogado = localStorage.getItem('autor_nome');
-            if (autorLogado) { mostrarEstante(autorLogado); }
+            if (autorLogado) { 
+                mostrarEstante(autorLogado); 
+            }
         };
+
+        function irParaCadastro() {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'flex';
+        }
 
         function finalizarCadastro() {
             const nome = document.getElementById('nome-autor').value;
             if (nome.trim() === "") return alert("Digite um nome!");
             if (contemOfensa(nome)) return alert("Nome não permitido!");
+            
             localStorage.setItem('autor_nome', nome);
             mostrarEstante(nome);
         }
 
+        // FUNÇÃO CORRIGIDA DO CONVIDADO
         function entrarConvidado() {
             localStorage.setItem('autor_nome', 'Convidado');
             mostrarEstante('Convidado');
@@ -217,7 +227,9 @@
             document.getElementById("menuLateral").style.width = "280px";
         }
 
-        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+        function fecharMenu() { 
+            document.getElementById("menuLateral").style.width = "0"; 
+        }
 
         function mudarCla(novoCla) {
             localStorage.setItem('cla_atual', novoCla);
@@ -225,11 +237,18 @@
 
         // SEGURANÇA E NAVEGAÇÃO
         document.addEventListener('contextmenu', e => e.preventDefault());
-        function voltarParaEntrada() { localStorage.removeItem('autor_nome'); location.reload(); }
+        
+        function voltarParaEntrada() { 
+            localStorage.removeItem('autor_nome'); 
+            localStorage.removeItem('cla_atual');
+            location.reload(); 
+        }
+
         function abrirPainelCriacao() { 
             document.getElementById('estante-principal').style.display = 'none';
             document.getElementById('tela-publicar').style.display = 'flex';
         }
+
         function fecharPainel() { 
             document.getElementById('tela-publicar').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
