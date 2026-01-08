@@ -236,11 +236,11 @@ gap: 15px;
 
 
 .campo-login {
-    width: 80%;
+    width: 85%;
     max-width: 300px;
-    padding: 15px;
+    padding: 12px;
     margin: 10px 0;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #444;
     background: #1e1e1e;
     color: white;
@@ -255,7 +255,6 @@ gap: 15px;
 
      </style>
 </head>
-
 <body>
     <div id="tela-entrada">
         <h1>Bem-vindo à Plataforma de Autores</h1>
@@ -264,13 +263,13 @@ gap: 15px;
         <button class="btn-entrar" style="background: #333; margin-top: 10px;" onclick="entrar()">Entrar como Convidado</button>
     </div>
 
-    <div id="tela-cadastro" style="display: none;">
+    <div id="tela-cadastro" style="display: none; flex-direction: column; align-items: center;">
         <h2>Crie sua conta de Autor</h2>
         <input type="text" placeholder="Nome de Autor" class="campo-login">
-        <input type="email" placeholder="Seu melhor E-mail" class="campo-login">
-        <input type="password" placeholder="Crie uma Senha" class="campo-login">
+        <input type="email" placeholder="E-mail" class="campo-login">
+        <input type="password" placeholder="Senha" class="campo-login">
         <button class="btn-entrar" onclick="finalizarCadastro()">Concluir Cadastro</button>
-        <p onclick="voltarParaEntrada()" style="cursor:pointer; font-size: 0.8rem;">Voltar</p>
+        <p onclick="voltarParaEntrada()" style="cursor:pointer; color: #888; margin-top: 15px;">Voltar</p>
     </div>
 
     <div id="estante-principal" style="display: none;">
@@ -287,21 +286,21 @@ gap: 15px;
             document.getElementById('tela-cadastro').style.display = 'flex';
         }
 
-        function finalizarCadastro() {
-            alert('Conta criada com sucesso! Bem-vindo, Autor.');
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
-
         function entrar() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
 
-        function voltarParaEntrada() {
-            document.getElementById('estante-principal').style.display = 'none';
+        function finalizarCadastro() {
+            alert('Conta criada com sucesso!');
             document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
+
+        function voltarParaEntrada() {
             document.getElementById('tela-entrada').style.display = 'flex';
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'none';
         }
     </script>
 </body>
