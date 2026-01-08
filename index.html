@@ -45,6 +45,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: transform 0.2s;
+            margin: 5px;
         }
 
         button:active { transform: scale(0.95); }
@@ -61,8 +62,6 @@
             outline: none;
         }
 
-        .campo-login:focus { border-color: #6a1b9a; }
-
         /* 4. ESTANTE E LIVROS */
         .nav-topo {
             display: flex;
@@ -77,7 +76,6 @@
 
         .btn-nav {
             background: none;
-            padding: 5px;
             color: #a29bfe;
         }
 
@@ -117,6 +115,13 @@
         .livro:nth-of-type(2) { background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); border-bottom: 5px solid #2ecc71; }
         .video { background: linear-gradient(to right, #ff0000, #b20000); border-bottom: 5px solid #fff; }
 
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -126,7 +131,7 @@
         <h1>Bem-vindo à Minha Biblioteca</h1>
         <p>Explore histórias incríveis.</p>
         <button onclick="irParaCadastro()">Criar Conta Grátis</button>
-        <button style="background: #333; margin-top: 10px;" onclick="entrar()">Entrar como Convidado</button>
+        <button style="background: #333;" onclick="entrar()">Entrar como Convidado</button>
     </div>
 
     <div id="tela-cadastro" style="display: none;">
@@ -139,8 +144,6 @@
     </div>
 
     <div id="estante-principal">
-
-  
         <div class="nav-topo">
             <button onclick="voltarParaEntrada()" class="btn-nav">🏠 Início</button>
             <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
@@ -149,34 +152,26 @@
         <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
 
         <div id="lista">
-    <h3 style="color: #a29bfe; margin-top: 20px;">📖 Meus Livros</h3>
-    <a href="celeste.html" class="item livro"     target="_blank">Celeste Dragon 🔥🐲</a>
-    <a href="pecados.html" class="item livro" target="_blank" >Sete Pecados Capitais 🌿🍎</a>
+            <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
+            <a href="celeste.html" class="item livro" target="_blank">Celeste Dragon 🔥🐲</a>
+            <a href="pecados.html" class="item livro" target="_blank">Sete Pecados Capitais 🌿🍎</a>
 
-    <h3 style="color: #ff7675; margin-top: 20px;">🎥 Trailers</h3>
-    <a href="video1.html" class="item video">Trailer's oficiais 🎬</a>
+            <h3 style="color: #ff7675;">🎥 Trailers</h3>
+            <a href="video1.html" class="item video">Trailers Oficiais 🎬</a>
 
-    <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
-    <a href="game1.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);">Aventura no Reino 🕹️</a>
+            <h3 style="color: #55efc4;">🎮 Mini-Jogos</h3>
+            <a href="mini.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);">Aventura no Reino 🕹️</a>
+            
+            <button style="background: #2196F3; margin-top: 20px;" onclick="window.location.href='jogos.html'">Acessar Área de Jogos 🎮</button>
+        </div>
 
-<div class="menu-categorias">
-    <button onclick="window.location.href='jogos.html'">Jogos 🎮</button>
-</div>
-
-
-</div>
-
-
-   
-
-    <footer style="margin-top: 40px; padding: 20px; border-top: 1px solid #333; width: 100%;">
-        <p style="font-size: 0.8rem; color: #888;">
-            Plataforma desenvolvida por <br>
-            <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
-        </p>
-    </footer>
-
- </div>
+        <footer>
+            <p style="font-size: 0.8rem; color: #888;">
+                Plataforma desenvolvida por <br>
+                <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
+            </p>
+        </footer>
+    </div>
 
     <div id="tela-publicar" style="display: none;">
         <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
@@ -185,31 +180,37 @@
         <button style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
         <p onclick="fecharPainel()" style="cursor:pointer; color: #888; margin-top: 10px;">Cancelar</p>
 
-
-
-    <footer style="margin-top: 40px; padding: 20px; border-top: 1px solid #333; width: 100%;">
-        <p style="font-size: 0.8rem; color: #888;">
-            Plataforma desenvolvida por <br>
-            <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
-        </p>
-    </footer>
-
-
+        <footer>
+            <p style="font-size: 0.8rem; color: #888;">
+                Plataforma desenvolvida por <br>
+                <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
+            </p>
+        </footer>
     </div>
 
     <script>
+        // Carregamento inicial
+        window.onload = function() {
+            if (localStorage.getItem('logado') === 'true') {
+                document.getElementById('tela-entrada').style.display = 'none';
+                document.getElementById('estante-principal').style.display = 'block';
+            }
+        };
+
         function irParaCadastro() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('tela-cadastro').style.display = 'flex';
         }
 
         function entrar() {
+            localStorage.setItem('logado', 'true');
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
 
         function finalizarCadastro() {
             const nome = document.getElementById('nome-autor').value;
+            localStorage.setItem('logado', 'true');
             alert('Bem-vindo, ' + (nome || 'Autor') + '! Conta criada.');
             document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
@@ -226,6 +227,7 @@
         }
 
         function voltarParaEntrada() {
+            localStorage.removeItem('logado');
             document.getElementById('tela-entrada').style.display = 'flex';
             document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'none';
@@ -241,40 +243,6 @@
                 alert('Por favor, digite o título da obra.');
             }
         }
-
-// Quando a página carrega, verifica se o usuário já estava na estante
-window.onload = function() {
-    if (localStorage.getItem('logado') === 'true') {
-        document.getElementById('tela-entrada').style.display = 'none';
-        document.getElementById('estante-principal').style.display = 'block';
-    }
-};
-
-// Atualize a sua função entrar() e finalizarCadastro() para salvar esse "estado"
-function entrar() {
-    localStorage.setItem('logado', 'true'); // Salva que entrou
-    document.getElementById('tela-entrada').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
-}
-
-function finalizarCadastro() {
-    localStorage.setItem('logado', 'true'); // Salva que cadastrou
-    alert('Conta criada!');
-    document.getElementById('tela-cadastro').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
-}
-
-// Quando clicar em "Início" na barra, ele pode querer deslogar ou apenas resetar
-function voltarParaEntrada() {
-    localStorage.removeItem('logado'); // Opcional: remove se quiser que ele veja a tela inicial de novo
-    document.getElementById('tela-entrada').style.display = 'flex';
-    document.getElementById('estante-principal').style.display = 'none';
-}
-
-
-
-
-
     </script>
 </body>
 </html>
