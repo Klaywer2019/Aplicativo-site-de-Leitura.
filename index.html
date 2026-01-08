@@ -1,408 +1,210 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Estante</title>
     
-<style>
+    <style>
+        /* 1. RESET E BASE */
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
+        /* 2. PADRONIZAÇÃO DAS TELAS */
+        #tela-entrada, #tela-cadastro, #tela-publicar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            text-align: center;
+        }
 
-#estante-principal {
-    display: none; /* Isso garante que ela comece invisível */
-    width: 100%;
-}
+        #estante-principal {
+            display: none;
+            width: 100%;
+            padding-bottom: 50px;
+        }
 
-#tela-entrada {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Ocupa a tela inteira do celular */
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden; /* Impede de passar para baixo */
-}
+        /* 3. BOTÕES E INPUTS */
+        button {
+            padding: 15px 30px;
+            background-color: #6a1b9a;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
 
+        button:active { transform: scale(0.95); }
 
+        .campo-login {
+            width: 80%;
+            max-width: 300px;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid #444;
+            background: #1e1e1e;
+            color: white;
+            outline: none;
+        }
 
+        .campo-login:focus { border-color: #6a1b9a; }
 
-#tela-entrada {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: opacity 0.5s ease;
-}
+        /* 4. ESTANTE E LIVROS */
+        .nav-topo {
+            display: flex;
+            justify-content: space-around;
+            background: #1e1e1e;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
 
-button {
-  padding: 15px 30px;
-  background-color: #6a1b9a; /* Um roxo elegante */
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-}
+        .btn-nav {
+            background: none;
+            padding: 5px;
+            color: #a29bfe;
+        }
 
+        #lista {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
 
+        .item {
+            width: 80%;
+            max-width: 350px;
+            padding: 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+        }
 
+        /* Prateleiras de madeira */
+        .item::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: -5%;
+            width: 110%;
+            height: 15px;
+            background: linear-gradient(to bottom, #5d3a1a, #2b1a0a);
+            border-radius: 4px;
+        }
 
+        .livro:nth-of-type(1) { background: linear-gradient(135deg, #4B0082, #000000, #00FF00); border-bottom: 5px solid #ffa500; }
+        .livro:nth-of-type(2) { background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); border-bottom: 5px solid #2ecc71; }
+        .video { background: linear-gradient(to right, #ff0000, #b20000); border-bottom: 5px solid #fff; }
 
-    /* Configuração da página inteira */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
-    }
-
-    /* Container principal que segura os livros */
-    .container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 40px;
-        border-radius: 25px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-    }
-
-    h1 {
-        color: #2c3e50;
-        margin-bottom: 30px;
-    }
-
-    /* Estilo base dos botões/livros */
-    .livro {
-        margin: 25px 0;
-        padding: 25px;
-        border-radius: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1.2rem;
-        color: white; /* Cor padrão branca */
-        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    /* Efeito ao tocar no livro */
-    .livro:active {
-        transform: scale(0.95);
-    }
-
-    .livro:nth-of-type(1) {
-    background: linear-gradient(135deg, #4B0082, #000000, #00FF00);
-    border-bottom: 5px solid #ffa500;
-}
-
-
-    /* 2. SETE PECADOS - Vinhas e Vermelho */
-    .livro:nth-of-type(2) {
-        background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); 
-        border-bottom: 5px solid #2ecc71;
-    }
-
-    /* 3. VAI DAR TUDO ERRADO - Caos e Amarelo */
-    .livro:nth-of-type(3) {
-        background: linear-gradient(45deg, #000000, #434343, #f1c40f); 
-        border-bottom: 5px solid #ffffff;
-        color: white; /* Letra branca para este livro */
-    
-
-
-/* Estilo para os seus créditos no rodapé */
-footer {
-    margin-top: auto; /* Empurra o crédito para o fim da página */
-    padding: 20px;
-    font-size: 0.9rem;
-    color: #888;
-    text-align: center;}
-
-
-
-.livro {
-    display: block; /* Faz o link ocupar o espaço necessário */
-    text-decoration: none;
-    position: relative;
-    margin: 20px auto 50px auto; 
-    width: 80%; 
-    z-index: 2;
-}
-
-.livro::after {
-    content: "";
-    position: absolute;
-    bottom: -15px; 
-    left: -5%;
-    width: 110%; 
-    height: 15px;
-    background: linear-gradient(to bottom, #5d3a1a, #2b1a0a); /* Cor da madeira */
-    border-radius: 4px;
-    box-shadow: 0 10px 15px rgba(0,0,0,0.8); 
-    z-index: 1;
-}
-
-
-
- body {
-    background-color: #121212; /* Fundo escuro essencial */
-    color: white;
-    font-family: sans-serif;
-    margin: 0;
-    text-align: center;
-display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-
-#tela-entrada, #estante-principal, #tela-cadastro {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Configuração da Página Inteira */
-body {
-    background-color: #121212; /* Seu fundo escuro preferido */
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-
-/* Centraliza a Tela de Entrada */
-#tela-entrada {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* Menu de Categorias (Para os botões não ficarem amontoados) */
-
-.menu-categorias {
-    display: flex;
-    justify-content: center; /* Centraliza os botões de categoria */
-    gap: 10px;
-    margin: 20px auto;
-    flex-wrap: wrap; /* Faz os botões pularem linha no celular se precisar */
-width: 90%;
-}
-
-.menu-categorias button {
-    background-color: #6a1b9a;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-font-size:0.9rem;
-}
-
-#lista {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Garante que os livros fiquem um embaixo do outro no centro */
-    width: 100%;
-gap: 15px;
-}
-
-/* Garante que os botões de livros ocupem um bom tamanho */
-.item {
-    width: 85%;
-    max-width: 350px;
-    text-align: center;
-    text-decoration: none;
-    padding: 20px;
-    border-radius: 15px;
-    font-weight: bold;
-    color: white;
-}
-
-/* Isso vai alinhar os campos de cadastro um embaixo do outro */
-#tela-cadastro {
-    display: none; /* O JavaScript mudará para 'flex' quando necessário */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 20px;
-}
-
-/* Estilo para os campos de E-mail e Senha */
-.campo-login {
-    width: 80%; /* Não deixa ocupar a tela toda */
-    max-width: 300px;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 12px;
-    border: 1px solid #444;
-    background: #1e1e1e; /* Fundo escuro para combinar com seu tema */
-    color: white;
-    font-size: 1rem;
-    outline: none;
-}
-
-.campo-login:focus {
-    border-color: #6a1b9a; /* Fica roxo quando você clica para digitar */
-}
-
-
-.campo-login:focus {
-    border-color: #6a1b9a; /* Roxo ao clicar */
-}
-
-
-
-.nav-topo {
-    display: flex;
-    justify-content: space-around;
-    background: #1e1e1e;
-    padding: 10px;
-    width: 100%;
-    position: sticky; /* Faz a barra grudar no topo ao rolar a página */
-    top: 0;
-    z-index: 100;
-    border-bottom: 1px solid #333;
-}
-
-.btn-nav {
-    background: none;
-    border: none;
-    color: #a29bfe;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.btn-nav:hover {
-    color: white;
-}
-
-/* Isso vai dar espaço entre o nome, email e senha */
-.campo-login {
-    width: 80%;
-    max-width: 300px;
-    padding: 12px;
-    margin: 8px 0; /* Cria o espaço entre os campos */
-    border-radius: 8px;
-    border: 1px solid #555;
-    background: #2a2a2a;
-    color: white;
-    display: block;
-}
-
-
-
-     </style>
+    </style>
 </head>
 
 <body>
-    <div id="tela-entrada" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+
+    <div id="tela-entrada">
         <h1>Bem-vindo à Minha Biblioteca</h1>
         <p>Explore histórias incríveis.</p>
-        <button class="btn-entrar" onclick="irParaCadastro()">Criar Conta Grátis</button>
-        <button class="btn-entrar" style="background: #333; margin-top: 10px;" onclick="entrar()">Entrar como Convidado</button>
+        <button onclick="irParaCadastro()">Criar Conta Grátis</button>
+        <button style="background: #333; margin-top: 10px;" onclick="entrar()">Entrar como Convidado</button>
     </div>
 
-    <div id="tela-cadastro" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <div id="tela-cadastro" style="display: none;">
         <h2>Crie sua conta de Autor</h2>
         <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
         <input type="email" placeholder="E-mail" class="campo-login">
         <input type="password" placeholder="Senha" class="campo-login">
-        <button class="btn-entrar" onclick="finalizarCadastro()">Concluir Cadastro</button>
+        <button onclick="finalizarCadastro()">Concluir Cadastro</button>
         <p onclick="voltarParaEntrada()" style="cursor:pointer; color: #888; margin-top: 15px;">Voltar</p>
     </div>
 
-    <div id="estante-principal" style="display: none;">
-        <div style="display: flex; justify-content: space-around; background: #1e1e1e; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333;">
-            <button onclick="voltarParaEntrada()" style="background:none; border:none; color:#a29bfe; font-weight:bold; cursor:pointer;">🏠 Início</button>
-            <button onclick="abrirPainelCriacao()" style="background:none; border:none; color:#a29bfe; font-weight:bold; cursor:pointer;">➕ Publicar</button>
+    <div id="estante-principal">
+        <div class="nav-topo">
+            <button onclick="voltarParaEntrada()" class="btn-nav">🏠 Início</button>
+            <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
         </div>
 
-        <h1 class="titulo-estante" style="text-align: center; margin-top: 20px;">Minha Biblioteca 📚</h1>
+        <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
 
         <div id="lista">
              <a href="celeste.html" class="item livro">Celeste Dragon 🔥🐲</a>
              <a href="pecados.html" class="item livro">Sete Pecados Capitais 🌿🍎</a>
-             <a href="video1.html" class="item video" style="background: linear-gradient(to right, #ff0000, #b20000);">Trailer do Livro 🎥</a>
+             <a href="video1.html" class="item video">Trailer do Livro 🎥</a>
         </div>
     </div>
 
-    <div id="tela-publicar" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <div id="tela-publicar" style="display: none;">
         <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
+        <input type="text" id="titulo-obra" placeholder="Título do seu Livro" class="campo-login">
         <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class="campo-login">
-        <button class="btn-entrar" style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
+        <button style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
         <p onclick="fecharPainel()" style="cursor:pointer; color: #888; margin-top: 10px;">Cancelar</p>
     </div>
 
-<script>
+    <script>
+        function irParaCadastro() {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'flex';
+        }
 
-function irParaCadastro() {
-    document.getElementById('tela-entrada').style.display = 'none';
-    document.getElementById('tela-cadastro').style.display = 'flex';
-}
+        function entrar() {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
 
-function entrar() {
-    document.getElementById('tela-entrada').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
-}
+        function finalizarCadastro() {
+            const nome = document.getElementById('nome-autor').value;
+            alert('Bem-vindo, ' + (nome || 'Autor') + '! Conta criada.');
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
 
-function finalizarCadastro() {
-    alert('Conta criada com sucesso!');
-    document.getElementById('tela-cadastro').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
-}
+        function abrirPainelCriacao() {
+            document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-publicar').style.display = 'flex';
+        }
 
-function abrirPainelCriacao() {
-    document.getElementById('estante-principal').style.display = 'none';
-    document.getElementById('tela-publicar').style.display = 'flex';
-}
+        function fecharPainel() {
+            document.getElementById('tela-publicar').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
 
-function fecharPainel() {
-    document.getElementById('tela-publicar').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'block';
-}
+        function voltarParaEntrada() {
+            document.getElementById('tela-entrada').style.display = 'flex';
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-publicar').style.display = 'none';
+        }
 
-function voltarParaEntrada() {
-    document.getElementById('tela-entrada').style.display = 'flex';
-    document.getElementById('tela-cadastro').style.display = 'none';
-    document.getElementById('estante-principal').style.display = 'none';
-    document.getElementById('tela-publicar').style.display = 'none';
-}
-
-function salvarObra() {
-    const titulo = document.getElementById('titulo-obra').value;
-    alert('Obra "' + titulo + '" enviada com sucesso!');
-    fecharPainel();
-}
-</script>
-
-
-
-
+        function salvarObra() {
+            const titulo = document.getElementById('titulo-obra').value;
+            if (titulo) {
+                alert('Obra "' + titulo + '" enviada com sucesso!');
+                fecharPainel();
+            } else {
+                alert('Por favor, digite o título da obra.');
+            }
+        }
+    </script>
 </body>
-            
-
-
-
-
-
-         
-
 </html>
