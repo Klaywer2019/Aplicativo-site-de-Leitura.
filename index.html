@@ -312,18 +312,17 @@ gap: 15px;
      </style>
 </head>
 
-
-    <body>
-    <div id="tela-entrada">
-        <h1>Bem-vindo à Plataforma de Autores</h1>
-        <p>Publique suas histórias e alcance seu público.</p>
+<body>
+    <div id="tela-entrada" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h1>Bem-vindo à Minha Biblioteca</h1>
+        <p>Explore histórias incríveis.</p>
         <button class="btn-entrar" onclick="irParaCadastro()">Criar Conta Grátis</button>
         <button class="btn-entrar" style="background: #333; margin-top: 10px;" onclick="entrar()">Entrar como Convidado</button>
     </div>
 
-    <div id="tela-cadastro" style="display: none; flex-direction: column; align-items: center;">
+    <div id="tela-cadastro" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h2>Crie sua conta de Autor</h2>
-        <input type="text" placeholder="Nome de Autor" class="campo-login">
+        <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
         <input type="email" placeholder="E-mail" class="campo-login">
         <input type="password" placeholder="Senha" class="campo-login">
         <button class="btn-entrar" onclick="finalizarCadastro()">Concluir Cadastro</button>
@@ -331,104 +330,28 @@ gap: 15px;
     </div>
 
     <div id="estante-principal" style="display: none;">
-<div id="estante-principal" style="display: none;">
-    <div class="nav-topo">
-        <button onclick="voltarParaEntrada()" class="btn-nav">🏠 Início</button>
-        <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
-    </div>
-
-    <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
-
-    <div class="menu-categorias">
-        <button onclick="filtrar('todos')">Tudo</button>
-        <button onclick="filtrar('livro')">Livros</button>
-        <button onclick="filtrar('video')">Vídeos</button>
-        <button onclick="filtrar('jogo')">Jogos</button>
-    </div>
-
-    <div id="lista">
+        <div style="display: flex; justify-content: space-around; background: #1e1e1e; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333;">
+            <button onclick="voltarParaEntrada()" style="background:none; border:none; color:#a29bfe; font-weight:bold; cursor:pointer;">🏠 Início</button>
+            <button onclick="abrirPainelCriacao()" style="background:none; border:none; color:#a29bfe; font-weight:bold; cursor:pointer;">➕ Publicar</button>
         </div>
-</div>
 
-
-        <button onclick="voltarParaEntrada()" class="btn-voltar">⬅ Sair</button>
-        <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
-
-        <button onclick="abrirPainelCriacao()" class="btn-publicar">
-            ➕ Publicar Meu Trabalho
-        </button>
+        <h1 class="titulo-estante" style="text-align: center; margin-top: 20px;">Minha Biblioteca 📚</h1>
 
         <div id="lista">
-             <a href="#" class="item livro">Seu Primeiro Livro Aqui 📖</a>
+             <a href="celeste.html" class="item livro">Celeste Dragon 🔥🐲</a>
+             <a href="pecados.html" class="item livro">Sete Pecados Capitais 🌿🍎</a>
+             <a href="video1.html" class="item video" style="background: linear-gradient(to right, #ff0000, #b20000);">Trailer do Livro 🎥</a>
         </div>
     </div>
 
     <div id="tela-publicar" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
         <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
         <input type="text" id="titulo-obra" placeholder="Título do seu Livro" class="campo-login">
-        <input type="text" id="link-obra" placeholder="Link do seu trabalho (URL)" class="campo-login">
-        <button class="btn-publicar" onclick="salvarObra()">Postar Agora</button>
-        <p onclick="fecharPainel()" style="cursor:pointer; color: #888;">Cancelar</p>
-    </div>
-
-    <script>
-        // Funções para navegar entre as telas
-        function irParaCadastro() {
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('tela-cadastro').style.display = 'flex';
-        }
-
-        function entrar() {
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
-
-       function finalizarCadastro() {
-    // 1. Mostra o aviso de sucesso
-    alert('Conta criada com sucesso! Bem-vindo, Autor.');
-
-    // 2. Esconde a tela de cadastro
-    document.getElementById('tela-cadastro').style.display = 'none';
-
-    // 3. Abre a estante principal
-    document.getElementById('estante-principal').style.display = 'block';
-    
-    // 4. Sobe a página para o topo
-    window.scrollTo(0, 0);
-}
+        <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class
 
 
-    
+            
 
-
-     function abrirPainelCriacao() {
-            document.getElementById('estante-principal').style.display = 'none';
-            document.getElementById('tela-publicar').style.display = 'flex';
-        }
-
-        function fecharPainel() {
-            document.getElementById('estante-principal').style.display = 'none';
-            document.getElementById('tela-publicar').style.display = 'none';
-
-// Mostra a tela inicial
-    document.getElementById('tela-entrada').style.display = 'flex';
-
-
-        }
-
-        function salvarObra() {
-            const titulo = document.getElementById('titulo-obra').value;
-            alert('Sucesso! Sua obra "' + titulo + '" foi enviada!');
-            fecharPainel();
-        }
-
-        function voltarParaEntrada() {
-            document.getElementById('tela-entrada').style.display = 'flex';
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'none';
-        }
-    </script>
-</body>
 
 
 
