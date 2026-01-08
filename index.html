@@ -122,6 +122,29 @@
             width: 100%;
             text-align: center;
         }
+
+
+        /* IMPEDE A SELEÇÃO DE TEXTO */
+        * {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE10+ */
+            user-select: none;         /* Padrão */
+        }
+
+        /* Permite seleção apenas nos campos de entrada (inputs) para não quebrar o login */
+        input, textarea, select {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
+
+
+
+
+
     </style>
 </head>
 
@@ -277,6 +300,23 @@
                 alert('Por favor, preencha o título e o link.');
             }
         }
+
+        // BLOQUEIA O BOTÃO DIREITO DO MOUSE
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // BLOQUEIA ATALHOS DE TECLADO (Ctrl+C, Ctrl+U, Ctrl+S, F12)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 73)) {
+                alert('A cópia de conteúdo não é permitida nesta biblioteca! 🚫');
+                return false;
+            }
+            if (e.keyCode === 123) { // Bloqueia F12 (Inspecionar)
+                return false;
+            }
+        });
+
+
+
     </script>
 </body>
 </html>
