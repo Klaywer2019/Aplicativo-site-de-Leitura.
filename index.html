@@ -4,19 +4,18 @@
     <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Estante</title>
+    <title>Minha Estante RPG</title>
     
     <style>
-        /* 1. RESET E SEGURANÇA MÁXIMA CONTRA CÓPIA */
+        /* 1. RESET E SEGURANÇA MÁXIMA */
         * {
-            -webkit-user-select: none; /* Impede seleção no Chrome/Safari */
-            -moz-user-select: none;    /* Impede seleção no Firefox */
-            -ms-user-select: none;     /* Impede seleção no IE */
-            user-select: none;         /* Impede seleção padrão */
-            -webkit-touch-callout: none; /* Impede menu de contexto em mobile */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
         }
 
-        /* Permite usar teclado apenas em campos de texto (para login/postagem) */
         input, select, textarea {
             -webkit-user-select: text;
             user-select: text;
@@ -49,7 +48,24 @@
             padding-bottom: 50px;
         }
 
-        /* 3. BOTÕES E INPUTS */
+        /* 3. ÍCONE DE PERFIL REDONDO */
+        .perfil-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #6a1b9a, #a29bfe);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            border: 2px solid #55efc4;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px rgba(85, 239, 196, 0.3);
+        }
+
+        /* 4. BOTÕES E INPUTS */
         button {
             padding: 15px 30px;
             background-color: #6a1b9a;
@@ -76,10 +92,11 @@
             outline: none;
         }
 
-        /* 4. ESTANTE E ITENS */
+        /* 5. ESTANTE E ITENS */
         .nav-topo {
             display: flex;
             justify-content: space-around;
+            align-items: center;
             background: #1e1e1e;
             padding: 15px;
             position: sticky;
@@ -91,6 +108,9 @@
         .btn-nav {
             background: none;
             color: #a29bfe;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         #lista {
@@ -142,15 +162,15 @@
 <body>
 
     <div id="tela-entrada">
-        <h1>Bem-vindo à Minha Biblioteca</h1>
-        <p>Explore histórias incríveis.</p>
-        <button onclick="irParaCadastro()">Criar Conta Grátis</button>
-        <button style="background: #333;" onclick="entrar()">Entrar como Convidado</button>
+        <h1>🛡️ Portal dos Clãs</h1>
+        <p>Acesse sua biblioteca sagrada.</p>
+        <button onclick="irParaCadastro()">Criar Conta de Autor</button>
+        <button style="background: #333;" onclick="entrarConvidado()">Entrar como Convidado</button>
     </div>
 
     <div id="tela-cadastro" style="display: none;">
-        <h2>Crie sua conta de Autor</h2>
-        <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
+        <h2>Inicie sua Jornada</h2>
+        <input type="text" id="nome-autor" placeholder="Seu Nome de Autor" class="campo-login">
         <input type="email" placeholder="E-mail" class="campo-login">
         <input type="password" placeholder="Senha" class="campo-login">
         <button onclick="finalizarCadastro()">Concluir Cadastro</button>
@@ -159,8 +179,9 @@
 
     <div id="estante-principal">
         <div class="nav-topo">
-            <button onclick="voltarParaEntrada()" class="btn-nav">🏠 Início</button>
+            <button onclick="voltarParaEntrada()" class="btn-nav">🏠 Sair</button>
             <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
+            <div class="perfil-avatar" id="user-icon" onclick="verPerfil()">?</div>
         </div>
 
         <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
@@ -206,40 +227,72 @@
     </div>
 
     <script>
-        // MEMÓRIA DE LOGIN: Impede voltar para o início ao navegar
+        // 1. FILTRO DE PALAVRAS OFENSIVAS
+        const listaNegra = ["palavraum", "palavradois", "ofensa3"]; // Adicione as palavras aqui
+
+        function contemOfensa(texto) {
+            const t = texto.toLowerCase();
+            return listaNegra.some(palavra => t.includes(palavra));
+        }
+
+        // 2. MEMÓRIA DE LOGIN (SALVA NO CELULAR)
         window.onload = function() {
-            if (localStorage.getItem('logado') === 'true') {
-                document.getElementById('tela-entrada').style.display = 'none';
-                document.getElementById('estante-principal').style.display = 'block';
+            const autorLogado = localStorage.getItem('autor_nome');
+            if (autorLogado) {
+                mostrarEstante(autorLogado);
             }
         };
 
-        // TRAVAS DE SEGURANÇA
-        document.addEventListener('contextmenu', e => e.preventDefault()); // Bloqueia clique direito
-        document.addEventListener('keydown', function(e) {
-            // Bloqueia Ctrl+C, Ctrl+V, Ctrl+U (Ver código), F12 (Inspecionar)
+        function finalizarCadastro() {
+            const nome = document.getElementById('nome-autor').value;
+            if (nome.trim() === "") return alert("Digite um nome!");
+            
+            if (contemOfensa(nome)) {
+                alert("Este nome contém palavras não permitidas! 🚫");
+                return;
+            }
+
+            localStorage.setItem('autor_nome', nome);
+            mostrarEstante(nome);
+        }
+
+        function entrarConvidado() {
+            localStorage.setItem('autor_nome', 'Convidado');
+            mostrarEstante('Convidado');
+        }
+
+        function mostrarEstante(nome) {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+            
+            // Atualiza o círculo de perfil com a inicial
+            document.getElementById('user-icon').innerText = nome.charAt(0).toUpperCase();
+        }
+
+        function verPerfil() {
+            const nome = localStorage.getItem('autor_nome');
+            alert("👤 Perfil do Autor\n\nNome: " + nome + "\nClã: Tenepress 🏰\nStatus: Online");
+        }
+
+        // 3. SEGURANÇA CONTRA CÓPIA
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
             if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 73)) {
-                alert('A proteção de direitos autorais está ativada! 🚫');
+                alert('Proteção de direitos autorais ativada! 🚫');
                 e.preventDefault();
-                return false;
             }
         });
 
+        // 4. FUNÇÕES DE NAVEGAÇÃO
         function irParaCadastro() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('tela-cadastro').style.display = 'flex';
         }
 
-        function entrar() {
-            localStorage.setItem('logado', 'true');
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
-
-        function finalizarCadastro() {
-            localStorage.setItem('logado', 'true');
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
+        function voltarParaEntrada() {
+            localStorage.removeItem('autor_nome');
+            location.reload();
         }
 
         function abrirPainelCriacao() {
@@ -252,15 +305,15 @@
             document.getElementById('estante-principal').style.display = 'block';
         }
 
-        function voltarParaEntrada() {
-            localStorage.removeItem('logado');
-            location.reload();
-        }
-
         function salvarObra() {
             const titulo = document.getElementById('titulo-obra').value;
             const link = document.getElementById('link-obra').value;
             const tipo = document.getElementById('tipo-trabalho').value;
+
+            if (contemOfensa(titulo)) {
+                alert("O título contém palavras ofensivas! 🚫");
+                return;
+            }
 
             if (titulo && link) {
                 const novoItem = document.createElement('a');
@@ -275,8 +328,6 @@
                     document.getElementById('secao-livros').appendChild(novoItem);
                 }
                 fecharPainel();
-            } else {
-                alert('Preencha todos os campos!');
             }
         }
     </script>
