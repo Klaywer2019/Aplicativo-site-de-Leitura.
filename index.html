@@ -198,8 +198,9 @@ body {
     display: flex;
     justify-content: center; /* Centraliza os botões de categoria */
     gap: 10px;
-    margin: 20px 0;
+    margin: 20px auto;
     flex-wrap: wrap; /* Faz os botões pularem linha no celular se precisar */
+width: 90%;
 }
 
 .menu-categorias button {
@@ -209,6 +210,7 @@ body {
     padding: 10px 15px;
     border-radius: 20px;
     cursor: pointer;
+font-size:0.9rem;
 }
 
 #lista {
@@ -216,9 +218,20 @@ body {
     flex-direction: column;
     align-items: center; /* Garante que os livros fiquem um embaixo do outro no centro */
     width: 100%;
+gap: 15px;
 }
 
-
+/* Garante que os botões de livros ocupem um bom tamanho */
+.item {
+    width: 85%;
+    max-width: 350px;
+    text-align: center;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    color: white;
+}
 
 
 
