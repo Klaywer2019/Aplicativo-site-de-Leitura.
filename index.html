@@ -234,18 +234,34 @@ gap: 15px;
     color: white;
 }
 
+/* Isso vai alinhar os campos de cadastro um embaixo do outro */
+#tela-cadastro {
+    display: none; /* O JavaScript mudará para 'flex' quando necessário */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+}
 
+/* Estilo para os campos de E-mail e Senha */
 .campo-login {
-    width: 85%;
+    width: 80%; /* Não deixa ocupar a tela toda */
     max-width: 300px;
-    padding: 12px;
+    padding: 15px;
     margin: 10px 0;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid #444;
-    background: #1e1e1e;
+    background: #1e1e1e; /* Fundo escuro para combinar com seu tema */
     color: white;
+    font-size: 1rem;
     outline: none;
 }
+
+.campo-login:focus {
+    border-color: #6a1b9a; /* Fica roxo quando você clica para digitar */
+}
+
 
 .campo-login:focus {
     border-color: #6a1b9a; /* Roxo ao clicar */
