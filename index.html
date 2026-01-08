@@ -324,10 +324,25 @@ gap: 15px;
         }
 
         function finalizarCadastro() {
-            alert('Conta criada com sucesso!');
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
+    // 1. Pega os valores (opcional, mas bom para o futuro)
+    const nome = document.querySelector('input[placeholder="Nome de Autor"]').value;
+
+    if (nome === "") {
+        alert("Por favor, preencha seu nome de autor!");
+        return;
+    }
+
+    // 2. Alerta de boas-vindas
+    alert("Bem-vindo(a), " + nome + "! Sua conta foi criada.");
+
+    // 3. A MÁGICA: Esconde o cadastro e mostra a estante
+    document.getElementById('tela-cadastro').style.display = 'none';
+    document.getElementById('estante-principal').style.display = 'block';
+
+    // 4. Garante que a tela comece do topo
+    window.scrollTo(0, 0);
+}
+
 
         function abrirPainelCriacao() {
             document.getElementById('estante-principal').style.display = 'none';
