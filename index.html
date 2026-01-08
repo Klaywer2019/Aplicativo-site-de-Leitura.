@@ -116,22 +116,7 @@ button {
         background: linear-gradient(45deg, #000000, #434343, #f1c40f); 
         border-bottom: 5px solid #ffffff;
         color: white; /* Letra branca para este livro */
-    }
-
-
-
-/* Muda a cor do fundo de branco para um cinza bem escuro/azulado */
-body {
-    background-color: #121212; 
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* Fonte mais moderna */
-    color: white;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
+    
 
 
 /* Estilo para os seus créditos no rodapé */
@@ -140,8 +125,8 @@ footer {
     padding: 20px;
     font-size: 0.9rem;
     color: #888;
-    text-align: center;
-}
+    text-align: center;}
+
 
 
 .livro {
@@ -188,22 +173,20 @@ footer {
     align-items: center;
 }
 
-    
-
- </style>
+     </style>
 </head>
 
 <body>
-    <div id="tela-entrada" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
-        <img src="dragao.jpg" alt="Logo" style="width: 150px; margin-bottom: 20px;">
+    <div id="tela-entrada">
+        <img src="dragao.jpg" alt="Logo Dragão" style="width: 150px; margin-bottom: 20px; border-radius: 10px;">
         
         <h1>Bem-vindo à Minha Biblioteca</h1>
         <p>Explore histórias incríveis.</p>
-        <button class="btn-roto" onclick="entrar()">Abrir Estante</button>
+        <button class="btn-entrar" onclick="entrar()">Abrir Estante</button>
     </div>
 
     <div id="estante-principal" style="display: none;">
-        <button onclick="voltar()" style="margin: 20px; padding: 10px; cursor: pointer;">⬅ Voltar</button>
+        <button class="btn-voltar" onclick="voltar()">⬅ Voltar</button>
 
         <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
         
@@ -213,23 +196,27 @@ footer {
             <a href="errado.html" class="livro">Vai dar tudo errado 🌪️🤡</a>
         </div>
 
-        <footer style="margin-top: 50px; font-size: 0.8rem; color: #888;">
+        <footer style="margin-top: 50px; font-size: 0.8rem; color: #888; text-align: center;">
             Desenvolvido por <strong>Jemima Keise Santos Cruz.</strong> © 2026
         </footer>
     </div>
 
     <script>
         function entrar() {
+            // Some com a entrada e aparece com a estante
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 0); 
         }
 
         function voltar() {
+            // Faz o caminho inverso
             document.getElementById('estante-principal').style.display = 'none';
             document.getElementById('tela-entrada').style.display = 'flex';
         }
     </script>
 </body>
+
+
 
 </html>
