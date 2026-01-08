@@ -173,6 +173,32 @@ footer {
     align-items: center;
 }
 
+.menu-categorias {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Para não quebrar no celular */
+}
+
+.menu-categorias button {
+    background: #333;
+    color: white;
+    border: 1px solid #444;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.menu-categorias button:hover {
+    background: #6a1b9a; /* Cor roxa para combinar com seu botão Entrar */
+}
+
+
+
+
      </style>
 </head>
 
@@ -188,6 +214,23 @@ footer {
     <div id="estante-principal" style="display: none;">
         <button class="btn-voltar" onclick="voltar()">⬅ Voltar</button>
 
+<div class="menu-categorias">
+    <button onclick="filtrar('todos')">Tudo</button>
+    <button onclick="filtrar('livro')">Livros 📚</button>
+    <button onclick="filtrar('video')">Vídeos 🎬</button>
+    <button onclick="filtrar('jogo')">Jogos 🎮</button>
+</div>
+
+<div id="lista">
+    <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
+    <a href="pecados.html" class="livro item livro">Sete Pecados Capitais 🌿🍎</a>
+    
+    <a href="video1.html" class="livro item video" style="background: linear-gradient(to right, #ff0000, #b20000);">Trailer do Livro 📽️</a>
+    <a href="jogo1.html" class="livro item jogo" style="background: linear-gradient(to right, #4b0082, #000000);">Quiz de Cristal Draco 🕹️</a>
+</div>
+
+
+
         <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
         
         <div id="lista">
@@ -201,13 +244,15 @@ footer {
         </footer>
     </div>
 
-    <script>
+   
+ <script>
         function entrar() {
             // Some com a entrada e aparece com a estante
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
             window.scrollTo(0, 0); 
         }
+
 
         function voltar() {
             // Faz o caminho inverso
@@ -216,6 +261,19 @@ footer {
         }
     </script>
 </body>
+function filtrar(categoria) {
+    const itens = document.querySelectorAll('.item');
+    
+    itens.forEach(item => {
+        if (categoria === 'todos') {
+            item.style.display = 'block';
+        } else if (item.classList.contains(categoria)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
 
 
 
