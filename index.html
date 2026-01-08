@@ -7,33 +7,49 @@
     <title>Minha Estante</title>
     
     <style>
-        /* RESET E SEGURANÇA CONTRA CÓPIA */
+        /* 1. RESET E SEGURANÇA MÁXIMA CONTRA CÓPIA */
         * {
-            -webkit-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; /* Impede seleção no Chrome/Safari */
+            -moz-user-select: none;    /* Impede seleção no Firefox */
+            -ms-user-select: none;     /* Impede seleção no IE */
+            user-select: none;         /* Impede seleção padrão */
+            -webkit-touch-callout: none; /* Impede menu de contexto em mobile */
         }
-        input, select { -webkit-user-select: text; user-select: text; }
+
+        /* Permite usar teclado apenas em campos de texto (para login/postagem) */
+        input, select, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+        }
 
         body {
             background-color: #121212;
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
+        /* 2. PADRONIZAÇÃO DAS TELAS */
         #tela-entrada, #tela-cadastro, #tela-publicar {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100%;
             text-align: center;
         }
 
-        #estante-principal { display: none; width: 100%; padding-bottom: 50px; }
+        #estante-principal {
+            display: none;
+            width: 100%;
+            padding-bottom: 50px;
+        }
 
+        /* 3. BOTÕES E INPUTS */
         button {
             padding: 15px 30px;
             background-color: #6a1b9a;
@@ -42,8 +58,11 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
+            transition: transform 0.2s;
             margin: 5px;
         }
+
+        button:active { transform: scale(0.95); }
 
         .campo-login {
             width: 80%;
@@ -51,11 +70,13 @@
             padding: 15px;
             margin: 10px 0;
             border-radius: 12px;
+            border: 1px solid #444;
             background: #1e1e1e;
             color: white;
-            border: 1px solid #444;
+            outline: none;
         }
 
+        /* 4. ESTANTE E ITENS */
         .nav-topo {
             display: flex;
             justify-content: space-around;
@@ -64,9 +85,13 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid #333;
         }
 
-        .btn-nav { background: none; color: #a29bfe; }
+        .btn-nav {
+            background: none;
+            color: #a29bfe;
+        }
 
         #lista {
             display: flex;
@@ -85,9 +110,11 @@
             font-weight: bold;
             color: white;
             position: relative;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+            display: block;
         }
 
-        /* Prateleiras */
+        /* Prateleiras de madeira */
         .item::after {
             content: "";
             position: absolute;
@@ -102,13 +129,21 @@
         .livro { background: linear-gradient(135deg, #4B0082, #000000, #00FF00); border-bottom: 5px solid #ffa500; }
         .video { background: linear-gradient(to right, #ff0000, #b20000); border-bottom: 5px solid #fff; }
 
-        footer { text-align: center; padding: 20px; color: #888; font-size: 0.8rem; }
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
+
 <body>
 
     <div id="tela-entrada">
         <h1>Bem-vindo à Minha Biblioteca</h1>
+        <p>Explore histórias incríveis.</p>
         <button onclick="irParaCadastro()">Criar Conta Grátis</button>
         <button style="background: #333;" onclick="entrar()">Entrar como Convidado</button>
     </div>
@@ -116,7 +151,10 @@
     <div id="tela-cadastro" style="display: none;">
         <h2>Crie sua conta de Autor</h2>
         <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
+        <input type="email" placeholder="E-mail" class="campo-login">
+        <input type="password" placeholder="Senha" class="campo-login">
         <button onclick="finalizarCadastro()">Concluir Cadastro</button>
+        <p onclick="voltarParaEntrada()" style="cursor:pointer; color: #888; margin-top: 15px;">Voltar</p>
     </div>
 
     <div id="estante-principal">
@@ -125,7 +163,7 @@
             <button onclick="abrirPainelCriacao()" class="btn-nav">➕ Publicar</button>
         </div>
 
-        <h1>Minha Biblioteca 📚</h1>
+        <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
 
         <div id="lista">
             <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
@@ -140,30 +178,35 @@
             </div>
 
             <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
-            <a href="jogos.html" class="item" style="background: #2d3436;">
-                Aventura no Reino 🕹️<br>
-                <span style="font-size: 0.7rem; color: #55efc4;">Clique para ver todos os projetos</span>
+            <a href="jogos.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);">
+                Aventura no Reino 🕹️
+                <br>
+                <span style="font-size: 0.7rem; color: #55efc4; font-weight: normal;">Clique para ver todos os projetos</span>
             </a>
         </div>
 
-        <footer>Plataforma desenvolvida por <br><strong>Jemima Keise.</strong> &copy; 2026</footer>
+        <footer>
+            <p style="font-size: 0.8rem; color: #888;">
+                Plataforma desenvolvida por <br>
+                <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
+            </p>
+        </footer>
     </div>
 
     <div id="tela-publicar" style="display: none;">
-        <h2>Novo Trabalho ✍️</h2>
+        <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
         <select id="tipo-trabalho" class="campo-login" style="width: 87%;">
-            <option value="livro">📖 Livro</option>
-            <option value="video">🎥 Trailer</option>
+            <option value="livro">📖 Novo Livro</option>
+            <option value="video">🎥 Novo Trailer</option>
         </select>
         <input type="text" id="titulo-obra" placeholder="Título" class="campo-login">
-        <input type="text" id="link-obra" placeholder="URL do Link" class="campo-login">
+        <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class="campo-login">
         <button style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
-        <p onclick="fecharPainel()" style="cursor:pointer;">Cancelar</p>
+        <p onclick="fecharPainel()" style="cursor:pointer; color: #888; margin-top: 10px;">Cancelar</p>
     </div>
 
     <script>
-
-        // Isso garante que, se você já entrou uma vez, o site não peça login de novo ao voltar
+        // MEMÓRIA DE LOGIN: Impede voltar para o início ao navegar
         window.onload = function() {
             if (localStorage.getItem('logado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
@@ -171,29 +214,30 @@
             }
         };
 
-
-
-
-        // Bloqueio de botão direito e atalhos
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85)) {
-                alert('Cópia não permitida! 🚫');
+        // TRAVAS DE SEGURANÇA
+        document.addEventListener('contextmenu', e => e.preventDefault()); // Bloqueia clique direito
+        document.addEventListener('keydown', function(e) {
+            // Bloqueia Ctrl+C, Ctrl+V, Ctrl+U (Ver código), F12 (Inspecionar)
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 73)) {
+                alert('A proteção de direitos autorais está ativada! 🚫');
                 e.preventDefault();
+                return false;
             }
         });
-
-        function entrar() { 
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
 
         function irParaCadastro() {
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('tela-cadastro').style.display = 'flex';
         }
 
+        function entrar() {
+            localStorage.setItem('logado', 'true');
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
+
         function finalizarCadastro() {
+            localStorage.setItem('logado', 'true');
             document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
@@ -208,6 +252,11 @@
             document.getElementById('estante-principal').style.display = 'block';
         }
 
+        function voltarParaEntrada() {
+            localStorage.removeItem('logado');
+            location.reload();
+        }
+
         function salvarObra() {
             const titulo = document.getElementById('titulo-obra').value;
             const link = document.getElementById('link-obra').value;
@@ -219,13 +268,15 @@
                 novoItem.target = "_blank";
                 novoItem.innerText = titulo;
                 novoItem.className = 'item ' + tipo;
-
+                
                 if (tipo === 'video') {
                     document.getElementById('secao-videos').appendChild(novoItem);
                 } else {
                     document.getElementById('secao-livros').appendChild(novoItem);
                 }
                 fecharPainel();
+            } else {
+                alert('Preencha todos os campos!');
             }
         }
     </script>
