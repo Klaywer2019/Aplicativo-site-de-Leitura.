@@ -111,8 +111,8 @@
             border-radius: 4px;
         }
 
-        .livro:nth-of-type(1) { background: linear-gradient(135deg, #4B0082, #000000, #00FF00); border-bottom: 5px solid #ffa500; }
-        .livro:nth-of-type(2) { background: linear-gradient(45deg, #1d4350, #27ae60, #8e0000); border-bottom: 5px solid #2ecc71; }
+        /* Estilos de cores */
+        .livro { background: linear-gradient(135deg, #4B0082, #000000, #00FF00); border-bottom: 5px solid #ffa500; }
         .video { background: linear-gradient(to right, #ff0000, #b20000); border-bottom: 5px solid #fff; }
 
         footer {
@@ -151,35 +151,27 @@
 
         <h1 style="margin-top: 20px;">Minha Biblioteca 📚</h1>
 
-        
-
-
-
         <div id="lista">
             <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
-            <a href="celeste.html" class="item livro" target="_blank">Celeste Dragon 🔥🐲</a>
-            <a href="pecados.html" class="item livro" target="_blank">Sete Pecados Capitais 🌿🍎</a>
+            <div id="secao-livros" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                <a href="celeste.html" class="item livro" target="_blank">Celeste Dragon 🔥🐲</a>
+                <a href="pecados.html" class="item livro" target="_blank">Sete Pecados Capitais 🌿🍎</a>
+            </div>
 
             <h3 style="color: #ff7675; margin-top: 20px;">🎥 Trailers</h3>
-            <a href="video1.html" class="item video">Trailers Oficiais 🎬</a>
+            <div id="secao-videos" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                <a href="video1.html" class="item video">Trailers Oficiais 🎬</a>
+            </div>
 
-                        <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
-            
+            <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
             <a href="jogos.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72); display: block;">
                 Aventura no Reino 🕹️
                 <br>
                 <span style="font-size: 0.7rem; color: #55efc4; font-weight: normal;">Clique para ver todos os projetos</span>
             </a>
-            
-         
-               
         </div>
 
-       
-
-
-
- <footer>
+        <footer>
             <p style="font-size: 0.8rem; color: #888;">
                 Plataforma desenvolvida por <br>
                 <strong style="color: #a29bfe;">Jemima Keise.</strong> &copy; 2026
@@ -189,8 +181,15 @@
 
     <div id="tela-publicar" style="display: none;">
         <h2 style="color: #e91e63;">Novo Trabalho ✍️</h2>
-        <input type="text" id="titulo-obra" placeholder="Título do seu Livro" class="campo-login">
+        
+        <select id="tipo-trabalho" class="campo-login" style="width: 87%;">
+            <option value="livro">📖 Novo Livro</option>
+            <option value="video">🎥 Novo Trailer (Vídeo)</option>
+        </select>
+
+        <input type="text" id="titulo-obra" placeholder="Título do seu Trabalho" class="campo-login">
         <input type="text" id="link-obra" placeholder="Link do trabalho (URL)" class="campo-login">
+        
         <button style="background: #e91e63;" onclick="salvarObra()">Postar Agora</button>
         <p onclick="fecharPainel()" style="cursor:pointer; color: #888; margin-top: 10px;">Cancelar</p>
 
@@ -203,7 +202,6 @@
     </div>
 
     <script>
-        // Carregamento inicial
         window.onload = function() {
             if (localStorage.getItem('logado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
@@ -248,13 +246,35 @@
             document.getElementById('tela-publicar').style.display = 'none';
         }
 
+        // FUNÇÃO SALVAR ATUALIZADA PARA VÍDEOS E LIVROS
         function salvarObra() {
             const titulo = document.getElementById('titulo-obra').value;
-            if (titulo) {
-                alert('Obra "' + titulo + '" enviada com sucesso!');
+            const link = document.getElementById('link-obra').value;
+            const tipo = document.getElementById('tipo-trabalho').value;
+
+            if (titulo && link) {
+                const novoItem = document.createElement('a');
+                novoItem.href = link;
+                novoItem.target = "_blank";
+                novoItem.innerText = titulo;
+                novoItem.className = 'item';
+
+                if (tipo === 'video') {
+                    novoItem.classList.add('video'); // Aplica a cor vermelha
+                    document.getElementById('secao-videos').appendChild(novoItem);
+                } else {
+                    novoItem.classList.add('livro'); // Aplica o degradê roxo/verde
+                    document.getElementById('secao-livros').appendChild(novoItem);
+                }
+
+                alert('"' + titulo + '" postado com sucesso!');
                 fecharPainel();
+                
+                // Limpa os campos
+                document.getElementById('titulo-obra').value = '';
+                document.getElementById('link-obra').value = '';
             } else {
-                alert('Por favor, digite o título da obra.');
+                alert('Por favor, preencha o título e o link.');
             }
         }
     </script>
