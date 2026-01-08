@@ -193,44 +193,31 @@ body {
 }
 
 /* Menu de Categorias (Para os botões não ficarem amontoados) */
+
 .menu-categorias {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centraliza os botões de categoria */
     gap: 10px;
-    flex-wrap: wrap;
-    margin: 20px auto;
-    width: 90%;
+    margin: 20px 0;
+    flex-wrap: wrap; /* Faz os botões pularem linha no celular se precisar */
 }
 
 .menu-categorias button {
-    background: #6a1b9a; /* Roxo para combinar com o botão principal */
+    background-color: #6a1b9a;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 15px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.9rem;
 }
 
-/* Estilo dos seus links de livros/vídeos */
-.item {
-    display: block;
-    text-decoration: none;
-    color: white;
-    margin: 15px auto;
-    width: 85%;
-    padding: 20px;
-    border-radius: 15px;
-    font-weight: bold;
-}
-
-.menu-categorias {
+#lista {
     display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center; /* Garante que os livros fiquem um embaixo do outro no centro */
+    width: 100%;
 }
+
 
 
 
@@ -240,8 +227,8 @@ body {
 
 <body>
     <div id="tela-entrada">
-        <h1 style="color: white;">Bem-vindo à Minha Biblioteca</h1>
-        <p style="color: white;">Explore histórias incríveis.</p>
+        <h1>Bem-vindo à Minha Biblioteca</h1>
+        <p>Explore histórias incríveis.</p>
         <button class="btn-entrar" onclick="entrar()">Abrir Estante</button>
     </div>
 
@@ -255,7 +242,7 @@ body {
             <button onclick="filtrar('jogo')">Jogos 🎮</button>
         </div>
 
-        <h1 class="titulo-estante" style="color: white;">Minha Biblioteca 📚</h1>
+        <h1 class="titulo-estante">Minha Biblioteca 📚</h1>
 
         <div id="lista">
             <a href="celeste.html" class="livro item livro">Celeste Dragon 🔥🐉</a>
@@ -294,6 +281,7 @@ body {
         }
     </script>
 </body>
+
 
          
 
