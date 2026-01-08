@@ -8,158 +8,106 @@
     
     <style>
         /* 1. RESET E SEGURANÇA MÁXIMA */
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-touch-callout: none;
-        }
-
-        input, select, textarea {
-            -webkit-user-select: text;
-            user-select: text;
-        }
+        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        input, select, textarea { -webkit-user-select: text; user-select: text; }
 
         body {
-            background-color: #121212;
-            color: white;
+            background-color: #121212; color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            min-height: 100vh;
+            margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
         }
 
-        /* 2. PADRONIZAÇÃO DAS TELAS */
+        /* 2. MENU LATERAL (NOVO) */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2000;
+            top: 0; right: 0; background-color: #1e1e1e;
+            overflow-x: hidden; transition: 0.5s; padding-top: 60px;
+            border-left: 3px solid #6a1b9a; box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        }
+
+        .sidebar-content { display: flex; flex-direction: column; align-items: center; color: white; text-align: center; }
+
+        .card-rpg {
+            background: #2d3436; border-radius: 20px; padding: 15px;
+            width: 85%; margin: 10px 0; border: 1px solid #444;
+        }
+
+        /* 3. PADRONIZAÇÃO DAS TELAS */
         #tela-entrada, #tela-cadastro, #tela-publicar {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-            text-align: center;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; height: 100vh; width: 100%; text-align: center;
         }
 
-        #estante-principal {
-            display: none;
-            width: 100%;
-            padding-bottom: 50px;
-        }
+        #estante-principal { display: none; width: 100%; padding-bottom: 50px; }
 
-        /* 3. ÍCONE DE PERFIL REDONDO */
         .perfil-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #6a1b9a, #a29bfe);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            color: white;
-            border: 2px solid #55efc4;
-            cursor: pointer;
-            font-size: 1.2rem;
-            box-shadow: 0 0 10px rgba(85, 239, 196, 0.3);
+            width: 40px; height: 40px; background: linear-gradient(45deg, #6a1b9a, #a29bfe);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: white; border: 2px solid #55efc4;
+            cursor: pointer; font-size: 1.2rem; box-shadow: 0 0 10px rgba(85, 239, 196, 0.3);
         }
 
         /* 4. BOTÕES E INPUTS */
         button {
-            padding: 15px 30px;
-            background-color: #6a1b9a;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s;
-            margin: 5px;
+            padding: 15px 30px; background-color: #6a1b9a; color: white;
+            border: none; border-radius: 25px; cursor: pointer;
+            font-weight: bold; transition: transform 0.2s; margin: 5px;
         }
 
-        button:active { transform: scale(0.95); }
-
         .campo-login {
-            width: 80%;
-            max-width: 300px;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 12px;
-            border: 1px solid #444;
-            background: #1e1e1e;
-            color: white;
-            outline: none;
+            width: 80%; max-width: 300px; padding: 15px; margin: 10px 0;
+            border-radius: 12px; border: 1px solid #444; background: #1e1e1e; color: white;
         }
 
         /* 5. ESTANTE E ITENS */
         .nav-topo {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background: #1e1e1e;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #333;
+            display: flex; justify-content: space-around; align-items: center;
+            background: #1e1e1e; padding: 15px; position: sticky; top: 0; z-index: 100;
         }
 
-        .btn-nav {
-            background: none;
-            color: #a29bfe;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .btn-nav { background: none; color: #a29bfe; border: none; font-weight: bold; }
 
-        #lista {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
+        #lista { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 30px; }
 
         .item {
-            width: 80%;
-            max-width: 350px;
-            padding: 25px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            color: white;
-            position: relative;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-            display: block;
+            width: 80%; max-width: 350px; padding: 25px; border-radius: 20px;
+            text-decoration: none; font-weight: bold; color: white; position: relative;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5); display: block;
         }
 
-        /* Prateleiras de madeira */
         .item::after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: -5%;
-            width: 110%;
-            height: 15px;
-            background: linear-gradient(to bottom, #5d3a1a, #2b1a0a);
+            content: ""; position: absolute; bottom: -15px; left: -5%;
+            width: 110%; height: 15px; background: linear-gradient(to bottom, #5d3a1a, #2b1a0a);
             border-radius: 4px;
         }
 
         .livro { background: linear-gradient(135deg, #4B0082, #000000, #00FF00); border-bottom: 5px solid #ffa500; }
         .video { background: linear-gradient(to right, #ff0000, #b20000); border-bottom: 5px solid #fff; }
 
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            border-top: 1px solid #333;
-            width: 100%;
-            text-align: center;
-        }
+        footer { margin-top: 40px; padding: 20px; border-top: 1px solid #333; text-align: center; }
     </style>
 </head>
 
 <body>
+
+    <div id="menuLateral" class="sidebar">
+        <div class="sidebar-content">
+            <button onclick="fecharMenu()" style="background:none; color:#ff7675; align-self:flex-start; margin-left:15px;">✖ Fechar</button>
+            <div class="perfil-avatar" style="width:70px; height:70px; font-size:2rem; margin:15px;" id="avatar-grande">?</div>
+            <h2 id="nome-perfil-menu">Herói</h2>
+            
+            <div class="card-rpg">
+                <p style="color:#888; font-size:0.8rem; margin:0;">Clã Atual:</p>
+                <h3 id="cla-nome" style="color:#55efc4; margin:5px;">Iniciante 🛡️</h3>
+            </div>
+
+            <div class="card-rpg">
+                <h4>💼 Área de Trabalho</h4>
+                <p style="font-size: 0.7rem; color: #aaa;">Acesse seus rascunhos e ferramentas.</p>
+                <button style="font-size:0.7rem; padding:10px;" onclick="alert('Indo para arquivos privados...')">Ver Meus Trabalhos</button>
+            </div>
+        </div>
+    </div>
 
     <div id="tela-entrada">
         <h1>🛡️ Portal dos Clãs</h1>
@@ -189,17 +137,17 @@
         <div id="lista">
             <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
             <div id="secao-livros" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-                <a href="celeste.html" class="item livro" target="_blank">Celeste Dragon 🔥🐲</a>
-                <a href="pecados.html" class="item livro" target="_blank">Sete Pecados Capitais 🌿🍎</a>
+                <a href="celeste.html" class="item livro" target="_blank" onclick="mudarCla('Tenepress 🏰')">Celeste Dragon 🔥🐲</a>
+                <a href="pecados.html" class="item livro" target="_blank" onclick="mudarCla('Tenepress 🏰')">Sete Pecados Capitais 🌿🍎</a>
             </div>
 
             <h3 style="color: #ff7675; margin-top: 20px;">🎥 Trailers</h3>
             <div id="secao-videos" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-                <a href="video1.html" class="item video">Trailers Oficiais 🎬</a>
+                <a href="video1.html" class="item video" onclick="mudarCla('Gale 🎥')">Trailers Oficiais 🎬</a>
             </div>
 
             <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
-            <a href="jogos.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);">
+            <a href="jogos.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);" onclick="mudarCla('Elgecon 🕹️')">
                 Aventura no Reino 🕹️
                 <br>
                 <span style="font-size: 0.7rem; color: #55efc4; font-weight: normal;">Clique para ver todos os projetos</span>
@@ -227,31 +175,22 @@
     </div>
 
     <script>
-        // 1. FILTRO DE PALAVRAS OFENSIVAS
-        const listaNegra = ["palavraum", "palavradois", "ofensa3"]; // Adicione as palavras aqui
+        const listaNegra = ["palavraum", "palavradois"];
 
         function contemOfensa(texto) {
             const t = texto.toLowerCase();
             return listaNegra.some(palavra => t.includes(palavra));
         }
 
-        // 2. MEMÓRIA DE LOGIN (SALVA NO CELULAR)
         window.onload = function() {
             const autorLogado = localStorage.getItem('autor_nome');
-            if (autorLogado) {
-                mostrarEstante(autorLogado);
-            }
+            if (autorLogado) { mostrarEstante(autorLogado); }
         };
 
         function finalizarCadastro() {
             const nome = document.getElementById('nome-autor').value;
             if (nome.trim() === "") return alert("Digite um nome!");
-            
-            if (contemOfensa(nome)) {
-                alert("Este nome contém palavras não permitidas! 🚫");
-                return;
-            }
-
+            if (contemOfensa(nome)) return alert("Nome não permitido!");
             localStorage.setItem('autor_nome', nome);
             mostrarEstante(nome);
         }
@@ -265,42 +204,33 @@
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
-            
-            // Atualiza o círculo de perfil com a inicial
             document.getElementById('user-icon').innerText = nome.charAt(0).toUpperCase();
         }
 
+        // FUNÇÕES DO MENU LATERAL
         function verPerfil() {
-            const nome = localStorage.getItem('autor_nome');
-            alert("👤 Perfil do Autor\n\nNome: " + nome + "\nClã: Tenepress 🏰\nStatus: Online");
+            const nome = localStorage.getItem('autor_nome') || "Herói";
+            const claSalvo = localStorage.getItem('cla_atual') || "Iniciante 🛡️";
+            document.getElementById("nome-perfil-menu").innerText = nome;
+            document.getElementById("avatar-grande").innerText = nome.charAt(0).toUpperCase();
+            document.getElementById("cla-nome").innerText = claSalvo;
+            document.getElementById("menuLateral").style.width = "280px";
         }
 
-        // 3. SEGURANÇA CONTRA CÓPIA
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+
+        function mudarCla(novoCla) {
+            localStorage.setItem('cla_atual', novoCla);
+        }
+
+        // SEGURANÇA E NAVEGAÇÃO
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 73)) {
-                alert('Proteção de direitos autorais ativada! 🚫');
-                e.preventDefault();
-            }
-        });
-
-        // 4. FUNÇÕES DE NAVEGAÇÃO
-        function irParaCadastro() {
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('tela-cadastro').style.display = 'flex';
-        }
-
-        function voltarParaEntrada() {
-            localStorage.removeItem('autor_nome');
-            location.reload();
-        }
-
-        function abrirPainelCriacao() {
+        function voltarParaEntrada() { localStorage.removeItem('autor_nome'); location.reload(); }
+        function abrirPainelCriacao() { 
             document.getElementById('estante-principal').style.display = 'none';
             document.getElementById('tela-publicar').style.display = 'flex';
         }
-
-        function fecharPainel() {
+        function fecharPainel() { 
             document.getElementById('tela-publicar').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
@@ -309,24 +239,12 @@
             const titulo = document.getElementById('titulo-obra').value;
             const link = document.getElementById('link-obra').value;
             const tipo = document.getElementById('tipo-trabalho').value;
-
-            if (contemOfensa(titulo)) {
-                alert("O título contém palavras ofensivas! 🚫");
-                return;
-            }
-
             if (titulo && link) {
                 const novoItem = document.createElement('a');
-                novoItem.href = link;
-                novoItem.target = "_blank";
-                novoItem.innerText = titulo;
-                novoItem.className = 'item ' + tipo;
-                
-                if (tipo === 'video') {
-                    document.getElementById('secao-videos').appendChild(novoItem);
-                } else {
-                    document.getElementById('secao-livros').appendChild(novoItem);
-                }
+                novoItem.href = link; novoItem.target = "_blank";
+                novoItem.innerText = titulo; novoItem.className = 'item ' + tipo;
+                if (tipo === 'video') document.getElementById('secao-videos').appendChild(novoItem);
+                else document.getElementById('secao-livros').appendChild(novoItem);
                 fecharPainel();
             }
         }
