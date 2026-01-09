@@ -189,23 +189,32 @@
     </div>
 
     <script>
+        // LOGICA DE MEMÓRIA (LOGIN AUTOMÁTICO)
         window.onload = function() {
-            if (localStorage.getItem('reinoLogado') === 'true') {
+            const logado = localStorage.getItem('reinoLogado');
+            const email = localStorage.getItem('usuarioEmail');
+
+            if (logado === 'true' && email) {
+                // Se já existir login, esconde a tela de entrada direto
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                const user = localStorage.getItem('usuarioEmail');
-                document.getElementById('nome-perfil').innerText = user ? user.split('@')[0] : "Viajante";
+                document.getElementById('nome-perfil').innerText = email.split('@')[0];
+                document.getElementById('status-perfil').innerText = "Ilha: Criador Ativo 🛡️";
             }
         };
 
         function entrarComoCriador() {
             const email = document.getElementById('login-email').value;
             const senha = document.getElementById('login-senha').value;
+            
             if (!email || !senha) return alert("🛡️ Informe E-mail e Senha Rúnica!");
             
+            // Grava os dados para o Login Automático
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('tipoUsuario', 'criador');
             localStorage.setItem('usuarioEmail', email);
+            
+            // Recarrega para aplicar as mudanças
             location.reload();
         }
 
@@ -216,6 +225,13 @@
             location.reload();
         }
 
+        function sair() { 
+            if(confirm("Deseja sair e limpar o acesso automático?")) {
+                localStorage.clear(); 
+                location.reload(); 
+            }
+        }
+
         function abrirCofre() {
             if(localStorage.getItem('tipoUsuario') === 'convidado') {
                 alert("🚫 Acesso Negado: Convidados não possuem cofre próprio!");
@@ -224,7 +240,6 @@
             }
         }
 
-        function sair() { localStorage.clear(); location.reload(); }
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
@@ -237,14 +252,14 @@
             const status = document.getElementById('status-pub');
             const conteudo = localStorage.getItem(tipo);
 
-            if (!conteudo) return alert("Não há conteúdo para publicar!");
+            if (!conteudo) return alert("Não há conteúdo para publicar! Vá na Ala dos Cientistas.");
 
             status.style.display = "block";
             status.innerHTML = "🔒 Selando rúnica...";
 
             setTimeout(() => {
                 const userEmail = localStorage.getItem('usuarioEmail');
-                // Criamos uma chave única que vincula o item ao email!
+                // Salva usando o e-mail como "chave" do baú
                 localStorage.setItem(userEmail + "_" + tipo + "_status", "publicado");
                 localStorage.setItem(userEmail + "_" + tipo + "_data", new Date().toLocaleDateString());
                 
