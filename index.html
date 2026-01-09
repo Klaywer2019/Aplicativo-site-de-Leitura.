@@ -62,7 +62,7 @@
         .video { background: linear-gradient(to right, #ff0000, #b20000); }
         .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
 
-        /* CONTAINER DE BOTÕES LADO A LADO */
+        /* BOTÕES LADO A LADO */
         .botoes-lado-a-lado {
             display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center;
         }
@@ -76,14 +76,12 @@
         .btn-entrar { background: #6a1b9a; border: 1px solid #a29bfe; }
         .btn-avaliar { background: linear-gradient(45deg, #2e7d32, #1b5e20); }
 
-        /* PERFIL */
         .perfil-foto {
             width: 45px; height: 45px; border-radius: 50%;
             border: 2px solid #55efc4; cursor: pointer; object-fit: cover;
             background: #444;
         }
 
-        /* MENU LATERAL */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 3500;
             top: 0; right: 0; background-color: #1e1e1e;
@@ -96,7 +94,6 @@
             width: 90%; margin: 10px auto; border: 1px solid #444;
         }
 
-        /* TELAS */
         #estante-principal { display: none; }
         #tela-entrada {
             position: fixed; top:0; left:0; width:100%; height:100%;
@@ -129,13 +126,6 @@
                     <div class="botoes-lado-a-lado">
                         <a href="livros.html" class="btn-card btn-entrar">Ler 📖</a>
                         <button class="btn-card btn-avaliar" onclick="window.location.href='livros.html'">Avaliar ⭐</button>
-                    </div>
-                </div>
-                <div class="item-card">
-                    <div class="item-capa livro" style="filter: grayscale(1);">Em breve... 🔒</div>
-                    <div class="botoes-lado-a-lado">
-                        <button class="btn-card btn-entrar" style="opacity:0.5;">Entrar</button>
-                        <button class="btn-card btn-avaliar" style="opacity:0.5;">Votar</button>
                     </div>
                 </div>
             </div>
@@ -175,22 +165,23 @@
         </div>
 
         <div class="card-rpg">
+            <h4 style="margin-top:0;">🔗 Ferramentas de Criação</h4>
+            <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
+            <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
+        </div>
+
+        <div class="card-rpg">
             <h4 style="margin-top:0;">🔗 Conversor JRG/URL</h4>
             <input type="text" id="input-url" style="width:100%; padding:8px; border-radius:8px; border:none; margin-bottom:10px; background:#121212; color:#55efc4;" placeholder="Cole o link ou nome aqui">
             <button class="btn-top" style="background:#2e7d32; width:100%; margin-bottom:5px;" onclick="converter('URL')">Gerar URL</button>
             <button class="btn-top" style="background:#6a1b9a; width:100%;" onclick="converter('JRG')">Gerar JRG</button>
             <p id="resultado-link" style="font-size: 0.8rem; margin-top: 10px; word-break: break-all; color: #55efc4;"></p>
         </div>
-
-        <div class="card-rpg">
-            <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #6a1b9a); width:100%;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
-        </div>
         
         <button class="btn-top" style="background:none; color:red; width:100%; margin-top: 20px;" onclick="fecharMenu()">✖ Fechar Menu</button>
     </div>
 
     <script>
-        // Lógica de Persistência de Tela (Fix do botão voltar)
         window.onload = function() {
             if (localStorage.getItem('reinoLogado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
