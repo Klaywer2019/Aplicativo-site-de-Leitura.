@@ -8,70 +8,117 @@
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* --- ALERTA PERSONALIZADO --- */
+        /* --- ESTILO DO ALERTA PERSONALIZADO --- */
         #alerta-celeste {
-            display: none; position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); z-index: 5000;
-            width: 90%; max-width: 320px; background: #1e1e1e;
-            border: 2px solid #6a1b9a; border-radius: 20px; padding: 25px;
-            text-align: center; box-shadow: 0 0 30px rgba(106, 27, 154, 0.6);
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5000;
+            width: 90%;
+            max-width: 320px;
+            background: #1e1e1e;
+            border: 2px solid #6a1b9a;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(106, 27, 154, 0.6);
         }
+        .alerta-titulo { color: #55efc4; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; }
+        .alerta-msg { color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4; white-space: pre-wrap; }
         .btn-alerta-ok {
             background: linear-gradient(45deg, #6a1b9a, #4b0082);
             color: white; border: none; padding: 12px 30px;
             border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%;
         }
         #overlay-alerta {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 4999; backdrop-filter: blur(3px);
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 4999;
+            backdrop-filter: blur(3px);
         }
 
-        /* TELA DE ENTRADA */
+        /* TELA DE ENTRADA ÉPICA */
         #tela-entrada {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: radial-gradient(circle, #1e1e1e 0%, #0a0a0a 100%);
             display: flex; flex-direction: column; justify-content: center;
             align-items: center; z-index: 4000;
         }
+
         .login-box {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
-            padding: 30px; border-radius: 30px; border: 1px solid rgba(106, 27, 154, 0.3);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 30px;
+            border: 1px solid rgba(106, 27, 154, 0.3);
             text-align: center; width: 90%; max-width: 380px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
+
         .input-celeste {
             width: 100%; padding: 12px; margin-bottom: 12px;
             background: rgba(0,0,0,0.5); border: 1px solid #444;
-            border-radius: 12px; color: #55efc4; outline: none;
+            border-radius: 12px; color: #55efc4; outline: none; transition: 0.3s;
+        }
+        .input-celeste:focus { border-color: #6a1b9a; box-shadow: 0 0 10px rgba(106, 27, 154, 0.5); }
+
+        .btn-login {
+            width: 100%; padding: 14px; background: linear-gradient(45deg, #6a1b9a, #4b0082);
+            color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4); }
+
+        .btn-convidado {
+            background: none; color: #aaa; border: 1px solid #444;
+            padding: 10px 20px; border-radius: 12px; cursor: pointer; margin-top: 10px;
         }
 
-        /* NAVEGAÇÃO */
+        /* ESTILO DA HOME */
+        .dragao-voando {
+            position: fixed; top: 10px; right: -60px; font-size: 2rem;
+            z-index: 2500; pointer-events: none;
+            animation: voo 15s linear infinite; opacity: 0.8;
+        }
+        @keyframes voo {
+            0% { transform: translateX(0) scaleX(1); right: -60px; }
+            45% { transform: translateX(-110vw) scaleX(1); }
+            50% { transform: translateX(-110vw) scaleX(-1); }
+            95% { transform: translateX(0) scaleX(-1); }
+            100% { transform: translateX(0) scaleX(1); }
+        }
+
         .nav-topo {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: #1e1e1e; border-bottom: 2px solid #6a1b9a;
             position: sticky; top: 0; z-index: 1000;
         }
-        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #55efc4; cursor: pointer; background: #444; }
 
-        /* CARDS DA HOME */
+        .btn-top { padding: 10px 15px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; }
+
         .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 25px 20px; scrollbar-width: none; }
-        .item-card {
-            min-width: 260px; background: #1c1c1c; border-radius: 20px;
-            padding-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center;
-        }
-        .item-capa { 
-            width: 100%; height: 120px; border-radius: 20px 20px 0 0; 
-            display: flex; align-items: center; justify-content: center; font-weight: bold; 
-            background: linear-gradient(135deg, #4B0082, #00FF00);
-        }
+        .prateleira-container::-webkit-scrollbar { display: none; }
+        .prateleira-madeira { border-bottom: 12px solid #3d2b1f; margin-bottom: 30px; }
 
-        /* SIDEBAR (AQUI ESTÁ O QUE SUMIU!) */
-        .sidebar { 
-            height: 100%; width: 0; position: fixed; z-index: 3500; 
-            top: 0; right: 0; background-color: #1e1e1e; overflow-x: hidden; 
-            transition: 0.5s; padding-top: 20px; border-left: 3px solid #6a1b9a; 
+        .item-card {
+            min-width: 260px; flex-shrink: 0; background: #1c1c1c; border-radius: 20px;
+            padding-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; overflow: hidden;
         }
+        
+        .item-capa { width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; font-weight: bold; text-shadow: 2px 2px 4px black; color: white; }
+        .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
+        .video { background: linear-gradient(to right, #ff0000, #b20000); }
+        .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
+
+        .botoes-lado-a-lado { display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center; }
+        .btn-card { flex: 1; padding: 10px 5px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+
+        .btn-entrar { background: #6a1b9a; border: 1px solid #a29bfe; }
+        .btn-avaliar { background: linear-gradient(45deg, #2e7d32, #1b5e20); }
+
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #55efc4; cursor: pointer; object-fit: cover; background: #444; }
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; background-color: #1e1e1e; overflow-x: hidden; transition: 0.5s; padding-top: 20px; border-left: 3px solid #6a1b9a; }
         .card-rpg { background: #2d3436; border-radius: 15px; padding: 15px; width: 90%; margin: 10px auto; border: 1px solid #444; }
-        .btn-menu { width: 100%; padding: 12px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
         #estante-principal { display: none; }
     </style>
@@ -80,131 +127,218 @@
 
     <div id="overlay-alerta"></div>
     <div id="alerta-celeste">
-        <div id="alerta-titulo" style="color:#55efc4; font-weight:bold; margin-bottom:10px;">🛡️ Mensagem</div>
-        <div id="msg-texto" style="color:#ccc; margin-bottom:20px; font-size:0.9rem; white-space: pre-wrap;"></div>
+        <div class="alerta-titulo" id="alerta-titulo">🛡️ Mensagem do Reino</div>
+        <div class="alerta-msg" id="msg-texto"></div>
         <button class="btn-alerta-ok" onclick="fecharAlerta()">Entendido</button>
     </div>
 
+    <div class="dragao-voando">🐉</div>
+
     <div id="tela-entrada">
         <div class="login-box">
-            <h1 style="color: #55efc4;">🛡️ Reino Celeste</h1>
-            <input type="email" id="login-email" placeholder="Seu E-mail" class="input-celeste">
-            <button class="btn-menu" style="background: #6a1b9a;" onclick="entrarComoCriador()">Entrar no Reino 🔐</button>
+            <h1 style="color: #55efc4; text-shadow: 0 0 15px #2e7d32; margin-bottom: 5px;">🛡️ Reino Celeste</h1>
+            <p style="color: #aaa; font-size: 0.8rem; margin-bottom: 20px;">Portal de Identificação do Criador</p>
+            
+            <input type="email" id="login-email" placeholder="E-mail do Criador" class="input-celeste">
+            <input type="password" id="login-senha" placeholder="Senha Rúnica" class="input-celeste">
+            
+            <button class="btn-login" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
+            <div style="margin: 15px 0; color: #444; font-size: 0.8rem;">———— ou ————</div>
+            <button class="btn-convidado" onclick="entrarComoConvidado()">Explorar como Convidado 🔍</button>
         </div>
     </div>
 
     <div id="estante-principal">
         <div class="nav-topo">
-            <button class="btn-menu" style="background:#c0392b; width: auto; padding: 8px 15px;" onclick="sair()">🏠 Sair</button>
-            <h3 style="margin:0; color: #55efc4;">Celeste App</h3>
-            <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()">
+            <button class="btn-top" style="background:#c0392b;" onclick="sair()">🏠 Sair</button>
+            <h3 style="margin:0; font-size: 1rem; color: #55efc4;">Celeste App</h3>
+            <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()" alt="Perfil">
         </div>
 
-        <h3 style="margin: 20px; color:#a29bfe;">📖 Meus Livros</h3>
-        <div class="prateleira-container">
-            <div class="item-card">
-                <div class="item-capa">Celeste Dragon 🔥🐲</div>
-                <button class="btn-menu" style="background:#6a1b9a; width: 80%;" onclick="window.location.href='livros.html'">Ler 📖</button>
+        <h3 style="margin: 20px 20px 5px; color:#a29bfe;">📖 Meus Livros</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <div class="item-capa livro">Celeste Dragon 🔥🐲</div>
+                    <div class="botoes-lado-a-lado">
+                        <a href="livros.html" class="btn-card btn-entrar">Ler 📖</a>
+                        <button class="btn-card btn-avaliar" onclick="window.location.href='livros.html'">Avaliar ⭐</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin: 0 20px 5px; color:#ff7675;">🎥 Trailers</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <div class="item-capa video">Trailers Oficiais 🎬</div>
+                    <div class="botoes-lado-a-lado">
+                        <a href="videos.html" class="btn-card btn-entrar">Assistir ▶️</a>
+                        <button class="btn-card btn-avaliar" onclick="window.location.href='videos.html'">Avaliar ⭐</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin: 0 20px 5px; color:#55efc4;">🕹️ Mini-Jogos</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <div class="item-capa jogos">Aventura no Reino 🕹️</div>
+                    <div class="botoes-lado-a-lado">
+                        <a href="jogos.html" class="btn-card btn-entrar">Jogar 🎮</a>
+                        <button class="btn-card btn-avaliar" onclick="window.location.href='jogos.html'">Avaliar ⭐</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="menuLateral" class="sidebar">
         <div class="card-rpg">
-            <h2 id="nome-perfil" style="margin:0;" ondblclick="verVigiaSecreta()">Visitante</h2>
-            <p style="color: #55efc4; margin: 5px 0 0;">Ilha: Criador Ativo 🛡️</p>
+            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;" ondblclick="verVigiaSecreta()">Visitante</h2>
+            <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
         </div>
 
-        <div class="card-rpg">
+        <div class="card-rpg" style="border: 1px solid #a29bfe;">
             <h4 style="margin:0; color: #a29bfe;">🏛️ Meu Tesouro</h4>
-            <button class="btn-menu" style="background: #6a1b9a;" onclick="window.location.href='inventario.html'">Abrir Cofre</button>
+            <p style="font-size: 0.7rem; color: #aaa; margin-bottom: 10px;">Acesse suas obras seladas.</p>
+            <button class="btn-top" style="background: #6a1b9a; width:100%;" onclick="abrirCofre()">Abrir Cofre</button>
         </div>
 
         <div class="card-rpg">
-            <h4 style="margin:0;">🧪 Ferramentas</h4>
-            <button class="btn-menu" style="background: #2e7d32;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
-            <button class="btn-menu" style="background: #444;" onclick="window.location.href='forja.html'">⚒️ Forja de Códigos</button>
-            <button class="btn-menu" style="background: #4b0082;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
+            <h4 style="margin-top:0;">🧪 Ferramentas</h4>
+            <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
+            <button class="btn-top" style="background: linear-gradient(45deg, #2d3436, #636e72); width:100%; margin-bottom:10px;" onclick="window.location.href='forja.html'">⚒️ Forja de Códigos</button>
+            <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
         </div>
 
         <div class="card-rpg">
-            <h4 style="margin:0;">📤 Publicar Obra</h4>
-            <select id="tipo-pub" class="input-celeste" style="margin-top:10px;">
+            <h4 style="margin-top:0;">📤 Publicar Obra</h4>
+            <select id="tipo-pub" style="width:100%; padding:8px; border-radius:8px; background:#121212; color:#55efc4; border:1px solid #444; margin-bottom:10px;">
                 <option value="rascunho_livro">📜 Meu Manuscrito</option>
-                <option value="codigo_forja">💻 Meu Código</option>
+                <option value="codigo_forja">💻 Meu Código Forjado</option>
             </select>
-            <button class="btn-menu" style="background: #d63031;" onclick="publicarSelado()">Selar e Publicar 🔐</button>
+            <button class="btn-top" style="background: linear-gradient(45deg, #d63031, #6a1b9a); width:100%;" onclick="publicarSelado()">Selar e Publicar 🔐</button>
+            <p id="status-pub" style="font-size: 0.75rem; margin-top: 10px; color: #55efc4; display:none;"></p>
         </div>
         
-        <button class="btn-menu" style="background:none; color:red;" onclick="fecharMenu()">✖ Fechar Menu</button>
+        <button class="btn-top" style="background:none; color:red; width:100%; margin-top: 20px;" onclick="fecharMenu()">✖ Fechar Menu</button>
     </div>
 
     <script>
-        function exibirAlerta(texto, titulo = "🛡️ Mensagem") {
+        /* FUNÇÕES DO NOVO ALERTA */
+        function exibirAlerta(texto, titulo = "🛡️ Mensagem do Reino") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
             document.getElementById('overlay-alerta').style.display = 'block';
             document.getElementById('alerta-celeste').style.display = 'block';
         }
+
         function fecharAlerta() {
             document.getElementById('overlay-alerta').style.display = 'none';
             document.getElementById('alerta-celeste').style.display = 'none';
         }
 
         window.onload = function() {
-            if (localStorage.getItem('reinoLogado') === 'true') {
+            const logado = localStorage.getItem('reinoLogado');
+            const email = localStorage.getItem('usuarioEmail');
+            if (logado === 'true' && email) {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                let email = localStorage.getItem('usuarioEmail');
                 document.getElementById('nome-perfil').innerText = email.split('@')[0];
-                registrarAtividade(email);
+                document.getElementById('status-perfil').innerText = "Ilha: Criador Ativo 🛡️";
             }
         };
 
         function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim().toLowerCase();
-            if (!email) return alert("E-mail necessário!");
+            const senha = document.getElementById('login-senha').value;
+            
+            if (!email || !senha) return exibirAlerta("Informe E-mail e Senha Rúnica!");
+            
+            registrarUsuarioVigia(email);
             localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('tipoUsuario', 'criador');
             localStorage.setItem('usuarioEmail', email);
-            registrarAtividade(email);
             location.reload();
         }
 
-        function registrarAtividade(email) {
-            let vigia = JSON.parse(localStorage.getItem('vigia_status') || "{}");
-            vigia[email] = { lastSeen: Date.now(), timestamp: new Date().toLocaleString('pt-BR') };
-            localStorage.setItem('vigia_status', JSON.stringify(vigia));
+        function registrarUsuarioVigia(email) {
+            let lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
+            const dataHora = new Date().toLocaleString('pt-BR');
+            
+            // Registra a entrada com e-mail e horário exato
+            lista.push(`👤 ${email}\n🕒 Acesso em: ${dataHora}`);
+            localStorage.setItem('vigia_usuarios', JSON.stringify(lista));
         }
 
         function verVigiaSecreta() {
-            const adm = "keisejemima@gmail.com".toLowerCase().trim();
-            const logado = (localStorage.getItem('usuarioEmail') || "").toLowerCase().trim();
-            if (logado !== adm) return exibirAlerta("Apenas a Administradora pode ver!", "🚫 Acesso Negado");
+            // AJUSTE: COLOQUE SEU EMAIL ABAIXO EXATAMENTE COMO VOCÊ DIGITA NO LOGIN
+            const admEmail = "keisejemima@gmail.com".toLowerCase().trim(); 
+            const usuarioLogado = (localStorage.getItem('usuarioEmail') || "").toLowerCase().trim();
 
-            let vigia = JSON.parse(localStorage.getItem('vigia_status') || "{}");
-            let lista = "";
-            const agora = Date.now();
-            for (let u in vigia) {
-                const online = (agora - vigia[u].lastSeen) < 300000;
-                lista += `👤 **${u}**\nStatus: ${online ? "🟢 ONLINE" : "🔴 OFFLINE"}\n\n`;
+            if (usuarioLogado !== admEmail) {
+                return exibirAlerta("Apenas a Administradora pode ver os registros!", "🚫 Acesso Negado");
             }
-            exibirAlerta(lista || "Ninguém ainda.", "📜 Arquivos da Vigia");
+            
+            const lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
+            exibirAlerta(lista.length === 0 ? "Nenhum usuário registrado." : "📋 REGISTROS DE ACESSO:\n\n" + lista.join("\n\n"), "📜 Arquivos da Vigia");
         }
 
-        function publicarSelado() {
-            const tipo = document.getElementById('tipo-pub').value;
-            const conteudo = localStorage.getItem(tipo);
-            if (!conteudo) return exibirAlerta("Não há nada na mesa de trabalho!", "⚒️ Forja Fria");
+        function entrarComoConvidado() {
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('tipoUsuario', 'convidado');
+            localStorage.setItem('usuarioEmail', 'convidado');
+            location.reload();
+        }
 
-            const email = localStorage.getItem('usuarioEmail');
-            localStorage.setItem(email + "_" + tipo + "_obra", conteudo);
-            localStorage.setItem(email + "_" + tipo + "_data", new Date().toLocaleDateString());
-            exibirAlerta("Obra guardada com sucesso!", "✨ Sucesso");
+        function sair() { 
+            exibirAlerta("Limpando acesso rúnico...", "🏠 Saindo");
+            setTimeout(() => {
+                localStorage.clear(); 
+                location.reload();
+            }, 1000);
+        }
+
+        function abrirCofre() {
+            if(localStorage.getItem('tipoUsuario') === 'convidado') {
+                exibirAlerta("Convidados não possuem cofre próprio!", "🚫 Acesso Restrito");
+            } else {
+                window.location.href = 'inventario.html';
+            }
         }
 
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-        function sair() { localStorage.clear(); location.reload(); }
+
+        function publicarSelado() {
+            if(localStorage.getItem('tipoUsuario') === 'convidado') return exibirAlerta("Apenas Criadores podem selar obras!", "🛡️ Erro de Classe");
+            
+            const tipo = document.getElementById('tipo-pub').value;
+            const status = document.getElementById('status-pub');
+            const conteudo = localStorage.getItem(tipo);
+
+            if (!conteudo) return exibirAlerta("Não há nada na mesa de trabalho! Vá nas ferramentas primeiro.", "⚒️ Forja Fria");
+
+            status.style.display = "block";
+            status.innerHTML = "🔒 Selando rúnica...";
+
+            setTimeout(() => {
+                const userEmail = localStorage.getItem('usuarioEmail');
+                const dataAtual = new Date().toLocaleDateString();
+                localStorage.setItem(userEmail + "_" + tipo + "_obra", conteudo);
+                localStorage.setItem(userEmail + "_" + tipo + "_data", dataAtual);
+                localStorage.removeItem(tipo);
+                
+                status.innerHTML = "✅ **Obra no seu Cofre!**";
+                status.style.color = "#55efc4";
+                exibirAlerta("Sua obra foi selada e guardada no seu Tesouro com sucesso!", "✨ Sucesso!");
+            }, 1000);
+        }
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
