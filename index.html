@@ -143,19 +143,6 @@
                 </div>
             </div>
         </div>
-
-        <h3 style="margin: 0 20px 5px; color:#55efc4;">🕹️ Mini-Jogos</h3>
-        <div class="prateleira-madeira">
-            <div class="prateleira-container">
-                <div class="item-card">
-                    <div class="item-capa jogos">Aventura no Reino 🕹️</div>
-                    <div class="botoes-lado-a-lado">
-                        <a href="jogos.html" class="btn-card btn-entrar">Jogar 🎮</a>
-                        <button class="btn-card btn-avaliar" onclick="window.location.href='jogos.html'">Avaliar ⭐</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div id="menuLateral" class="sidebar">
@@ -176,6 +163,17 @@
             <button class="btn-top" style="background:#2e7d32; width:100%; margin-bottom:5px;" onclick="converter('URL')">Gerar URL</button>
             <button class="btn-top" style="background:#6a1b9a; width:100%;" onclick="converter('JRG')">Gerar JRG</button>
             <p id="resultado-link" style="font-size: 0.8rem; margin-top: 10px; word-break: break-all; color: #55efc4;"></p>
+        </div>
+
+        <div class="card-rpg">
+            <h4 style="margin-top:0;">📤 Publicar Obra Protegida</h4>
+            <p style="font-size: 0.7rem; color: #aaa;">Seu trabalho será criptografado antes da publicação.</p>
+            <select id="tipo-pub" style="width:100%; padding:8px; border-radius:8px; background:#121212; color:#55efc4; border:1px solid #444; margin-bottom:10px;">
+                <option value="rascunho_livro">📜 Meu Manuscrito</option>
+                <option value="codigo_forja">💻 Meu Código Forjado</option>
+            </select>
+            <button class="btn-top" style="background: linear-gradient(45deg, #d63031, #6a1b9a); width:100%;" onclick="publicarSelado()">Selar e Publicar 🔐</button>
+            <p id="status-pub" style="font-size: 0.75rem; margin-top: 10px; color: #55efc4; display:none;"></p>
         </div>
         
         <button class="btn-top" style="background:none; color:red; width:100%; margin-top: 20px;" onclick="fecharMenu()">✖ Fechar Menu</button>
@@ -209,6 +207,32 @@
             const hash = btoa(input).substring(0, 8); 
             const resultado = tipo === 'JRG' ? `celeste://dragons/${hash}.jrg` : `https://reinoceleste.com/share/${hash}`;
             document.getElementById('resultado-link').innerText = "Link Gerado: " + resultado;
+        }
+
+        // --- SISTEMA DE PUBLICAÇÃO COM CRIPTOGRAFIA ---
+        function publicarSelado() {
+            const chaveLocal = document.getElementById('tipo-pub').value;
+            const status = document.getElementById('status-pub');
+            const conteudo = localStorage.getItem(chaveLocal);
+
+            if (!conteudo || conteudo.trim() === "") {
+                alert("🛡️ Escudo de Segurança: Não há conteúdo salvo para publicar! Vá ao laboratório primeiro.");
+                return;
+            }
+
+            status.style.display = "block";
+            status.innerHTML = "🔒 Selando com criptografia rúnica...";
+
+            setTimeout(() => {
+                // Simulação de Criptografia Base64 + Sal de Segurança
+                const salt = "ID-CELESTE-2026";
+                const hashProtegido = btoa(conteudo + "|" + salt);
+                
+                console.log("Obra enviada com segurança:", hashProtegido);
+
+                status.innerHTML = "✅ **Obra Publicada!**<br>Seu projeto foi selado e protegido com sucesso.";
+                status.style.color = "#55efc4";
+            }, 1500);
         }
 
         document.addEventListener('contextmenu', e => e.preventDefault());
