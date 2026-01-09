@@ -64,7 +64,7 @@
             box-shadow: 0 15px 30px rgba(106, 27, 154, 0.4);
         }
 
-        .slot-item::before { /* Detalhe lateral de livro */
+        .slot-item::before { 
             content: "";
             position: absolute;
             left: 0; top: 10%; height: 80%; width: 5px;
@@ -77,22 +77,9 @@
             color: #55efc4; 
             font-weight: bold; 
             margin-top: 10px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            text-align: center;
+            word-wrap: break-word;
             width: 100%;
-        }
-
-        .badge-count {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #d63031;
-            color: white;
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 50%;
-            font-weight: bold;
         }
 
         .vazio-msg {
@@ -120,19 +107,33 @@
             const container = document.getElementById('container-reliquias');
             container.innerHTML = ""; 
             
-            const userEmail = localStorage.getItem('usuarioEmail');
+            // Pega o e-mail logado e limpa espaços/maiúsculas
+            const userEmail = (localStorage.getItem('usuarioEmail') || "").toLowerCase().trim();
             let encontrouAlgo = false;
 
-            // Percorre todo o armazenamento em busca de itens deste usuário
+            if (!userEmail) {
+                container.innerHTML = `<div class="vazio-msg"><h3>Identidade não encontrada...</h3><p>Por favor, faça login novamente no Reino.</p></div>`;
+                return;
+            }
+
+            // Percorre o armazenamento local em busca das obras seladas
             for (let i = 0; i < localStorage.length; i++) {
                 const chave = localStorage.key(i);
 
-                // Verifica se a chave pertence ao usuário e é um item de livro/projeto
-                if (chave.startsWith(userEmail + "_LIVRO_")) {
-                    const nomeDoLivro = chave.replace(userEmail + "_LIVRO_", "");
-                    const conteudo = JSON.parse(localStorage.getItem(chave));
+                // O index.html salva como: email_rascunho_livro_obra
+                if (chave.startsWith(userEmail) && chave.endsWith("_obra")) {
                     
-                    criarCardLivro(container, nomeDoLivro, conteudo.length);
+                    // Extrai o tipo de obra para exibir um nome bonito
+                    let tipoTecnico = chave.replace(userEmail + "_", "").replace("_obra", "");
+                    let nomeExibicao = "Obra Selada";
+
+                    if (tipoTecnico === "rascunho_livro") nomeExibicao = "📜 Meu Manuscrito";
+                    if (tipoTecnico === "codigo_forja") nomeExibicao = "💻 Código Rúnico";
+
+                    // Busca a data que salvamos junto com a obra
+                    const dataSalva = localStorage.getItem(chave.replace("_obra", "_data")) || "Data Antiga";
+                    
+                    criarCardReliquia(container, nomeExibicao, dataSalva, chave);
                     encontrouAlgo = true;
                 }
             }
@@ -140,28 +141,28 @@
             if (!encontrouAlgo) {
                 container.innerHTML = `<div class="vazio-msg">
                     <h3>Sua biblioteca está vazia...</h3>
-                    <p>Dê um nome à sua obra na Sidebar da Home e publique para criar seu primeiro livro!</p>
+                    <p>Vá na Sidebar da Home, escreva algo nas Ferramentas e use o botão "Selar e Publicar"!</p>
                 </div>`;
             }
         }
 
-        function criarCardLivro(container, nome, totalCapitulos) {
+        function criarCardReliquia(container, nome, data, chaveOriginal) {
             const div = document.createElement('div');
             div.className = 'slot-item';
             div.innerHTML = `
-                <span class="badge-count">${totalCapitulos}</span>
-                <div style="font-size: 3.5rem;">📖</div>
+                <div style="font-size: 3rem;">📜</div>
                 <div class="slot-nome">${nome}</div>
-                <div style="font-size: 0.6rem; color: #888; margin-top: 5px;">Relíquia Guardada</div>
+                <div style="font-size: 0.65rem; color: #888; margin-top: 8px;">Selado em: ${data}</div>
             `;
             
             div.onclick = () => {
-                alert(`Abrindo livro: ${nome}\nEste livro possui ${totalCapitulos} capítulos/módulos selados.`);
-                // Futuramente podemos abrir uma página com a leitura dos capítulos aqui
+                const conteudo = localStorage.getItem(chaveOriginal);
+                alert(`📖 LENDO RELÍQUIA:\n\n${conteudo}`);
             };
             container.appendChild(div);
         }
 
+        // Carrega os itens assim que a página abre
         window.onload = carregarInventario;
     </script>
 </body>
