@@ -13,6 +13,29 @@
             overflow: hidden;
         }
 
+        /* --- NOVO DESIGN DE ALERTA RÚNICO --- */
+        #overlay-celeste {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 9998; backdrop-filter: blur(5px);
+        }
+        #alerta-celeste {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); z-index: 9999;
+            width: 85%; max-width: 320px; background: #1a1a1a;
+            border: 2px solid #6a1b9a; border-radius: 20px; padding: 25px;
+            text-align: center; box-shadow: 0 0 30px rgba(106, 27, 154, 0.6);
+            animation: surgir 0.3s ease-out;
+        }
+        @keyframes surgir {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        .btn-alerta-ok {
+            background: linear-gradient(45deg, #6a1b9a, #4b0082);
+            color: white; border: none; padding: 12px; width: 100%;
+            border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 15px;
+        }
+
         /* HEADER DO ESTÚDIO */
         .header-estudio {
             background: #161b22; padding: 15px 20px;
@@ -55,7 +78,7 @@
 
         .btn-ferramenta:hover { background: #30363d; border-color: #a29bfe; }
 
-        /* MODAL DE FERRAMENTAS (PAINEL FLUTUANTE) */
+        /* MODAL DE FERRAMENTAS */
         #painel-reliquias {
             display: none; position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 90%; max-width: 350px;
@@ -86,6 +109,13 @@
     </style>
 </head>
 <body>
+
+    <div id="overlay-celeste"></div>
+    <div id="alerta-celeste">
+        <h3 id="alerta-titulo" style="color:#55efc4; margin-top:0;">🛡️ Mensagem</h3>
+        <p id="alerta-texto" style="color:#ccc; font-size: 0.9rem;"></p>
+        <button class="btn-alerta-ok" onclick="fecharAlerta()">Entendido</button>
+    </div>
 
     <div class="header-estudio">
         <button onclick="window.location.href='index.html'" style="background:none; border:none; color:#aaa; cursor:pointer;">⬅ Voltar ao Reino</button>
@@ -139,6 +169,19 @@
         const upload = document.getElementById('importar-video');
         const painel = document.getElementById('painel-reliquias');
 
+        // FUNÇÃO DO NOVO ALERTA
+        function exibirAlerta(titulo, texto) {
+            document.getElementById('alerta-titulo').innerText = titulo;
+            document.getElementById('alerta-texto').innerText = texto;
+            document.getElementById('overlay-celeste').style.display = 'block';
+            document.getElementById('alerta-celeste').style.display = 'block';
+        }
+
+        function fecharAlerta() {
+            document.getElementById('overlay-celeste').style.display = 'none';
+            document.getElementById('alerta-celeste').style.display = 'none';
+        }
+
         const biblioteca = {
             memes: [
                 { nome: "😂 Risada do Zap", tipo: "Vídeo" },
@@ -175,12 +218,12 @@
 
         function exportarVideoComoURL() {
             if (!video.src) {
-                alert("❌ Erro: Não há vídeo para exportar!");
+                exibirAlerta("❌ Erro", "Não há vídeo para exportar!");
                 return;
             }
             const email = localStorage.getItem('usuarioEmail') || "visitante";
             localStorage.setItem(email + "_video_projeto", video.src);
-            alert("✨ Sucesso!\nSua obra foi convertida e guardada no seu Tesouro!");
+            exibirAlerta("✨ Sucesso", "Sua obra foi convertida e guardada no seu Tesouro!");
         }
 
         function abrirPainel(tipo) {
@@ -192,12 +235,12 @@
             if (tipo === 'memes') {
                 titulo.innerText = "🧪 Baú de Memes";
                 biblioteca.memes.forEach(m => {
-                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Meme selecionado!')">${m.nome} <span>${m.tipo}</span></div>`;
+                    conteudo.innerHTML += `<div class="item-lista" onclick="exibirAlerta('Meme','Meme adicionado à linha do tempo!')">${m.nome} <span>${m.tipo}</span></div>`;
                 });
             } else if (tipo === 'sons') {
                 titulo.innerText = "🌌 Sons de Mistério";
                 biblioteca.sons.forEach(s => {
-                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Tocando prévia...')">${s.icon} ${s.nome}</div>`;
+                    conteudo.innerHTML += `<div class="item-lista" onclick="exibirAlerta('Áudio','Tocando prévia do som...')">${s.icon} ${s.nome}</div>`;
                 });
             } else if (tipo === 'filtros') {
                 titulo.innerText = "📜 Filtros de Memória";
@@ -211,7 +254,7 @@
         }
 
         function abrirTesoura() {
-            alert("🌪️ FERRAMENTA TESOURA:\n\nSelecione o ponto de corte na linha do tempo!");
+            exibirAlerta("🌪️ Tesoura", "Selecione o ponto de corte na linha do tempo!");
         }
 
         function fecharPainel() { painel.style.display = 'none'; }
