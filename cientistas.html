@@ -26,10 +26,9 @@
 
         h3 { color: #55efc4; margin-top: 0; border-bottom: 1px solid #2e7d32; padding-bottom: 10px; display: flex; align-items: center; gap: 10px; }
 
-        /* EDIÇÃO CONFORTÁVEL */
         textarea {
             width: 100%; height: 200px; background: #000; 
-            color: #f5f5f5; /* Conforto visual total */
+            color: #f5f5f5;
             border: 2px solid #2e7d32; border-radius: 12px; padding: 15px;
             font-family: 'Consolas', monospace; resize: none;
             font-size: 16px; line-height: 1.5; outline: none;
@@ -45,7 +44,7 @@
 
         .btn-cientista:hover { opacity: 0.9; transform: scale(1.01); }
 
-        /* Estilo específico e Animação para o botão do Gemini */
+        /* Estilo Gemini */
         @keyframes pulsar {
             0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.7); }
             70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
@@ -55,24 +54,13 @@
         .btn-ai {
             background: linear-gradient(45deg, #4285f4, #9b72cb);
             border: 1px solid #ffffff33;
-            animation: pulsar 2s infinite; /* Efeito de pulso infinito */
+            animation: pulsar 2s infinite;
         }
 
-        /* PREVIEW DE CÓDIGO */
         #preview-code {
             width: 100%; height: 150px; background: white;
             margin-top: 10px; border-radius: 8px; border: none;
         }
-
-        /* VÍDEO CANVAS */
-        #video-canvas {
-            width: 100%; max-width: 500px; height: 280px;
-            background: black; border-radius: 10px; margin-top: 10px;
-            display: block; margin: 10px auto;
-        }
-
-        .controles-video { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
-        .btn-filtro { background: #333; color: #55efc4; border: 1px solid #55efc4; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -96,36 +84,36 @@
             <p style="font-size: 0.85rem; color: #aaa;">Crie componentes para seus mini-jogos e veja o resultado abaixo.</p>
             <textarea id="codigo-html" placeholder="<h1>Olá Mundo</h1>" oninput="executarCodigo()"></textarea>
             <iframe id="preview-code"></iframe>
+            <button class="btn-cientista" onclick="baixarCodigo()" style="background: linear-gradient(45deg, #6a1b9a, #2e7d32);">Guardar Projeto na Forja (.html)</button>
         </div>
 
         <div class="ferramenta-card" style="border-color: #4285f4;">
             <h3>✨ Consultar Assistente Intergalático</h3>
-            <p style="font-size: 0.85rem; color: #aaa;">Precisa de ideias para a história ou ajuda com códigos complexos? Pergunte ao Gemini.</p>
+            <p style="font-size: 0.85rem; color: #aaa;">Precisa de ideias ou ajuda com códigos? Pergunte ao Gemini.</p>
             <a href="https://gemini.google.com/" target="_blank" class="btn-cientista btn-ai">Chamar Gemini (IA)</a>
-        </div>
-
-        <div class="ferramenta-card">
-            <h3>🎬 Estúdio de Trailers (Beta)</h3>
-            <input type="file" id="upload-video" accept="video/*" style="margin-bottom: 10px;">
-            <video id="video-canvas" controls></video>
-            <div class="controles-video">
-                <button class="btn-filtro" onclick="aplicarFiltro('grayscale(100%)')">Vento Cinza</button>
-                <button class="btn-filtro" onclick="aplicarFiltro('hue-rotate(90deg) brightness(1.2)')">Radiação Verde</button>
-                <button class="btn-filtro" onclick="aplicarFiltro('hue-rotate(270deg)')">Gravidade Roxa</button>
-                <button class="btn-filtro" onclick="aplicarFiltro('none')">Limpar Filtros</button>
-            </div>
         </div>
 
     </div>
 
     <script>
-        // LÓGICA DE PROGRAMAÇÃO
+        // EXECUTA O CÓDIGO NA FORJA
         function executarCodigo() {
             const codigo = document.getElementById('codigo-html').value;
             const preview = document.getElementById('preview-code').contentWindow.document;
             preview.open();
             preview.write(codigo);
             preview.close();
+        }
+
+        // BAIXA O CÓDIGO DA FORJA
+        function baixarCodigo() {
+            const codigo = document.getElementById('codigo-html').value;
+            if(!codigo) return alert("A forja está vazia!");
+            const blob = new Blob([codigo], { type: "text/html" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "projeto_forja_celeste.html";
+            link.click();
         }
 
         // LÓGICA DE TEXTO
@@ -138,21 +126,13 @@
 
         function baixarTexto() {
             const texto = document.getElementById('bloco-notas').value;
+            if(!texto) return alert("O pergaminho está vazio!");
             const blob = new Blob([texto], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = "manuscrito_celeste.txt";
             link.click();
         }
-
-        // LÓGICA DE VÍDEO
-        const video = document.getElementById('video-canvas');
-        const upload = document.getElementById('upload-video');
-        upload.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) { video.src = URL.createObjectURL(file); }
-        });
-        function aplicarFiltro(f) { video.style.filter = f; }
 
         window.onload = function() {
             document.getElementById('bloco-notas').value = localStorage.getItem('rascunho_livro') || "";
