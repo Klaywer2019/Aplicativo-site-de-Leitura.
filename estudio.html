@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Estúdio de Trailers - Reino Celeste</title>
+    <style>
+        /* Estilo focado no player de vídeo */
+        .video-container { width: 90%; margin: auto; background: #1c1c1c; padding: 20px; border-radius: 20px; border: 2px solid #55efc4; }
+        video { width: 100%; border-radius: 10px; filter: none; }
+        .controles-estudio { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .btn-filtro { padding: 12px; border: 1px solid #55efc4; background: none; color: #55efc4; border-radius: 10px; cursor: pointer; }
+    </style>
+</head>
+<body style="background:#121212; color:white; font-family: sans-serif; text-align:center;">
+
+    <div style="padding: 20px;">
+        <button onclick="window.location.href='cientistas.html'" style="background:#444; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">← Voltar ao Lab</button>
+        <h2 style="color:#55efc4;">🎬 Estúdio de Vídeo (Beta)</h2>
+    </div>
+
+    <div class="video-container">
+        <input type="file" id="upload-video" accept="video/*" style="margin-bottom: 20px;">
+        <video id="player-estudio" controls></video>
+        
+        <div class="controles-estudio">
+            <button class="btn-filtro" onclick="aplicarFiltro('grayscale(100%)')">Vento Cinza 🌪️</button>
+            <button class="btn-filtro" onclick="aplicarFiltro('hue-rotate(90deg) brightness(1.2)')">Radiação Verde 🧪</button>
+            <button class="btn-filtro" onclick="aplicarFiltro('invert(1) sepia(1) hue-rotate(250deg)')">Gravidade Roxa 🌌</button>
+            <button class="btn-filtro" onclick="aplicarFiltro('none')" style="background:#c0392b; color:white; border:none;">Limpar Filtros</button>
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('upload-video');
+        const video = document.getElementById('player-estudio');
+
+        input.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                video.src = url;
+            }
+        });
+
+        function aplicarFiltro(filtro) {
+            video.style.filter = filtro;
+        }
+    </script>
+</body>
+</html>
