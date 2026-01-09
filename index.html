@@ -6,123 +6,152 @@
     <title>Reino Celeste - Home</title>
     <style>
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
-        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* NAV TOPO COM BOTÃO PUBLICAR REATIVADO */
+        /* DRAGÃO PASSAGEIRO */
+        .dragao-voando {
+            position: fixed; top: 10px; right: -60px; font-size: 2rem;
+            z-index: 2500; pointer-events: none;
+            animation: voo 15s linear infinite; opacity: 0.8;
+        }
+        @keyframes voo {
+            0% { transform: translateX(0) scaleX(1); right: -60px; }
+            45% { transform: translateX(-110vw) scaleX(1); }
+            50% { transform: translateX(-110vw) scaleX(-1); }
+            95% { transform: translateX(0) scaleX(-1); }
+            100% { transform: translateX(0) scaleX(1); }
+        }
+
+        /* NAV TOPO */
         .nav-topo {
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 15px; background: #1e1e1e; border-bottom: 2px solid #6a1b9a;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: #1e1e1e; border-bottom: 2px solid #6a1b9a;
+            position: sticky; top: 0; z-index: 1000;
         }
 
         .btn-top {
-            padding: 10px 20px; border-radius: 20px; border: none;
+            padding: 10px 15px; border-radius: 20px; border: none;
             color: white; font-weight: bold; cursor: pointer;
         }
 
-        /* PRATELEIRAS DE MADEIRA */
-        .prateleira {
-            border-bottom: 12px solid #3d2b1f; /* Cor de madeira escura */
-            margin-bottom: 40px; width: 90%; margin-left: 5%;
-            padding-bottom: 10px;
+        /* PRATELEIRAS HORIZONTAIS (ESTILO NETFLIX) */
+        .prateleira-container {
+            display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 25px 20px;
+            scroll-behavior: smooth; scrollbar-width: none; /* Esconde scroll no Firefox */
+        }
+        .prateleira-container::-webkit-scrollbar { display: none; } /* Esconde scroll no Chrome */
+
+        .prateleira-madeira {
+            border-bottom: 12px solid #3d2b1f; margin-bottom: 30px;
         }
 
-        /* ESTILO DOS CARDS PRINCIPAIS */
-        .item-container { margin: 20px auto; width: 100%; max-width: 400px; }
+        .item-card {
+            min-width: 250px; flex-shrink: 0; /* Impede que o card encolha */
+            background: #1c1c1c; border-radius: 20px; padding-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center;
+        }
         
-        .item {
-            width: 100%; padding: 30px; border-radius: 25px;
-            text-decoration: none; font-weight: bold; color: white; display: block;
-            text-align: center; text-shadow: 2px 2px 4px black; font-size: 1.1rem;
+        .item-capa {
+            width: 100%; height: 120px; border-radius: 20px 20px 0 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; text-shadow: 2px 2px 4px black; color: white;
+            text-decoration: none;
         }
 
-        .livro { background: linear-gradient(135deg, #4B0082, #00FF00); } /* Celeste Dragon */
-        .video { background: linear-gradient(to right, #ff0000, #b20000); } /* Trailers */
-        .jogos { background: linear-gradient(45deg, #2d3436, #636e72); } /* Mini-Jogos */
+        .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
+        .video { background: linear-gradient(to right, #ff0000, #b20000); }
+        .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
 
-        /* BOTÃO AVALIAR REESTILIZADO (CELESTE) */
         .btn-avaliar {
             background: linear-gradient(45deg, #6a1b9a, #2e7d32);
-            color: white; border: 1px solid #a29bfe; padding: 6px 20px;
-            border-radius: 12px; margin-top: 10px; cursor: pointer; font-weight: bold;
+            color: white; border: 1px solid #a29bfe; padding: 6px 15px;
+            border-radius: 12px; margin-top: 10px; cursor: pointer; font-size: 0.8rem;
         }
 
-        /* MENU LATERAL E PERFIL */
+        /* PERFIL */
+        .perfil-foto {
+            width: 45px; height: 45px; border-radius: 50%;
+            border: 2px solid #55efc4; cursor: pointer; object-fit: cover;
+            background: #444;
+        }
+
+        /* MENU E CONVERSOR */
         .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 2000;
+            height: 100%; width: 0; position: fixed; z-index: 3500;
             top: 0; right: 0; background-color: #1e1e1e;
-            overflow-x: hidden; transition: 0.5s; padding-top: 60px;
+            overflow-x: hidden; transition: 0.5s; padding-top: 20px;
             border-left: 3px solid #6a1b9a;
         }
 
-        .perfil-avatar {
-            width: 45px; height: 45px; background: linear-gradient(45deg, #6a1b9a, #a29bfe);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-weight: bold; border: 2px solid #55efc4; cursor: pointer;
-        }
-
         .card-rpg {
-            background: #2d3436; border-radius: 20px; padding: 15px;
-            width: 90%; margin: 10px auto; text-align: center; border: 1px solid #444;
+            background: #2d3436; border-radius: 15px; padding: 15px;
+            width: 90%; margin: 10px auto; border: 1px solid #444;
         }
 
-        .btn-lab {
-            background: linear-gradient(45deg, #2e7d32, #6a1b9a);
-            color: white; border: none; padding: 10px; border-radius: 12px;
-            width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;
+        .input-link {
+            width: 100%; padding: 8px; border-radius: 8px; border: none;
+            margin-bottom: 10px; background: #121212; color: #55efc4;
         }
 
         /* TELAS */
-        #estante-principal { display: none; padding-top: 20px; }
-        #tela-entrada, #tela-publicar {
+        #estante-principal { display: none; }
+        #tela-entrada {
             position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(18,18,18,0.95); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 3000;
+            background: #121212; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 4000;
         }
     </style>
 </head>
 <body>
 
-    <div id="tela-entrada">
-        <h1>🛡️ Reino Celeste</h1>
-        <button class="btn-top" style="background:#6a1b9a;" onclick="entrar()">Entrar no Reino</button>
-    </div>
+    <div class="dragao-voando">🐉</div>
 
-    <div id="tela-publicar" style="display:none;">
-        <h2>Nova Descoberta Científica</h2>
-        <input type="text" placeholder="Título da Obra" style="padding:10px; width:80%; margin:10px;">
-        <button class="btn-top" style="background:#2e7d32;" onclick="fecharPublicar()">Publicar 🚀</button>
-        <button class="btn-top" style="background:#444; margin-top:10px;" onclick="fecharPublicar()">Voltar</button>
+    <div id="tela-entrada">
+        <h1 style="color: #55efc4; text-shadow: 0 0 10px #2e7d32;">🛡️ Reino Celeste</h1>
+        <button class="btn-top" style="background:#6a1b9a; padding: 15px 40px;" onclick="entrar()">Entrar no Reino</button>
     </div>
 
     <div id="estante-principal">
         <div class="nav-topo">
             <button class="btn-top" style="background:#c0392b;" onclick="location.reload()">🏠 Sair</button>
-            <button class="btn-top" style="background:#6a1b9a;" onclick="abrirPublicar()">➕ Publicar</button>
-            <div class="perfil-avatar" onclick="abrirMenu()">J</div>
+            <h3 style="margin:0; font-size: 1rem; color: #55efc4;">Celeste App</h3>
+            <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()" alt="Perfil">
         </div>
 
-        <div style="text-align:center; margin-top: 20px;">
-            <h3 style="color:#a29bfe;">📖 Meus Livros</h3>
-            <div class="prateleira">
-                <div class="item-container">
-                    <a href="livros.html" class="item livro">Celeste Dragon 🔥🐲</a>
-                    <button class="btn-avaliar" onclick="window.location.href='livros.html'">Avaliar ⭐</button>
+        <h3 style="margin: 20px 20px 5px; color:#a29bfe;">📖 Meus Livros</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <a href="livros.html" class="item-capa livro">Celeste Dragon 🔥🐲</a>
+                    <button class="btn-avaliar">Avaliar Obra ⭐</button>
+                </div>
+                <div class="item-card">
+                    <a href="#" class="item-capa livro" style="filter: grayscale(1);">Em breve... 🔒</a>
+                    <button class="btn-avaliar">Bloqueado</button>
                 </div>
             </div>
+        </div>
 
-            <h3 style="color:#ff7675;">🎥 Trailers</h3>
-            <div class="prateleira">
-                <div class="item-container">
-                    <a href="videos.html" class="item video">Trailers Oficiais 🎬</a>
-                    <button class="btn-avaliar" onclick="window.location.href='videos.html'">Avaliar ⭐</button>
+        <h3 style="margin: 0 20px 5px; color:#ff7675;">🎥 Trailers</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <a href="videos.html" class="item-capa video">Trailers Oficiais 🎬</a>
+                    <button class="btn-avaliar">Ver Agora</button>
+                </div>
+                <div class="item-card">
+                    <a href="#" class="item-capa video" style="background: linear-gradient(to right, #444, #222);">Extra: Making Of</a>
+                    <button class="btn-avaliar">Em Breve</button>
                 </div>
             </div>
+        </div>
 
-            <h3 style="color:#55efc4;">🕹️ Mini-Jogos</h3>
-            <div class="prateleira">
-                <div class="item-container">
-                    <a href="jogos.html" class="item jogos">Aventura no Reino 🕹️</a>
-                    <button class="btn-avaliar" onclick="window.location.href='jogos.html'">Avaliar ⭐</button>
+        <h3 style="margin: 0 20px 5px; color:#55efc4;">🕹️ Mini-Jogos</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <a href="jogos.html" class="item-capa jogos">Aventura no Reino 🕹️</a>
+                    <button class="btn-avaliar">Jogar</button>
                 </div>
             </div>
         </div>
@@ -130,14 +159,23 @@
 
     <div id="menuLateral" class="sidebar">
         <div class="card-rpg">
-            <h2 id="nome-perfil">Jemima keise</h2>
-            <p>Ilha: Iniciante 🛡️</p>
+            <h2 id="nome-perfil" style="margin:0;">Jemima Keise</h2>
+            <p style="color: #55efc4;">Ilha: Iniciante 🛡️</p>
         </div>
+
         <div class="card-rpg">
-            <h4>🧪 Laboratório</h4>
-            <button class="btn-lab" onclick="window.location.href='cientistas.html'">Ala dos Cientistas</button>
+            <h4 style="margin-top:0;">🔗 Conversor JRG/URL</h4>
+            <input type="text" id="input-url" class="input-link" placeholder="Cole o link ou nome aqui">
+            <button class="btn-top" style="background:#2e7d32; width:100%; margin-bottom:5px;" onclick="converter('URL')">Gerar URL</button>
+            <button class="btn-top" style="background:#6a1b9a; width:100%;" onclick="converter('JRG')">Gerar JRG</button>
+            <p id="resultado-link" style="font-size: 0.8rem; margin-top: 10px; word-break: break-all; color: #55efc4;"></p>
         </div>
-        <button class="btn-top" style="background:none; color:red; width:100%;" onclick="fecharMenu()">✖ Fechar</button>
+
+        <div class="card-rpg">
+            <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #6a1b9a); width:100%;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
+        </div>
+        
+        <button class="btn-top" style="background:none; color:red; width:100%; margin-top: 20px;" onclick="fecharMenu()">✖ Fechar Menu</button>
     </div>
 
     <script>
@@ -145,10 +183,17 @@
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
-        function abrirPublicar() { document.getElementById('tela-publicar').style.display = 'flex'; }
-        function fecharPublicar() { document.getElementById('tela-publicar').style.display = 'none'; }
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+
+        function converter(tipo) {
+            const input = document.getElementById('input-url').value;
+            if(!input) return alert("Digite algo primeiro!");
+            const hash = btoa(input).substring(0, 8); // Gera um código aleatório
+            const resultado = tipo === 'JRG' ? `celeste://dragons/${hash}.jrg` : `https://reinoceleste.com/share/${hash}`;
+            document.getElementById('resultado-link').innerText = "Link Gerado: " + resultado;
+        }
+
         document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
