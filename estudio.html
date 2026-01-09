@@ -2,48 +2,149 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estúdio de Trailers - Reino Celeste</title>
     <style>
-        /* Estilo focado no player de vídeo */
-        .video-container { width: 90%; margin: auto; background: #1c1c1c; padding: 20px; border-radius: 20px; border: 2px solid #55efc4; }
-        video { width: 100%; border-radius: 10px; filter: none; }
-        .controles-estudio { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .btn-filtro { padding: 12px; border: 1px solid #55efc4; background: none; color: #55efc4; border-radius: 10px; cursor: pointer; }
+        * { box-sizing: border-box; }
+        body { 
+            background-color: #0a0a0a; color: white; 
+            font-family: 'Segoe UI', sans-serif; margin: 0; 
+            display: flex; flex-direction: column; height: 100vh;
+        }
+
+        /* HEADER DO ESTÚDIO */
+        .header-estudio {
+            background: #161b22; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #6a1b9a;
+        }
+
+        /* ÁREA PRINCIPAL (PLAYER) */
+        .workspace {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px;
+            background: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .video-wrapper {
+            width: 100%; max-width: 800px; position: relative;
+            box-shadow: 0 0 30px rgba(106, 27, 154, 0.3); border-radius: 12px;
+            overflow: hidden; background: #000;
+        }
+
+        video { width: 100%; display: block; filter: none; transition: 0.3s; }
+
+        /* PAINEL DE CONTROLE (BOTTOM) */
+        .painel-edicao {
+            background: #161b22; padding: 20px;
+            border-top: 2px solid #2e7d32;
+        }
+
+        .controles-grade {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px; max-width: 1000px; margin: auto;
+        }
+
+        /* BOTÕES PROFISSIONAIS */
+        .btn-ferramenta {
+            background: #21262d; color: #55efc4; border: 1px solid #30363d;
+            padding: 12px; border-radius: 8px; cursor: pointer;
+            font-weight: bold; font-size: 0.9rem; transition: 0.2s;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+
+        .btn-ferramenta:hover { background: #30363d; border-color: #55efc4; }
+        .btn-ferramenta.ativo { background: #2e7d32; color: white; }
+
+        /* INPUT DE UPLOAD ESTILIZADO */
+        .upload-section {
+            margin-bottom: 20px; text-align: center;
+        }
+        .custom-upload {
+            background: linear-gradient(45deg, #6a1b9a, #4b0082);
+            color: white; padding: 12px 25px; border-radius: 25px;
+            cursor: pointer; display: inline-block; font-weight: bold;
+            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+        }
+
+        .btn-save {
+            background: #2e7d32; color: white; border: none;
+            padding: 10px 20px; border-radius: 20px; font-weight: bold;
+            cursor: pointer;
+        }
+
     </style>
 </head>
-<body style="background:#121212; color:white; font-family: sans-serif; text-align:center;">
+<body>
 
-    <div style="padding: 20px;">
-        <button onclick="window.location.href='cientistas.html'" style="background:#444; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">← Voltar ao Lab</button>
-        <h2 style="color:#55efc4;">🎬 Estúdio de Vídeo (Beta)</h2>
+    <div class="header-estudio">
+        <button onclick="window.location.href='cientistas.html'" style="background:none; border:none; color:#aaa; cursor:pointer;">⬅ Voltar ao Lab</button>
+        <h3 style="margin:0; color:#55efc4;">🎬 Studio Pro <span style="font-size: 0.7rem; background:#444; padding:2px 6px; border-radius:4px;">BETA</span></h3>
+        <button class="btn-save" onclick="alert('Funcionalidade de exportação em desenvolvimento!')">Exportar ⬇️</button>
     </div>
 
-    <div class="video-container">
-        <input type="file" id="upload-video" accept="video/*" style="margin-bottom: 20px;">
-        <video id="player-estudio" controls></video>
-        
-        <div class="controles-estudio">
-            <button class="btn-filtro" onclick="aplicarFiltro('grayscale(100%)')">Vento Cinza 🌪️</button>
-            <button class="btn-filtro" onclick="aplicarFiltro('hue-rotate(90deg) brightness(1.2)')">Radiação Verde 🧪</button>
-            <button class="btn-filtro" onclick="aplicarFiltro('invert(1) sepia(1) hue-rotate(250deg)')">Gravidade Roxa 🌌</button>
-            <button class="btn-filtro" onclick="aplicarFiltro('none')" style="background:#c0392b; color:white; border:none;">Limpar Filtros</button>
+    <div class="workspace">
+        <div class="upload-section">
+            <label for="importar-video" class="custom-upload">
+                📥 Importar Mídia para o Estúdio
+            </label>
+            <input type="file" id="importar-video" accept="video/*" style="display: none;">
+        </div>
+
+        <div class="video-wrapper">
+            <video id="main-player" controls></video>
+        </div>
+    </div>
+
+    <div class="painel-edicao">
+        <div style="text-align: center; margin-bottom: 15px; color: #aaa; font-size: 0.8rem;">FILTROS E ENERGIAS</div>
+        <div class="controles-grade">
+            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'grayscale(100%)')">
+                <span>🌪️</span> Vento Cinza
+            </button>
+            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'hue-rotate(90deg) brightness(1.2)')">
+                <span>🧪</span> Radiação Verde
+            </button>
+            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'invert(1) hue-rotate(180deg)')">
+                <span>🌌</span> Gravidade Roxa
+            </button>
+            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'sepia(1) saturate(2)')">
+                <span>📜</span> Memória Antiga
+            </button>
+            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'contrast(1.5) brightness(0.8)')">
+                <span>🔥</span> Brasa Viva
+            </button>
+            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'none')" style="color: #ff7675;">
+                <span>❌</span> Limpar Tudo
+            </button>
         </div>
     </div>
 
     <script>
-        const input = document.getElementById('upload-video');
-        const video = document.getElementById('player-estudio');
+        const video = document.getElementById('main-player');
+        const upload = document.getElementById('importar-video');
 
-        input.addEventListener('change', function() {
+        // Carregar o vídeo selecionado
+        upload.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 const url = URL.createObjectURL(file);
                 video.src = url;
+                video.play();
             }
         });
 
-        function aplicarFiltro(filtro) {
+        // Função para aplicar filtros e marcar botão ativo
+        function aplicarFiltro(btn, filtro) {
             video.style.filter = filtro;
+            
+            // Remove a classe 'ativo' de todos os botões
+            document.querySelectorAll('.btn-ferramenta').forEach(b => b.classList.remove('ativo'));
+            
+            // Adiciona ao botão clicado (se não for o de limpar)
+            if(filtro !== 'none') {
+                btn.classList.add('ativo');
+            }
         }
     </script>
 </body>
