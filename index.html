@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Estante RPG - Conexão Celeste</title>
-    
+    <title>Reino Celeste - Home</title>
     <style>
-        /* RESET E PADRÕES */
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
-        body {
-            background-color: #121212; color: white;
-            font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden;
+        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+
+        /* NAV TOPO COM BOTÃO PUBLICAR REATIVADO */
+        .nav-topo {
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 15px; background: #1e1e1e; border-bottom: 2px solid #6a1b9a;
         }
 
-        #barra-progresso {
-            position: fixed; top: 0; left: 0; height: 4px;
-            width: 0%; background: #55efc4; z-index: 3000;
+        .btn-top {
+            padding: 10px 20px; border-radius: 20px; border: none;
+            color: white; font-weight: bold; cursor: pointer;
         }
 
-        /* MENU LATERAL */
+        /* PRATELEIRAS DE MADEIRA */
+        .prateleira {
+            border-bottom: 12px solid #3d2b1f; /* Cor de madeira escura */
+            margin-bottom: 40px; width: 90%; margin-left: 5%;
+            padding-bottom: 10px;
+        }
+
+        /* ESTILO DOS CARDS PRINCIPAIS */
+        .item-container { margin: 20px auto; width: 100%; max-width: 400px; }
+        
+        .item {
+            width: 100%; padding: 30px; border-radius: 25px;
+            text-decoration: none; font-weight: bold; color: white; display: block;
+            text-align: center; text-shadow: 2px 2px 4px black; font-size: 1.1rem;
+        }
+
+        .livro { background: linear-gradient(135deg, #4B0082, #00FF00); } /* Celeste Dragon */
+        .video { background: linear-gradient(to right, #ff0000, #b20000); } /* Trailers */
+        .jogos { background: linear-gradient(45deg, #2d3436, #636e72); } /* Mini-Jogos */
+
+        /* BOTÃO AVALIAR REESTILIZADO (CELESTE) */
+        .btn-avaliar {
+            background: linear-gradient(45deg, #6a1b9a, #2e7d32);
+            color: white; border: 1px solid #a29bfe; padding: 6px 20px;
+            border-radius: 12px; margin-top: 10px; cursor: pointer; font-weight: bold;
+        }
+
+        /* MENU LATERAL E PERFIL */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000;
             top: 0; right: 0; background-color: #1e1e1e;
@@ -27,165 +54,101 @@
             border-left: 3px solid #6a1b9a;
         }
 
-        .sidebar-content { display: flex; flex-direction: column; align-items: center; padding: 20px; }
-
-        .card-rpg {
-            background: #2d3436; border-radius: 20px; padding: 15px;
-            width: 95%; margin: 10px 0; border: 1px solid #444; text-align: center;
-        }
-
-        /* BOTÃO CIENTISTAS (ESTILO ESPECIAL) */
-        .btn-cientista-perfil {
-            background: linear-gradient(45deg, #2e7d32, #6a1b9a);
-            color: white; border: none; padding: 12px; border-radius: 15px;
-            width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;
-            box-shadow: 0 0 10px rgba(85, 239, 196, 0.2);
-        }
-
-        /* ITENS DA ESTANTE */
-        .item-container { margin: 25px auto; width: 85%; max-width: 400px; position: relative; }
-        
-        .item {
-            width: 100%; padding: 25px; border-radius: 20px;
-            text-decoration: none; font-weight: bold; color: white; display: block;
-            text-align: center; transition: 0.3s;
-        }
-
-        .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
-        .video { background: linear-gradient(to right, #ff0000, #b20000); }
-        .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
-
-        .item:hover { transform: scale(1.03); filter: brightness(1.1); }
-
-        /* TELAS */
-        #tela-entrada, #tela-cadastro, #tela-ban {
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; height: 100vh; width: 100%; text-align: center;
-            position: fixed; top: 0; left: 0; background: #121212; z-index: 4000;
-        }
-
-        #estante-principal { display: none; }
-
         .perfil-avatar {
-            width: 40px; height: 40px; background: linear-gradient(45deg, #6a1b9a, #a29bfe);
+            width: 45px; height: 45px; background: linear-gradient(45deg, #6a1b9a, #a29bfe);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
             font-weight: bold; border: 2px solid #55efc4; cursor: pointer;
         }
 
-        button { padding: 12px 25px; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .card-rpg {
+            background: #2d3436; border-radius: 20px; padding: 15px;
+            width: 90%; margin: 10px auto; text-align: center; border: 1px solid #444;
+        }
+
+        .btn-lab {
+            background: linear-gradient(45deg, #2e7d32, #6a1b9a);
+            color: white; border: none; padding: 10px; border-radius: 12px;
+            width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+
+        /* TELAS */
+        #estante-principal { display: none; padding-top: 20px; }
+        #tela-entrada, #tela-publicar {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(18,18,18,0.95); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 3000;
+        }
     </style>
 </head>
 <body>
 
-    <div id="barra-progresso"></div>
-
-    <div id="menuLateral" class="sidebar">
-        <div class="sidebar-content">
-            <button onclick="fecharMenu()" style="background:none; color:#ff7675;">✖ Fechar</button>
-            <div class="perfil-avatar" style="width:70px; height:70px; font-size:2rem; margin:15px;" id="avatar-grande">?</div>
-            <h2 id="nome-perfil-menu">Herói</h2>
-            
-            <div class="card-rpg">
-                <p style="color:#888; font-size:0.8rem;">Ilha Atual:</p>
-                <h3 id="cla-nome" style="color:#55efc4;">Iniciante 🛡️</h3>
-            </div>
-
-            <div class="card-rpg">
-                <h4>🧪 Laboratório</h4>
-                <p style="font-size: 0.7rem; color: #aaa;">Acesse ferramentas de criação.</p>
-                <button class="btn-cientista-perfil" onclick="irParaCientistas()">Ala dos Cientistas</button>
-            </div>
-
-            <button onclick="sair()" style="margin-top:20px; background:#e74c3c;">Sair do Reino</button>
-        </div>
-    </div>
-
     <div id="tela-entrada">
-        <h1>🛡️ Portal dos Clãs</h1>
-        <button onclick="irParaCadastro()" style="background:#6a1b9a; color:white;">Criar Conta de Autor</button>
+        <h1>🛡️ Reino Celeste</h1>
+        <button class="btn-top" style="background:#6a1b9a;" onclick="entrar()">Entrar no Reino</button>
     </div>
 
-    <div id="tela-cadastro" style="display: none;">
-        <h2>Inicie sua Jornada</h2>
-        <input type="text" id="nome-autor" placeholder="Nome de Autor" style="padding:15px; border-radius:10px; border:none; width:80%;">
-        <button onclick="finalizarCadastro()" style="margin-top:15px; background:#2e7d32; color:white;">Concluir</button>
+    <div id="tela-publicar" style="display:none;">
+        <h2>Nova Descoberta Científica</h2>
+        <input type="text" placeholder="Título da Obra" style="padding:10px; width:80%; margin:10px;">
+        <button class="btn-top" style="background:#2e7d32;" onclick="fecharPublicar()">Publicar 🚀</button>
+        <button class="btn-top" style="background:#444; margin-top:10px;" onclick="fecharPublicar()">Voltar</button>
     </div>
 
     <div id="estante-principal">
-        <div class="nav-topo" style="display:flex; justify-content:space-between; align-items: center; padding:15px; background:#1e1e1e;">
-            <h3 style="margin:0; color:#a29bfe;">Reino Celeste</h3>
-            <div class="perfil-avatar" id="user-icon" onclick="verPerfil()">?</div>
+        <div class="nav-topo">
+            <button class="btn-top" style="background:#c0392b;" onclick="location.reload()">🏠 Sair</button>
+            <button class="btn-top" style="background:#6a1b9a;" onclick="abrirPublicar()">➕ Publicar</button>
+            <div class="perfil-avatar" onclick="abrirMenu()">J</div>
         </div>
 
-        <div id="lista" style="text-align:center; padding-top: 20px;">
-            <h3>📖 Meus Livros</h3>
-            <div class="item-container">
-                <a href="livros.html" class="item livro">Explorar Estante 🐉</a>
+        <div style="text-align:center; margin-top: 20px;">
+            <h3 style="color:#a29bfe;">📖 Meus Livros</h3>
+            <div class="prateleira">
+                <div class="item-container">
+                    <a href="livros.html" class="item livro">Celeste Dragon 🔥🐲</a>
+                    <button class="btn-avaliar" onclick="window.location.href='livros.html'">Avaliar ⭐</button>
+                </div>
             </div>
 
-            <h3>🎥 Trailers</h3>
-            <div class="item-container">
-                <a href="videos.html" class="item video">Galeria de Vídeos 🎬</a>
+            <h3 style="color:#ff7675;">🎥 Trailers</h3>
+            <div class="prateleira">
+                <div class="item-container">
+                    <a href="videos.html" class="item video">Trailers Oficiais 🎬</a>
+                    <button class="btn-avaliar" onclick="window.location.href='videos.html'">Avaliar ⭐</button>
+                </div>
             </div>
 
-            <h3>🎮 Mini-Jogos</h3>
-            <div class="item-container">
-                <a href="jogos.html" class="item jogos">Portal de Jogos 🕹️</a>
+            <h3 style="color:#55efc4;">🕹️ Mini-Jogos</h3>
+            <div class="prateleira">
+                <div class="item-container">
+                    <a href="jogos.html" class="item jogos">Aventura no Reino 🕹️</a>
+                    <button class="btn-avaliar" onclick="window.location.href='jogos.html'">Avaliar ⭐</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <div id="menuLateral" class="sidebar">
+        <div class="card-rpg">
+            <h2 id="nome-perfil">Jemima keise</h2>
+            <p>Ilha: Iniciante 🛡️</p>
+        </div>
+        <div class="card-rpg">
+            <h4>🧪 Laboratório</h4>
+            <button class="btn-lab" onclick="window.location.href='cientistas.html'">Ala dos Cientistas</button>
+        </div>
+        <button class="btn-top" style="background:none; color:red; width:100%;" onclick="fecharMenu()">✖ Fechar</button>
+    </div>
+
     <script>
-        // FUNÇÕES DE NAVEGAÇÃO
-        function verPerfil() {
-            const nome = localStorage.getItem('autor_nome') || "Herói";
-            document.getElementById("nome-perfil-menu").innerText = nome;
-            document.getElementById("avatar-grande").innerText = nome[0].toUpperCase();
-            document.getElementById("menuLateral").style.width = "280px";
-        }
-
-        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-
-        function irParaCientistas() {
-            window.location.href = 'cientistas.html';
-        }
-
-        // CADASTRO E LOGIN
-        function irParaCadastro() {
+        function entrar() {
             document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('tela-cadastro').style.display = 'flex';
-        }
-
-        function finalizarCadastro() {
-            const nome = document.getElementById('nome-autor').value.trim();
-            if (nome === "") return alert("Digite um nome!");
-            localStorage.setItem('autor_nome', nome);
-            mostrarEstante(nome);
-        }
-
-        function mostrarEstante(nome) {
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('tela-cadastro').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
-            document.getElementById('user-icon').innerText = nome[0].toUpperCase();
         }
-
-        function sair() { localStorage.clear(); location.reload(); }
-
-        window.onload = function() {
-            const nome = localStorage.getItem('autor_nome');
-            if (nome) mostrarEstante(nome);
-        };
-
-        // BARRA DE PROGRESSO
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("barra-progresso").style.width = scrolled + "%";
-        };
-
-        // BLOQUEIOS DE PROTEÇÃO
+        function abrirPublicar() { document.getElementById('tela-publicar').style.display = 'flex'; }
+        function fecharPublicar() { document.getElementById('tela-publicar').style.display = 'none'; }
+        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
         document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
