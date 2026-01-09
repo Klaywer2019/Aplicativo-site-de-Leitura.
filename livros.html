@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estante de Livros - Reino Celeste</title>
+    <style>
+        /* 1. RESET E PADRÃO CELESTE */
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+        body { 
+            background-color: #121212; color: white; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding-bottom: 50px; 
+        }
+
+        /* BARRA DE TOPO */
+        .nav-topo { 
+            display:flex; justify-content:space-around; align-items: center; 
+            padding:15px; background:#1e1e1e; border-bottom: 2px solid #6a1b9a; 
+        }
+
+        /* 2. ESTILO DOS LIVROS (ROXO E VERDE) */
+        .estante-container { padding: 20px; text-align: center; }
+
+        .livro-card {
+            width: 90%; max-width: 400px; margin: 25px auto;
+            background: #1e1e1e; border-radius: 20px; overflow: hidden;
+            border: 1px solid #444; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .livro-capa {
+            width: 100%; height: 180px; 
+            background: linear-gradient(135deg, #4B0082, #00FF00); /* Cores do Celeste Dragon */
+            display: flex; justify-content: center; align-items: center; 
+            font-weight: bold; font-size: 1.2rem; text-shadow: 2px 2px 4px black;
+        }
+
+        .livro-info { padding: 20px; }
+
+        .btn-ler {
+            display: block; width: 100%; padding: 12px; margin-bottom: 10px;
+            background: #6a1b9a; color: white; text-decoration: none;
+            border-radius: 10px; font-weight: bold; border: 1px solid #a29bfe;
+        }
+
+        .btn-avaliar {
+            background: linear-gradient(45deg, #6a1b9a, #2e7d32); /* Sua nova cor Celeste */
+            color: white; border: 1px solid #a29bfe; padding: 8px 20px;
+            border-radius: 12px; font-size: 0.85rem; cursor: pointer;
+            font-weight: bold; transition: 0.3s; width: 100%;
+        }
+
+        /* 3. TELAS DE PROTEÇÃO (BANIN-HAL E AVALIAÇÃO) */
+        #tela-ban, #tela-avaliacao {
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; height: 100vh; width: 100%; text-align: center;
+            position: fixed; top: 0; left: 0; background: rgba(18,18,18,0.98); z-index: 4000;
+        }
+
+        .campo-feedback {
+            width: 80%; max-width: 300px; height: 100px; padding: 12px;
+            background: #1e1e1e; color: white; border: 1px solid #6a1b9a;
+            border-radius: 10px; margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-topo">
+        <button onclick="window.location.href='index.html'" style="background:#444; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">⬅ Voltar</button>
+        <h2 style="color:#a29bfe;">📖 Ala de Livros</h2>
+    </div>
+
+    <div class="estante-container">
+        <div class="livro-card">
+            <div class="livro-capa">CELESTE DRAGON 🔥🐲</div>
+            <div class="livro-info">
+                <h3>Celeste Dragon</h3>
+                <p style="font-size: 0.8rem; color: #888;">Autor: Jemima keise</p>
+                <a href="celeste_ler.html" class="btn-ler">Ler Agora 📖</a>
+                <button class="btn-avaliar" onclick="abrirAvaliacao('Celeste Dragon')">Avaliar Obra ⭐</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-avaliacao">
+        <h2 id="titulo-aval">Avaliar Obra</h2>
+        <textarea id="feedback-texto" placeholder="Deixe um elogio ou dica construtiva..." class="campo-feedback"></textarea>
+        <button onclick="enviarAvaliacao()" style="background:#6a1b9a; color:white; padding:12px 30px; border-radius:25px; border:none; font-weight:bold;">Enviar Apoio</button>
+        <button onclick="fecharAvaliacao()" style="background:none; color:#888; border:none; margin-top:15px; cursor:pointer;">Cancelar</button>
+    </div>
+
+    <div id="tela-ban" style="color: red;">
+        <h1>⚠️ ACESSO INTERROMPIDO ⚠️</h1>
+        <p>Violação das leis de direitos autorais ou termos de conduta.</p>
+        <p id="timer-ban"></p>
+    </div>
+
+    <script>
+        // SEGURANÇA E FILTRO (Obrigatório para evitar roubo e ofensas)
+        const listaProibida = ["sexo", "porn", "hentai", "+18", "roubo", "plagio", "copia", "ofensa"];
+
+        function verificarImoralidade(texto) {
+            return listaProibida.some(p => texto.toLowerCase().includes(p));
+        }
+
+        function abrirAvaliacao(nome) {
+            document.getElementById('titulo-aval').innerText = "Apoiando: " + nome;
+            document.getElementById('tela-avaliacao').style.display = 'flex';
+        }
+
+        function fecharAvaliacao() { document.getElementById('tela-avaliacao').style.display = 'none'; }
+
+        function enviarAvaliacao() {
+            const f = document.getElementById('feedback-texto').value;
+            if (verificarImoralidade(f)) {
+                const banAte = new Date().getTime() + (48 * 60 * 60 * 1000);
+                localStorage.setItem('ban_tempo', banAte);
+                location.reload();
+                return;
+            }
+            alert("✅ Sua avaliação foi registrada! O autor agradece o apoio.");
+            fecharAvaliacao();
+        }
+
+        // ANTI-PLÁGIO: BLOQUEIO DE CÓPIA
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if(e.ctrlKey && (e.key === 'c' || e.key === 'u')) {
+                alert("🛡️ Proteção Celeste: Cópia não permitida!");
+                e.preventDefault();
+            }
+        });
+
+        // CHECAR BANIMENTO AO CARREGAR
+        window.onload = function() {
+            const banAte = localStorage.getItem('ban_tempo');
+            if (banAte && new Date().getTime() < banAte) {
+                document.body.innerHTML = "";
+                document.body.appendChild(document.getElementById('tela-ban'));
+                document.getElementById('tela-ban').style.display = 'flex';
+                document.getElementById('timer-ban').innerText = "Aguarde o tempo de castigo.";
+            }
+        };
+    </script>
+</body>
+</html>
