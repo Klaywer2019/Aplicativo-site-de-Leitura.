@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forja de Códigos - Reino Celeste</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #0a0a0a; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Cabeçalho da Forja */
+        .header-forja { background: #1e1e1e; padding: 15px; border-bottom: 2px solid #6a1b9a; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Área de Edição */
+        .container-editores { display: flex; flex: 1; gap: 5px; padding: 5px; overflow: hidden; }
+        .painel { flex: 1; display: flex; flex-direction: column; }
+        label { font-size: 0.7rem; color: #a29bfe; padding: 5px; background: #121212; border-radius: 5px 5px 0 0; }
+        textarea { flex: 1; background: #1c1c1c; color: #55efc4; border: 1px solid #333; padding: 10px; font-family: monospace; resize: none; outline: none; }
+        textarea:focus { border-color: #6a1b9a; }
+
+        /* Preview em tempo real (A Extensão) */
+        #preview { flex: 1; background: white; border: none; border-radius: 10px; margin: 5px; }
+
+        .btn-acao { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; }
+        .btn-salvar { background: linear-gradient(45deg, #6a1b9a, #4b0082); color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="header-forja">
+        <button class="btn-acao" style="background:#444; color:white;" onclick="window.location.href='index.html'">⬅ Voltar</button>
+        <h2 style="margin:0; font-size: 1.1rem; color: #55efc4;">⚒️ Forja de Códigos Rúnicos</h2>
+        <button class="btn-salvar" onclick="salvarNaForja()">Selar Código 🔐</button>
+    </div>
+
+    <div class="container-editores">
+        <div class="painel">
+            <label>HTML</label>
+            <textarea id="html-code" placeholder="<div>Olá Mundo</div>" oninput="atualizarPreview()"></textarea>
+        </div>
+        <div class="painel">
+            <label>CSS</label>
+            <textarea id="css-code" placeholder="div { color: red; }" oninput="atualizarPreview()"></textarea>
+        </div>
+    </div>
+
+    <label style="margin-left: 5px;">👁️ Visão da Obra (Preview)</label>
+    <iframe id="preview"></iframe>
+
+    <script>
+        function atualizarPreview() {
+            const html = document.getElementById('html-code').value;
+            const css = "<style>" + document.getElementById('css-code').value + "</style>";
+            const frame = document.getElementById('preview').contentWindow.document;
+            
+            frame.open();
+            frame.write(css + html);
+            frame.close();
+        }
+
+        function salvarNaForja() {
+            const html = document.getElementById('html-code').value;
+            const css = document.getElementById('css-code').value;
+            
+            if(!html && !css) return alert("A forja está fria! Digite algum código.");
+
+            const obraCompleta = JSON.stringify({ html: html, css: css });
+            
+            // Salva no rascunho de código para a index capturar
+            localStorage.setItem('codigo_forja', obraCompleta);
+            
+            alert("✅ Código forjado com sucesso! Volte à Home e use 'Selar e Publicar' no seu Menu.");
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
