@@ -3,121 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Jogos - Biblioteca</title>
+    <title>Ala de Jogos - Energia dos Dragões</title>
     <style>
-        /* 1. BASE IGUAL À ESTANTE */
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
+        /* 1. RESET E SEGURANÇA */
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+        body { 
+            background-color: #0d0d0d; color: white; 
+            font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; 
         }
 
-        /* 2. BARRA DE TOPO */
-        .nav-topo {
-            display: flex;
-            justify-content: space-around;
-            background: #1e1e1e;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #333;
+        /* NAVEGAÇÃO COM ENERGIA GRAVITACIONAL (ROXO) */
+        .nav-topo { 
+            display:flex; justify-content:space-around; align-items: center; 
+            padding:15px; background:#1a1a1a; border-bottom: 3px solid #6a1b9a; 
+            box-shadow: 0 0 15px rgba(106, 27, 154, 0.5);
         }
 
-        .btn-voltar {
-            background: none;
-            border: none;
-            color: #55efc4; /* Verde neon para jogos */
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
+        /* 2. CARDS DE JOGOS (VENTO CINZA + RADIAÇÃO VERDE) */
+        .jogos-container { padding: 20px; text-align: center; }
+
+        .jogo-card {
+            width: 95%; max-width: 450px; margin: 25px auto;
+            background: #1e1e1e; border-radius: 20px; overflow: hidden;
+            border: 2px solid #2d3436; /* Vento Cinza */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            transition: 0.3s;
         }
 
-        /* 3. LISTA DE JOGOS (ESTILO PRATELEIRA) */
-        .container-jogos {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-            padding: 20px;
-            margin-top: 20px;
+        .jogo-banner {
+            width: 100%; height: 180px; 
+            background: linear-gradient(45deg, #2d3436, #636e72); /* Vento Cinza */
+            display: flex; justify-content: center; align-items: center; 
+            font-weight: bold; font-size: 1.2rem;
+            border-bottom: 2px solid #2e7d32; /* Radiação Verde */
         }
 
-        .item-jogo {
-            width: 85%;
-            max-width: 350px;
-            padding: 25px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            color: white;
-            position: relative;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-            /* Degradê estilo Gamer */
-            background: linear-gradient(135deg, #2d3436 0%, #00b894 100%);
-            transition: transform 0.3s;
+        .jogo-info { padding: 20px; }
+
+        /* BOTÃO AVALIAR (MISTURA GAMA: ROXO + VERDE) */
+        .btn-avaliar {
+            background: linear-gradient(45deg, #6a1b9a, #2e7d32); 
+            color: white; border: 1px solid #a29bfe; padding: 12px 25px;
+            border-radius: 15px; font-size: 0.9rem; cursor: pointer;
+            font-weight: bold; transition: 0.3s; width: 100%;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-avaliar:hover { 
+            box-shadow: 0 0 15px #55efc4; 
+            transform: translateY(-3px);
         }
 
-        .item-jogo:active {
-            transform: scale(0.95);
+        /* 3. TELAS DE PROTEÇÃO */
+        #tela-ban, #tela-avaliacao {
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; height: 100vh; width: 100%; text-align: center;
+            position: fixed; top: 0; left: 0; background: rgba(0,0,0,0.95); z-index: 4000;
         }
 
-        /* Efeito de prateleira metálica para jogos */
-        .item-jogo::after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: -5%;
-            width: 110%;
-            height: 10px;
-            background: linear-gradient(to bottom, #636e72, #2d3436);
-            border-radius: 2px;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
-        }
-
-        /* Cores diferentes para cada jogo */
-        .jogo-aventura { background: linear-gradient(135deg, #0984e3, #00cec9); }
-        .jogo-rpg { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            font-size: 0.8rem;
-            color: #888;
+        .campo-feedback {
+            width: 85%; max-width: 350px; height: 90px; padding: 12px;
+            background: #111; color: #55efc4; border: 1px solid #2e7d32;
+            border-radius: 12px; margin: 15px 0; outline: none;
         }
     </style>
 </head>
 <body>
 
     <div class="nav-topo">
-        <a href="index.html" class="btn-voltar">⬅ Voltar para Estante</a>
-        <span style="color: #55efc4; font-weight: bold;">Área Gamer 🎮</span>
+        <button onclick="window.location.href='index.html'" style="background:#333; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">⬅ Portal Inicial</button>
+        <h2 style="color:#55efc4;">🕹️ Reino de Elgecon</h2>
     </div>
 
-    <h1>Meus Projetos de Jogos</h1>
-    <p style="color: #888;">Clique para jogar no navegador</p>
-
-    <div class="container-jogos">
-        <a href="link-do-seu-jogo-1.html" class="item-jogo jogo-aventura">
-            Aventura Dragon Quest 🐉
-        </a>
-
-        <a href="link-do-seu-jogo-2.html" class="item-jogo jogo-rpg">
-            Reino dos Pecados RPG ⚔️
-        </a>
-
-        <a href="link-do-seu-jogo-3.html" class="item-jogo">
-            Em breve novo jogo... 🕹️
-        </a>
+    <div class="jogos-container">
+        <div class="jogo-card">
+            <div class="jogo-banner">AVENTURA NO REINO 🕹️</div>
+            <div class="info-video" style="padding: 20px;">
+                <h3 style="color: #a29bfe;">Aventura no Reino</h3>
+                <p style="color:#888; font-size: 0.85rem; margin-bottom: 15px;">
+                    Energia Detectada: Vento Cinza & Radiação Verde.<br>
+                    Ajude o desenvolvedor com seu feedback!
+                </p>
+                <button class="btn-avaliar" onclick="abrirAvaliacao('Aventura no Reino')">Voto de Confiança ⭐</button>
+            </div>
+        </div>
     </div>
 
-    <footer>
-        Plataforma desenvolvida por <br>
-        <strong style="color: #55efc4;">Keise Jemima</strong> &copy; 2026
-    </footer>
+    <div id="tela-avaliacao">
+        <h2 id="titulo-aval" style="color: #55efc4;">Avaliar Projeto</h2>
+        <textarea id="feedback-texto" placeholder="Sua ideia pode melhorar o jogo..." class="campo-feedback"></textarea>
+        <button onclick="enviarAvaliacao()" style="background:#2e7d32; color:white; padding:12px 30px; border-radius:25px; border:none; font-weight:bold; cursor:pointer;">Enviar Energia ⚡</button>
+        <button onclick="fecharAvaliacao()" style="background:none; color:#888; border:none; margin-top:15px; cursor:pointer;">Recuar</button>
+    </div>
 
+    <div id="tela-ban" style="color: #ff0000;">
+        <h1>⚠️ ENERGIA INSTÁVEL: BAN ⚠️</h1>
+        <p>Tentativa de roubo de código ou conduta impura.</p>
+        <p>O Dragão da Radiação baniu você por 48 horas.</p>
+    </div>
+
+    <script>
+        const listaProibida = ["sexo", "porn", "+18", "roubo", "plagio", "copia", "ofensa", "hacker"];
+
+        function verificarImoralidade(texto) {
+            return listaProibida.some(p => texto.toLowerCase().includes(p));
+        }
+
+        function abrirAvaliacao(nome) {
+            document.getElementById('titulo-aval').innerText = "Apoiando: " + nome;
+            document.getElementById('tela-avaliacao').style.display = 'flex';
+        }
+
+        function fecharAvaliacao() { document.getElementById('tela-avaliacao').style.display = 'none'; }
+
+        function enviarAvaliacao() {
+            const f = document.getElementById('feedback-texto').value;
+            if (verificarImoralidade(f)) {
+                localStorage.setItem('ban_tempo', new Date().getTime() + (48 * 60 * 60 * 1000));
+                location.reload();
+                return;
+            }
+            alert("✅ Feedback enviado! Você fortaleceu este projeto.");
+            fecharAvaliacao();
+        }
+
+        // BLOQUEIOS ANTI-PLÁGIO
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if(e.ctrlKey && (e.key === 'c' || e.key === 'u')) e.preventDefault();
+        });
+
+        // VERIFICAR BAN
+        window.onload = function() {
+            const banAte = localStorage.getItem('ban_tempo');
+            if (banAte && new Date().getTime() < banAte) {
+                document.body.innerHTML = "";
+                document.body.appendChild(document.getElementById('tela-ban'));
+                document.getElementById('tela-ban').style.display = 'flex';
+            }
+        };
+    </script>
 </body>
 </html>
