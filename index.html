@@ -25,7 +25,7 @@
             box-shadow: 0 0 30px rgba(106, 27, 154, 0.6);
         }
         .alerta-titulo { color: #55efc4; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; }
-        .alerta-msg { color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4; }
+        .alerta-msg { color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4; white-space: pre-wrap; }
         .btn-alerta-ok {
             background: linear-gradient(45deg, #6a1b9a, #4b0082);
             color: white; border: none; padding: 12px 30px;
@@ -253,9 +253,11 @@
         };
 
         function entrarComoCriador() {
-            const email = document.getElementById('login-email').value;
+            let email = document.getElementById('login-email').value.trim().toLowerCase();
             const senha = document.getElementById('login-senha').value;
+            
             if (!email || !senha) return exibirAlerta("Informe E-mail e Senha Rúnica!");
+            
             registrarUsuarioVigia(email);
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('tipoUsuario', 'criador');
@@ -265,33 +267,39 @@
 
         function registrarUsuarioVigia(email) {
             let lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
-            if (!lista.includes(email)) {
-                lista.push(email);
-                localStorage.setItem('vigia_usuarios', JSON.stringify(lista));
-            }
+            const dataHora = new Date().toLocaleString('pt-BR');
+            
+            // Registra a entrada com e-mail e horário exato
+            lista.push(`👤 ${email}\n🕒 Acesso em: ${dataHora}`);
+            localStorage.setItem('vigia_usuarios', JSON.stringify(lista));
         }
 
         function verVigiaSecreta() {
-            const admEmail = "seuemail@exemplo.com"; 
-            const usuarioLogado = localStorage.getItem('usuarioEmail');
-            if (usuarioLogado !== admEmail) return exibirAlerta("Apenas a Administradora pode ver os registros!", "🚫 Acesso Negado");
+            // AJUSTE: COLOQUE SEU EMAIL ABAIXO EXATAMENTE COMO VOCÊ DIGITA NO LOGIN
+            const admEmail = "keisejemima@gmail.com".toLowerCase().trim(); 
+            const usuarioLogado = (localStorage.getItem('usuarioEmail') || "").toLowerCase().trim();
+
+            if (usuarioLogado !== admEmail) {
+                return exibirAlerta("Apenas a Administradora pode ver os registros!", "🚫 Acesso Negado");
+            }
+            
             const lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
-            exibirAlerta(lista.length === 0 ? "Nenhum usuário." : "📋 REGISTROS:\n\n" + lista.join("\n"), "📜 Arquivos da Vigia");
+            exibirAlerta(lista.length === 0 ? "Nenhum usuário registrado." : "📋 REGISTROS DE ACESSO:\n\n" + lista.join("\n\n"), "📜 Arquivos da Vigia");
         }
 
         function entrarComoConvidado() {
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('tipoUsuario', 'convidado');
-            localStorage.setItem('usuarioEmail', 'Convidado');
+            localStorage.setItem('usuarioEmail', 'convidado');
             location.reload();
         }
 
         function sair() { 
-            exibirAlerta("Acesso automático limpo. Até a próxima!", "🏠 Saindo...");
+            exibirAlerta("Limpando acesso rúnico...", "🏠 Saindo");
             setTimeout(() => {
                 localStorage.clear(); 
                 location.reload();
-            }, 1500);
+            }, 1000);
         }
 
         function abrirCofre() {
