@@ -159,7 +159,7 @@
 
     <div id="menuLateral" class="sidebar">
         <div class="card-rpg">
-            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem;">Visitante</h2>
+            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;" ondblclick="verVigiaSecreta()">Visitante</h2>
             <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
         </div>
 
@@ -195,7 +195,6 @@
             const email = localStorage.getItem('usuarioEmail');
 
             if (logado === 'true' && email) {
-                // Se já existir login, esconde a tela de entrada direto
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
                 document.getElementById('nome-perfil').innerText = email.split('@')[0];
@@ -209,13 +208,42 @@
             
             if (!email || !senha) return alert("🛡️ Informe E-mail e Senha Rúnica!");
             
-            // Grava os dados para o Login Automático
+            // Salva na lista de vigia antes de logar
+            registrarUsuarioVigia(email);
+
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('tipoUsuario', 'criador');
             localStorage.setItem('usuarioEmail', email);
             
-            // Recarrega para aplicar as mudanças
             location.reload();
+        }
+
+        // Função para salvar quem passou pelo portal
+        function registrarUsuarioVigia(email) {
+            let lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
+            if (!lista.includes(email)) {
+                lista.push(email);
+                localStorage.setItem('vigia_usuarios', JSON.stringify(lista));
+            }
+        }
+
+        // FUNÇÃO SECRETA DE ADMINISTRADORA
+        function verVigiaSecreta() {
+            // TROQUE PELO SEU EMAIL REAL ABAIXO
+            const admEmail = "seuemail@exemplo.com"; 
+            const usuarioLogado = localStorage.getItem('usuarioEmail');
+
+            if (usuarioLogado !== admEmail) {
+                alert("🛡️ Apenas a Administradora do Reino pode ver os registros!");
+                return;
+            }
+
+            const lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
+            if (lista.length === 0) {
+                alert("Nenhum usuário registrado ainda.");
+            } else {
+                alert("📋 USUÁRIOS QUE LOGARAM NESTE DISPOSITIVO:\n\n" + lista.join("\n"));
+            }
         }
 
         function entrarComoConvidado() {
@@ -259,7 +287,6 @@
 
             setTimeout(() => {
                 const userEmail = localStorage.getItem('usuarioEmail');
-                // Salva usando o e-mail como "chave" do baú
                 localStorage.setItem(userEmail + "_" + tipo + "_status", "publicado");
                 localStorage.setItem(userEmail + "_" + tipo + "_data", new Date().toLocaleDateString());
                 
