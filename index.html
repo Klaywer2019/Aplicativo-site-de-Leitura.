@@ -128,19 +128,46 @@
             <div class="perfil-avatar" id="user-icon" onclick="verPerfil()">?</div>
         </div>
 
-        <div id="lista" style="text-align:center;">
-            <h3>📖 Meus Livros</h3>
-            <div id="secao-livros">
-                <a href="#" class="item livro" onclick="mudarCla('Tenepress 🏰')">Celeste Dragon 🔥🐲</a>
-            </div>
-            <h3>🎥 Trailers</h3>
-            <div id="secao-videos">
-                <a href="#" class="item video" onclick="mudarCla('Gale 🎥')">Trailers Oficiais 🎬</a>
-            </div>
-        </div>
+      
+
+
+
+
+  <div id="lista" style="text-align:center;">
+    <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
+    <div id="secao-livros">
+        <a href="celeste.html" class="item livro" target="_blank" onclick="mudarCla('Tenepress 🏰')">Celeste Dragon 🔥🐲</a>
+        <a href="pecados.html" class="item livro" target="_blank" onclick="mudarCla('Tenepress 🏰')">Sete Pecados Capitais 🌿🍎</a>
     </div>
 
-    <div id="tela-publicar" style="display: none;">
+    <h3 style="color: #ff7675; margin-top: 20px;">🎥 Trailers</h3>
+    <div id="secao-videos">
+        <a href="video1.html" class="item video" onclick="mudarCla('Gale 🎥')">Trailers Oficiais 🎬</a>
+    </div>
+
+    <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
+    <a href="jogos.html" class="item" style="background: linear-gradient(45deg, #2d3436, #636e72);" onclick="mudarCla('Elgecon 🕹️')">
+        Aventura no Reino 🕹️
+        <br>
+        <span style="font-size: 0.7rem; color: #55efc4; font-weight: normal;">Clique para ver todos os projetos</span>
+    </a>
+</div>
+
+        
+
+
+
+
+
+</div>
+    </div>
+
+    
+
+
+
+
+<div id="tela-publicar" style="display: none;">
         <h2>Novo Trabalho ✍️</h2>
         <input type="text" id="titulo-obra" placeholder="Título" class="campo-login">
         <input type="text" id="link-obra" placeholder="Link/URL" class="campo-login">
