@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reino Celeste - Home</title>
     <style>
+        /* Mantendo seus estilos originais */
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* DRAGÃO PASSAGEIRO */
         .dragao-voando {
             position: fixed; top: 10px; right: -60px; font-size: 2rem;
             z-index: 2500; pointer-events: none;
@@ -22,7 +22,6 @@
             100% { transform: translateX(0) scaleX(1); }
         }
 
-        /* NAV TOPO */
         .nav-topo {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: #1e1e1e; border-bottom: 2px solid #6a1b9a;
@@ -34,7 +33,6 @@
             color: white; font-weight: bold; cursor: pointer;
         }
 
-        /* PRATELEIRAS HORIZONTAIS */
         .prateleira-container {
             display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 25px 20px;
             scroll-behavior: smooth; scrollbar-width: none;
@@ -62,7 +60,6 @@
         .video { background: linear-gradient(to right, #ff0000, #b20000); }
         .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
 
-        /* BOTÕES LADO A LADO */
         .botoes-lado-a-lado {
             display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center;
         }
@@ -143,6 +140,19 @@
                 </div>
             </div>
         </div>
+
+        <h3 style="margin: 0 20px 5px; color:#55efc4;">🕹️ Mini-Jogos</h3>
+        <div class="prateleira-madeira">
+            <div class="prateleira-container">
+                <div class="item-card">
+                    <div class="item-capa jogos">Aventura no Reino 🕹️</div>
+                    <div class="botoes-lado-a-lado">
+                        <a href="jogos.html" class="btn-card btn-entrar">Jogar 🎮</a>
+                        <button class="btn-card btn-avaliar" onclick="window.location.href='jogos.html'">Avaliar ⭐</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="menuLateral" class="sidebar">
@@ -209,7 +219,6 @@
             document.getElementById('resultado-link').innerText = "Link Gerado: " + resultado;
         }
 
-        // --- SISTEMA DE PUBLICAÇÃO COM CRIPTOGRAFIA ---
         function publicarSelado() {
             const chaveLocal = document.getElementById('tipo-pub').value;
             const status = document.getElementById('status-pub');
@@ -224,12 +233,9 @@
             status.innerHTML = "🔒 Selando com criptografia rúnica...";
 
             setTimeout(() => {
-                // Simulação de Criptografia Base64 + Sal de Segurança
                 const salt = "ID-CELESTE-2026";
                 const hashProtegido = btoa(conteudo + "|" + salt);
-                
                 console.log("Obra enviada com segurança:", hashProtegido);
-
                 status.innerHTML = "✅ **Obra Publicada!**<br>Seu projeto foi selado e protegido com sucesso.";
                 status.style.color = "#55efc4";
             }, 1500);
