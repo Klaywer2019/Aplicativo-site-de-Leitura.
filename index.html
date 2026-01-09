@@ -172,6 +172,7 @@
         <div class="card-rpg">
             <h4 style="margin-top:0;">🧪 Ferramentas</h4>
             <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
+            <button class="btn-top" style="background: linear-gradient(45deg, #2d3436, #636e72); width:100%; margin-bottom:10px;" onclick="window.location.href='forja.html'">⚒️ Forja de Códigos</button>
             <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
         </div>
 
@@ -189,11 +190,9 @@
     </div>
 
     <script>
-        // LOGICA DE MEMÓRIA (LOGIN AUTOMÁTICO)
         window.onload = function() {
             const logado = localStorage.getItem('reinoLogado');
             const email = localStorage.getItem('usuarioEmail');
-
             if (logado === 'true' && email) {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
@@ -205,20 +204,14 @@
         function entrarComoCriador() {
             const email = document.getElementById('login-email').value;
             const senha = document.getElementById('login-senha').value;
-            
             if (!email || !senha) return alert("🛡️ Informe E-mail e Senha Rúnica!");
-            
-            // Salva na lista de vigia antes de logar
             registrarUsuarioVigia(email);
-
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('tipoUsuario', 'criador');
             localStorage.setItem('usuarioEmail', email);
-            
             location.reload();
         }
 
-        // Função para salvar quem passou pelo portal
         function registrarUsuarioVigia(email) {
             let lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
             if (!lista.includes(email)) {
@@ -227,23 +220,12 @@
             }
         }
 
-        // FUNÇÃO SECRETA DE ADMINISTRADORA
         function verVigiaSecreta() {
-            // TROQUE PELO SEU EMAIL REAL ABAIXO
             const admEmail = "seuemail@exemplo.com"; 
             const usuarioLogado = localStorage.getItem('usuarioEmail');
-
-            if (usuarioLogado !== admEmail) {
-                alert("🛡️ Apenas a Administradora do Reino pode ver os registros!");
-                return;
-            }
-
+            if (usuarioLogado !== admEmail) return alert("🛡️ Apenas a Administradora pode ver os registros!");
             const lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
-            if (lista.length === 0) {
-                alert("Nenhum usuário registrado ainda.");
-            } else {
-                alert("📋 USUÁRIOS QUE LOGARAM NESTE DISPOSITIVO:\n\n" + lista.join("\n"));
-            }
+            alert(lista.length === 0 ? "Nenhum usuário." : "📋 REGISTROS:\n\n" + lista.join("\n"));
         }
 
         function entrarComoConvidado() {
@@ -262,7 +244,7 @@
 
         function abrirCofre() {
             if(localStorage.getItem('tipoUsuario') === 'convidado') {
-                alert("🚫 Acesso Negado: Convidados não possuem cofre próprio!");
+                alert("🚫 Acesso Negado!");
             } else {
                 window.location.href = 'inventario.html';
             }
@@ -272,23 +254,27 @@
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
         function publicarSelado() {
-            if(localStorage.getItem('tipoUsuario') === 'convidado') {
-                return alert("🛡️ Apenas Criadores identificados podem selar obras!");
-            }
-
+            if(localStorage.getItem('tipoUsuario') === 'convidado') return alert("🛡️ Acesso apenas para Criadores!");
+            
             const tipo = document.getElementById('tipo-pub').value;
             const status = document.getElementById('status-pub');
             const conteudo = localStorage.getItem(tipo);
 
-            if (!conteudo) return alert("Não há conteúdo para publicar! Vá na Ala dos Cientistas.");
+            if (!conteudo) return alert("Não há nada na mesa de trabalho! Vá nas ferramentas primeiro.");
 
             status.style.display = "block";
             status.innerHTML = "🔒 Selando rúnica...";
 
             setTimeout(() => {
                 const userEmail = localStorage.getItem('usuarioEmail');
-                localStorage.setItem(userEmail + "_" + tipo + "_status", "publicado");
-                localStorage.setItem(userEmail + "_" + tipo + "_data", new Date().toLocaleDateString());
+                const dataAtual = new Date().toLocaleDateString();
+                
+                // Salva a obra vinculada ao e-mail
+                localStorage.setItem(userEmail + "_" + tipo + "_obra", conteudo);
+                localStorage.setItem(userEmail + "_" + tipo + "_data", dataAtual);
+                
+                // Limpa o rascunho temporário para a próxima criação
+                localStorage.removeItem(tipo);
                 
                 status.innerHTML = "✅ **Obra no seu Cofre!**";
                 status.style.color = "#55efc4";
