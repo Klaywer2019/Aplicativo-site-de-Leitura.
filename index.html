@@ -8,7 +8,7 @@
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* --- DESIGN DO ALERTA RÚNICO (QUADRADO BRANCO BANIDO) --- */
+        /* --- DESIGN DO ALERTA RÚNICO --- */
         #overlay-alerta {
             display: none;
             position: fixed;
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                     <div class="botoes-lado-a-lado">
-                        <a href="livros.html" class="btn-card btn-entrar">Ler 📖</a>
+                        <a href="celeste.html" class="btn-card btn-entrar">Ler 📖</a>
                         <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar a autora Keise Jemima!', '⭐ Avaliação')">Avaliar ⭐</button>
                     </div>
                 </div>
@@ -172,15 +172,6 @@
                     <div class="botoes-lado-a-lado">
                         <a href="pecados.html" class="btn-card btn-entrar">Ler 📖</a>
                         <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar o autor Yuri Otávio!', '⭐ Avaliação')">Avaliar ⭐</button>
-                    </div>
-                </div>
-
-                <div class="item-card" style="opacity: 0.5;">
-                    <div class="item-capa" style="background: #222; border: 2px dashed #444;">
-                        <span style="font-size:0.9rem; color:#888;">Mais Livros em Breve... ⏳</span>
-                    </div>
-                    <div class="botoes-lado-a-lado">
-                        <button class="btn-card" style="background:#333; cursor:not-allowed;" disabled>Selado 🔒</button>
                     </div>
                 </div>
             </div>
@@ -210,20 +201,14 @@
                 <div style="background: #222; padding: 15px; border-radius: 0 0 20px 20px;">
                     <h4 style="margin: 0; color: #a29bfe;">Aventura no Reino</h4>
                     <p style="font-size: 0.75rem; color: #888; margin: 5px 0 15px;">Energia Detectada: Vento Cinza & Radiação Verde.</p>
-                    <div class="botoes-lado-a-lado" style="margin-bottom: 10px;">
-                        <a href="jogos.html" class="btn-card btn-entrar" style="background: linear-gradient(45deg, #6a1b9a, #4b0082);">JOGAR AGORA 🎮</a>
+                    <div class="botoes-lado-a-lado" style="margin-bottom: 15px;">
+                        <a href="jogos.html" class="btn-card btn-entrar" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); height: 45px;">JOGAR AGORA 🎮</a>
                     </div>
                     <div style="display: flex; justify-content: space-around; border-top: 1px solid #333; padding-top: 10px;">
-                        <button onclick="exibirAlerta('Você deu um joinha!', '👍 Feedback')" style="background:none; border:none; color:#55efc4; cursor:pointer;">👍 Like</button>
-                        <button onclick="exibirAlerta('Chat em manutenção rúnica...', '💬 Chat')" style="background:none; border:none; color:#a29bfe; cursor:pointer;">💬 Chat</button>
-                        <button onclick="exibirAlerta('Voto de Confiança registrado!', '⭐ Avaliação')" style="background:none; border:none; color:#f1c40f; cursor:pointer;">⭐ Avaliar</button>
+                        <button onclick="exibirAlerta('Você deu um joinha no jogo!', '👍 Feedback')" style="background:none; border:none; color:#55efc4; cursor:pointer; font-weight: bold;">👍 Like</button>
+                        <button onclick="exibirAlerta('O chat rúnico está sendo forjado...', '💬 Chat')" style="background:none; border:none; color:#a29bfe; cursor:pointer; font-weight: bold;">💬 Chat</button>
+                        <button onclick="exibirAlerta('Obrigado pela avaliação!', '⭐ Avaliar')" style="background:none; border:none; color:#f1c40f; cursor:pointer; font-weight: bold;">⭐ Avaliar</button>
                     </div>
-                </div>
-            </div>
-
-            <div class="item-card" style="width: 100%; max-width: 450px; margin: 0 auto 25px; min-width: unset; opacity: 0.6;">
-                <div class="item-capa" style="height: 150px; background: #333; border: 2px dashed #444;">
-                    <span style="color: #666;">Novos Desafios em Breve... ⏳</span>
                 </div>
             </div>
         </div>
@@ -231,7 +216,7 @@
 
     <div id="menuLateral" class="sidebar">
         <div class="card-rpg">
-            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;" ondblclick="verVigiaSecreta()">Visitante</h2>
+            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;">Visitante</h2>
             <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
         </div>
         <div class="card-rpg" style="border: 1px solid #a29bfe;">
