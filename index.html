@@ -7,7 +7,7 @@
     <title>Minha Estante RPG - Reino Protegido</title>
     
     <style>
-        /* 1. RESET E SEGURANÇA */
+        /* RESET E SEGURANÇA */
         * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
         input, select, textarea { -webkit-user-select: text; user-select: text; }
 
@@ -17,14 +17,13 @@
             margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
         }
 
-        /* BARRA DE PROGRESSO NEON */
         #barra-progresso {
             position: fixed; top: 0; left: 0; height: 4px;
             width: 0%; background: #55efc4; z-index: 3000;
             box-shadow: 0 0 10px #55efc4; transition: 0.2s;
         }
 
-        /* 2. MENU LATERAL */
+        /* MENU LATERAL */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000;
             top: 0; right: 0; background-color: #1e1e1e;
@@ -39,10 +38,11 @@
             width: 90%; margin: 10px 0; border: 1px solid #444; text-align: center;
         }
 
-        /* 3. TELAS */
-        #tela-entrada, #tela-cadastro, #tela-publicar, #tela-ban {
+        /* TELAS */
+        #tela-entrada, #tela-cadastro, #tela-publicar, #tela-ban, #tela-avaliacao {
             display: flex; flex-direction: column; justify-content: center;
             align-items: center; height: 100vh; width: 100%; text-align: center;
+            position: fixed; top: 0; left: 0; background: rgba(18,18,18,0.95); z-index: 4000;
         }
 
         #estante-principal { display: none; padding-bottom: 50px; }
@@ -53,19 +53,32 @@
             font-weight: bold; border: 2px solid #55efc4; cursor: pointer;
         }
 
-        /* 4. ITENS DA ESTANTE */
+        /* ITENS DA ESTANTE */
+        .item-container { margin: 25px auto; width: 85%; max-width: 400px; position: relative; }
+        
         .item {
-            width: 80%; max-width: 350px; padding: 25px; border-radius: 20px;
-            text-decoration: none; font-weight: bold; color: white; position: relative;
-            margin: 15px auto; display: block;
+            width: 100%; padding: 25px; border-radius: 20px;
+            text-decoration: none; font-weight: bold; color: white; display: block;
+            box-sizing: border-box;
         }
         .item::after {
-            content: ""; position: absolute; bottom: -15px; left: -5%;
-            width: 110%; height: 15px; background: linear-gradient(to bottom, #5d3a1a, #2b1a0a);
-            border-radius: 4px;
+            content: ""; position: absolute; bottom: -10px; left: -5%;
+            width: 110%; height: 12px; background: linear-gradient(to bottom, #5d3a1a, #2b1a0a);
+            border-radius: 4px; z-index: -1;
         }
         .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
         .video { background: linear-gradient(to right, #ff0000, #b20000); }
+        .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
+
+        .btn-avaliar {
+            background: #55efc4; color: #121212; border: none; padding: 5px 15px;
+            border-radius: 10px; font-size: 0.8rem; cursor: pointer; margin-top: 10px;
+            font-weight: bold; box-shadow: 0 0 10px rgba(85,239,196,0.3);
+        }
+
+        /* ESTRELAS */
+        .estrelas { font-size: 2rem; color: #444; margin: 15px 0; cursor: pointer; }
+        .estrela-ativa { color: #f1c40f; text-shadow: 0 0 10px #f1c40f; }
 
         button {
             padding: 12px 25px; background: #6a1b9a; color: white;
@@ -82,11 +95,21 @@
 
     <div id="barra-progresso"></div>
 
-    <div id="tela-ban" style="display:none; background: black; color: red; position: fixed; z-index: 9999; width: 100%; height: 100%;">
+    <div id="tela-ban" style="display:none; background: black; color: red;">
         <h1 style="font-size: 2.5rem;">⚠️ BANIN-HAL INTERCEPTOU ⚠️</h1>
-        <p>Você tentou introduzir algo impuro ou ofensivo no reino.</p>
+        <p>Ação imoral ou ofensiva detectada no Reino.</p>
         <p>ACESSO BLOQUEADO POR 48 HORAS.</p>
         <div id="timer-ban" style="font-size: 1.5rem; margin-top: 20px; color: white;"></div>
+    </div>
+
+    <div id="tela-avaliacao" style="display: none;">
+        <h2 id="titulo-aval">Avaliar Trabalho</h2>
+        <div class="estrelas" id="container-estrelas">
+            <span onclick="votar(1)">★</span><span onclick="votar(2)">★</span><span onclick="votar(3)">★</span><span onclick="votar(4)">★</span><span onclick="votar(5)">★</span>
+        </div>
+        <textarea id="feedback-texto" placeholder="Deixe um elogio ou dica construtiva..." class="campo-login" style="height: 80px;"></textarea>
+        <button onclick="enviarAvaliacao()">Confirmar Voto</button>
+        <button onclick="fecharAvaliacao()" style="background:#444; margin-top:10px;">Voltar</button>
     </div>
 
     <div id="menuLateral" class="sidebar">
@@ -94,21 +117,201 @@
             <button onclick="fecharMenu()" style="background:none; color:#ff7675;">✖ Fechar</button>
             <div class="perfil-avatar" style="width:70px; height:70px; font-size:2rem; margin:15px;" id="avatar-grande">?</div>
             <h2 id="nome-perfil-menu">Herói</h2>
-            
             <div class="card-rpg">
                 <p style="color:#888; font-size:0.8rem;">Ilha Atual:</p>
                 <h3 id="cla-nome" style="color:#55efc4;">Iniciante 🛡️</h3>
             </div>
-
             <div class="card-rpg">
                 <h4>💼 Área de Trabalho</h4>
-                <button onclick="alert('Abrindo rascunhos...')">Meus Projetos</button>
-                <button style="margin-top:10px; background:#444;" onclick="abrirConversor()">Converter para JRG 🛠️</button>
+                <button onclick="abrirConversor()">Converter para JRG 🛠️</button>
             </div>
         </div>
     </div>
 
     <div id="tela-entrada">
-        <h1 style="margin-bottom: 20px;">🛡️ Portal dos Clãs</h1>
+        <h1>🛡️ Portal dos Clãs</h1>
         <button onclick="irParaCadastro()">Criar Conta de Autor</button>
-        <button style="background: #333;" onclick="entrarConvidado()">Entrar como Convidado</button
+        <button style="background: #333;" onclick="entrarConvidado()">Entrar como Convidado</button>
+    </div>
+
+    <div id="tela-cadastro" style="display: none;">
+        <h2>Inicie sua Jornada</h2>
+        <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
+        <button onclick="finalizarCadastro()">Concluir Cadastro</button>
+    </div>
+
+    <div id="estante-principal">
+        <div class="nav-topo" style="display:flex; justify-content:space-around; align-items: center; padding:15px; background:#1e1e1e;">
+            <button onclick="sair()" style="background: #e74c3c; padding: 10px 20px;">🏠 Sair</button>
+            <button onclick="abrirPainelCriacao()" style="padding: 10px 20px;">➕ Publicar</button>
+            <div class="perfil-avatar" id="user-icon" onclick="verPerfil()">?</div>
+        </div>
+
+        <div id="lista" style="text-align:center; padding-top: 20px;">
+            <h3 style="color: #a29bfe;">📖 Meus Livros</h3>
+            <div class="item-container">
+                <a href="#" class="item livro" onclick="mudarCla('Tenepress 🏰')">Celeste Dragon 🔥🐲</a>
+                <button class="btn-avaliar" onclick="abrirAvaliacao('Celeste Dragon')">Avaliar ⭐</button>
+            </div>
+
+            <h3 style="color: #ff7675; margin-top: 20px;">🎥 Trailers</h3>
+            <div class="item-container">
+                <a href="#" class="item video" onclick="mudarCla('Gale 🎥')">Trailers Oficiais 🎬</a>
+                <button class="btn-avaliar" onclick="abrirAvaliacao('Trailers Oficiais')">Avaliar ⭐</button>
+            </div>
+
+            <h3 style="color: #55efc4; margin-top: 20px;">🎮 Mini-Jogos</h3>
+            <div class="item-container">
+                <a href="#" class="item jogos" onclick="mudarCla('Elgecon 🕹️')">Aventura no Reino 🕹️</a>
+                <button class="btn-avaliar" onclick="abrirAvaliacao('Aventura no Reino')">Avaliar ⭐</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-publicar" style="display: none;">
+        <h2>Novo Trabalho ✍️</h2>
+        <input type="text" id="titulo-obra" placeholder="Título" class="campo-login">
+        <input type="text" id="link-obra" placeholder="Link/URL" class="campo-login">
+        <button onclick="salvarObra()">Postar Agora</button>
+        <button onclick="fecharPainel()" style="background:#444;">Cancelar</button>
+    </div>
+
+    <script>
+        const listaProibida = ["sexo", "porn", "hentai", "+18", "safado", "puta", "ofensa", "morra"];
+        let notaAtual = 0;
+        let obraSendoAvaliada = "";
+
+        function verificarImoralidade(texto) {
+            const t = texto.toLowerCase();
+            return listaProibida.some(p => t.includes(p));
+        }
+
+        function aplicarCastigo() {
+            const banAte = new Date().getTime() + (48 * 60 * 60 * 1000);
+            localStorage.setItem('ban_tempo', banAte);
+            location.reload();
+        }
+
+        function checarBan() {
+            const banAte = localStorage.getItem('ban_tempo');
+            if (banAte) {
+                const agora = new Date().getTime();
+                if (agora < banAte) {
+                    document.body.innerHTML = "";
+                    document.body.appendChild(document.getElementById('tela-ban'));
+                    document.getElementById('tela-ban').style.display = 'flex';
+                    let falta = banAte - agora;
+                    document.getElementById('timer-ban').innerText = Math.floor(falta/(1000*60*60)) + "h restantes";
+                    return true;
+                } else { localStorage.removeItem('ban_tempo'); }
+            }
+            return false;
+        }
+
+        // LÓGICA DE AVALIAÇÃO
+        function abrirAvaliacao(nome) {
+            obraSendoAvaliada = nome;
+            document.getElementById('titulo-aval').innerText = "Avaliando: " + nome;
+            document.getElementById('tela-avaliacao').style.display = 'flex';
+            votar(0); // Reseta estrelas
+        }
+
+        function fecharAvaliacao() { document.getElementById('tela-avaliacao').style.display = 'none'; }
+
+        function votar(n) {
+            notaAtual = n;
+            const stars = document.querySelectorAll('#container-estrelas span');
+            stars.forEach((s, i) => {
+                if (i < n) s.classList.add('estrela-ativa');
+                else s.classList.remove('estrela-ativa');
+            });
+        }
+
+        function enviarAvaliacao() {
+            const feedback = document.getElementById('feedback-texto').value;
+            if (verificarImoralidade(feedback)) { aplicarCastigo(); return; }
+            if (notaAtual === 0) return alert("Escolha pelo menos 1 estrela!");
+            
+            alert("Voto de Confiança enviado! Sua avaliação ajudará " + obraSendoAvaliada + " a subir no ranking.");
+            document.getElementById('feedback-texto').value = "";
+            fecharAvaliacao();
+        }
+
+        // CONTINUAÇÃO DAS FUNÇÕES ANTERIORES
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("barra-progresso").style.width = scrolled + "%";
+        };
+
+        window.onload = function() {
+            if (!checarBan()) {
+                const nome = localStorage.getItem('autor_nome');
+                if (nome) mostrarEstante(nome);
+            }
+        };
+
+        function irParaCadastro() {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'flex';
+        }
+
+        function finalizarCadastro() {
+            const nome = document.getElementById('nome-autor').value;
+            if (verificarImoralidade(nome)) { aplicarCastigo(); return; }
+            if (nome.trim() === "") return alert("Digite um nome!");
+            localStorage.setItem('autor_nome', nome);
+            mostrarEstante(nome);
+        }
+
+        function entrarConvidado() {
+            localStorage.setItem('autor_nome', 'Convidado');
+            mostrarEstante('Convidado');
+        }
+
+        function mostrarEstante(nome) {
+            document.getElementById('tela-entrada').style.display = 'none';
+            document.getElementById('tela-cadastro').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+            document.getElementById('user-icon').innerText = nome[0].toUpperCase();
+        }
+
+        function verPerfil() {
+            const nome = localStorage.getItem('autor_nome') || "Herói";
+            document.getElementById("nome-perfil-menu").innerText = nome;
+            document.getElementById("avatar-grande").innerText = nome[0].toUpperCase();
+            document.getElementById("cla-nome").innerText = localStorage.getItem('cla_atual') || "Iniciante 🛡️";
+            document.getElementById("menuLateral").style.width = "280px";
+        }
+
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+        function mudarCla(c) { localStorage.setItem('cla_atual', c); }
+
+        function abrirConversor() {
+            let link = prompt("URL para converter em JRG:");
+            if (link) alert("Código gerado: " + btoa(link).substring(0,8) + ".jrg");
+        }
+
+        function abrirPainelCriacao() { 
+            document.getElementById('estante-principal').style.display = 'none';
+            document.getElementById('tela-publicar').style.display = 'flex';
+        }
+
+        function fecharPainel() { 
+            document.getElementById('tela-publicar').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+        }
+
+        function salvarObra() {
+            const t = document.getElementById('titulo-obra').value;
+            const l = document.getElementById('link-obra').value;
+            if (verificarImoralidade(t) || verificarImoralidade(l)) { aplicarCastigo(); return; }
+            if (t && l) { alert("Trabalho enviado para o ranking!"); fecharPainel(); }
+        }
+
+        function sair() { localStorage.clear(); location.reload(); }
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+</body>
+</html>
