@@ -1,1 +1,168 @@
-jggh
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cofre de Relíquias - Reino Celeste</title>
+    <style>
+        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { 
+            background-color: #121212; 
+            color: white; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 20px;
+        }
+
+        .header-cofre {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #6a1b9a;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-voltar {
+            background: #2d3436;
+            color: #55efc4;
+            border: 1px solid #55efc4;
+            padding: 8px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .grid-inventario {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        /* Estilo Pasta/Livro */
+        .slot-item {
+            aspect-ratio: 1 / 1.2;
+            background: linear-gradient(145deg, #1e1e1e, #252525);
+            border: 1px solid #444;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+            padding: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .slot-item:hover {
+            border-color: #a29bfe;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(106, 27, 154, 0.4);
+        }
+
+        .slot-item::before { /* Detalhe lateral de livro */
+            content: "";
+            position: absolute;
+            left: 0; top: 10%; height: 80%; width: 5px;
+            background: #6a1b9a;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .slot-nome { 
+            font-size: 0.85rem; 
+            color: #55efc4; 
+            font-weight: bold; 
+            margin-top: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .badge-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #d63031;
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .vazio-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            color: #636e72;
+            border: 2px dashed #2d3436;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-cofre">
+        <a href="index.html" class="btn-voltar">⬅ Voltar ao Reino</a>
+        <h2 style="margin:0; color: #a29bfe;">🏛️ Minha Biblioteca</h2>
+        <div style="width: 100px;"></div> 
+    </div>
+
+    <div class="grid-inventario" id="container-reliquias"></div>
+
+    <script>
+        function carregarInventario() {
+            const container = document.getElementById('container-reliquias');
+            container.innerHTML = ""; 
+            
+            const userEmail = localStorage.getItem('usuarioEmail');
+            let encontrouAlgo = false;
+
+            // Percorre todo o armazenamento em busca de itens deste usuário
+            for (let i = 0; i < localStorage.length; i++) {
+                const chave = localStorage.key(i);
+
+                // Verifica se a chave pertence ao usuário e é um item de livro/projeto
+                if (chave.startsWith(userEmail + "_LIVRO_")) {
+                    const nomeDoLivro = chave.replace(userEmail + "_LIVRO_", "");
+                    const conteudo = JSON.parse(localStorage.getItem(chave));
+                    
+                    criarCardLivro(container, nomeDoLivro, conteudo.length);
+                    encontrouAlgo = true;
+                }
+            }
+
+            if (!encontrouAlgo) {
+                container.innerHTML = `<div class="vazio-msg">
+                    <h3>Sua biblioteca está vazia...</h3>
+                    <p>Dê um nome à sua obra na Sidebar da Home e publique para criar seu primeiro livro!</p>
+                </div>`;
+            }
+        }
+
+        function criarCardLivro(container, nome, totalCapitulos) {
+            const div = document.createElement('div');
+            div.className = 'slot-item';
+            div.innerHTML = `
+                <span class="badge-count">${totalCapitulos}</span>
+                <div style="font-size: 3.5rem;">📖</div>
+                <div class="slot-nome">${nome}</div>
+                <div style="font-size: 0.6rem; color: #888; margin-top: 5px;">Relíquia Guardada</div>
+            `;
+            
+            div.onclick = () => {
+                alert(`Abrindo livro: ${nome}\nEste livro possui ${totalCapitulos} capítulos/módulos selados.`);
+                // Futuramente podemos abrir uma página com a leitura dos capítulos aqui
+            };
+            container.appendChild(div);
+        }
+
+        window.onload = carregarInventario;
+    </script>
+</body>
+</html>
