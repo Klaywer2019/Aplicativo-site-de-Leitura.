@@ -14,7 +14,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 4999;
-            backdrop-filter: blur(5px); /* Efeito de desfoque profissional */
+            backdrop-filter: blur(5px);
         }
         #alerta-celeste {
             display: none;
@@ -164,13 +164,42 @@
         <h3 style="margin: 20px 20px 5px; color:#a29bfe;">📖 Meus Livros</h3>
         <div class="prateleira-madeira">
             <div class="prateleira-container">
+                
                 <div class="item-card">
-                    <div class="item-capa livro">Celeste Dragon 🔥🐲</div>
+                    <div class="item-capa livro">
+                        <div style="text-align:center;">
+                            <span style="display:block; font-size:1.1rem;">Celeste Dragon 🔥🐲</span>
+                            <span style="display:block; font-size:0.7rem; color:#55efc4; margin-top:5px; text-shadow: none;">Autor: Keise Jemima</span>
+                        </div>
+                    </div>
                     <div class="botoes-lado-a-lado">
                         <a href="livros.html" class="btn-card btn-entrar">Ler 📖</a>
-                        <button class="btn-card btn-avaliar" onclick="window.location.href='livros.html'">Avaliar ⭐</button>
+                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar a autora Keise Jemima!', '⭐ Avaliação')">Avaliar ⭐</button>
                     </div>
                 </div>
+
+                <div class="item-card">
+                    <div class="item-capa" style="background: linear-gradient(135deg, #000000, #d63031);">
+                        <div style="text-align:center;">
+                            <span style="display:block; font-size:1.1rem;">Sete Pecados Capitais 🍎</span>
+                            <span style="display:block; font-size:0.7rem; color:#55efc4; margin-top:5px; text-shadow: none;">Autor: Yuri Otávio</span>
+                        </div>
+                    </div>
+                    <div class="botoes-lado-a-lado">
+                        <a href="pecados.html" class="btn-card btn-entrar">Ler 📖</a>
+                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar o autor Yuri Otávio!', '⭐ Avaliação')">Avaliar ⭐</button>
+                    </div>
+                </div>
+
+                <div class="item-card" style="opacity: 0.5;">
+                    <div class="item-capa" style="background: #222; border: 2px dashed #444;">
+                        <span style="font-size:0.9rem; color:#888;">Mais Livros em Breve... ⏳</span>
+                    </div>
+                    <div class="botoes-lado-a-lado">
+                        <button class="btn-card" style="background:#333; cursor:not-allowed;" disabled>Selado 🔒</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -181,7 +210,7 @@
                     <div class="item-capa video">Trailers Oficiais 🎬</div>
                     <div class="botoes-lado-a-lado">
                         <a href="videos.html" class="btn-card btn-entrar">Assistir ▶️</a>
-                        <button class="btn-card btn-avaliar" onclick="window.location.href='videos.html'">Avaliar ⭐</button>
+                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Avaliação de trailer enviada!')">Avaliar ⭐</button>
                     </div>
                 </div>
             </div>
@@ -194,7 +223,7 @@
                     <div class="item-capa jogos">Aventura no Reino 🕹️</div>
                     <div class="botoes-lado-a-lado">
                         <a href="jogos.html" class="btn-card btn-entrar">Jogar 🎮</a>
-                        <button class="btn-card btn-avaliar" onclick="window.location.href='jogos.html'">Avaliar ⭐</button>
+                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por avaliar o jogo!')">Avaliar ⭐</button>
                     </div>
                 </div>
             </div>
