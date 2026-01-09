@@ -4,10 +4,10 @@
     <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Estante RPG - Reino Protegido</title>
+    <title>Minha Estante RPG - Proteção Celeste</title>
     
     <style>
-        /* RESET E SEGURANÇA */
+        /* 1. RESET E SEGURANÇA TOTAL */
         * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
         input, select, textarea { -webkit-user-select: text; user-select: text; }
 
@@ -23,7 +23,7 @@
             box-shadow: 0 0 10px #55efc4; transition: 0.2s;
         }
 
-        /* MENU LATERAL */
+        /* 2. MENU LATERAL (SIDEBAR) */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000;
             top: 0; right: 0; background-color: #1e1e1e;
@@ -38,11 +38,11 @@
             width: 90%; margin: 10px 0; border: 1px solid #444; text-align: center;
         }
 
-        /* TELAS */
+        /* 3. SISTEMA DE TELAS */
         #tela-entrada, #tela-cadastro, #tela-publicar, #tela-ban, #tela-avaliacao {
             display: flex; flex-direction: column; justify-content: center;
             align-items: center; height: 100vh; width: 100%; text-align: center;
-            position: fixed; top: 0; left: 0; background: rgba(18,18,18,0.95); z-index: 4000;
+            position: fixed; top: 0; left: 0; background: rgba(18,18,18,0.98); z-index: 4000;
         }
 
         #estante-principal { display: none; padding-bottom: 50px; }
@@ -53,31 +53,35 @@
             font-weight: bold; border: 2px solid #55efc4; cursor: pointer;
         }
 
-        /* ITENS DA ESTANTE */
-        .item-container { margin: 25px auto; width: 85%; max-width: 400px; position: relative; }
+        /* 4. ESTILO DOS ITENS E BOTÃO AVALIAR (CORES CELESTE DRAGON) */
+        .item-container { margin: 30px auto; width: 85%; max-width: 400px; position: relative; }
         
         .item {
             width: 100%; padding: 25px; border-radius: 20px;
             text-decoration: none; font-weight: bold; color: white; display: block;
-            box-sizing: border-box;
+            box-sizing: border-box; text-shadow: 1px 1px 5px black;
         }
+        
         .item::after {
             content: ""; position: absolute; bottom: -10px; left: -5%;
             width: 110%; height: 12px; background: linear-gradient(to bottom, #5d3a1a, #2b1a0a);
             border-radius: 4px; z-index: -1;
         }
+
         .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
         .video { background: linear-gradient(to right, #ff0000, #b20000); }
         .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
 
         .btn-avaliar {
-            background: #55efc4; color: #121212; border: none; padding: 5px 15px;
-            border-radius: 10px; font-size: 0.8rem; cursor: pointer; margin-top: 10px;
-            font-weight: bold; box-shadow: 0 0 10px rgba(85,239,196,0.3);
+            background: linear-gradient(45deg, #6a1b9a, #2e7d32); /* Roxo e Verde Escuro */
+            color: white; border: 1px solid #a29bfe; padding: 7px 20px;
+            border-radius: 12px; font-size: 0.85rem; cursor: pointer; margin-top: 12px;
+            font-weight: bold; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
+        .btn-avaliar:hover { transform: scale(1.05); filter: brightness(1.2); }
 
         /* ESTRELAS */
-        .estrelas { font-size: 2rem; color: #444; margin: 15px 0; cursor: pointer; }
+        .estrelas { font-size: 2.2rem; color: #444; margin: 15px 0; cursor: pointer; }
         .estrela-ativa { color: #f1c40f; text-shadow: 0 0 10px #f1c40f; }
 
         button {
@@ -95,9 +99,9 @@
 
     <div id="barra-progresso"></div>
 
-    <div id="tela-ban" style="display:none; background: black; color: red;">
+    <div id="tela-ban" style="display:none; color: red;">
         <h1 style="font-size: 2.5rem;">⚠️ BANIN-HAL INTERCEPTOU ⚠️</h1>
-        <p>Ação imoral ou ofensiva detectada no Reino.</p>
+        <p>Ação imoral, plágio ou roubo de identidade detectado.</p>
         <p>ACESSO BLOQUEADO POR 48 HORAS.</p>
         <div id="timer-ban" style="font-size: 1.5rem; margin-top: 20px; color: white;"></div>
     </div>
@@ -107,8 +111,8 @@
         <div class="estrelas" id="container-estrelas">
             <span onclick="votar(1)">★</span><span onclick="votar(2)">★</span><span onclick="votar(3)">★</span><span onclick="votar(4)">★</span><span onclick="votar(5)">★</span>
         </div>
-        <textarea id="feedback-texto" placeholder="Deixe um elogio ou dica construtiva..." class="campo-login" style="height: 80px;"></textarea>
-        <button onclick="enviarAvaliacao()">Confirmar Voto</button>
+        <textarea id="feedback-texto" placeholder="Deixe um elogio ou dica para ajudar o autor..." class="campo-login" style="height: 100px;"></textarea>
+        <button onclick="enviarAvaliacao()">Confirmar Apoio ⭐</button>
         <button onclick="fecharAvaliacao()" style="background:#444; margin-top:10px;">Voltar</button>
     </div>
 
@@ -129,15 +133,15 @@
     </div>
 
     <div id="tela-entrada">
-        <h1>🛡️ Portal dos Clãs</h1>
+        <h1 style="margin-bottom: 20px;">🛡️ Portal dos Clãs</h1>
         <button onclick="irParaCadastro()">Criar Conta de Autor</button>
         <button style="background: #333;" onclick="entrarConvidado()">Entrar como Convidado</button>
     </div>
 
     <div id="tela-cadastro" style="display: none;">
-        <h2>Inicie sua Jornada</h2>
+        <h2>Sua Identidade Real</h2>
         <input type="text" id="nome-autor" placeholder="Nome de Autor" class="campo-login">
-        <button onclick="finalizarCadastro()">Concluir Cadastro</button>
+        <button onclick="finalizarCadastro()">Registrar no Reino</button>
     </div>
 
     <div id="estante-principal">
@@ -169,15 +173,16 @@
     </div>
 
     <div id="tela-publicar" style="display: none;">
-        <h2>Novo Trabalho ✍️</h2>
-        <input type="text" id="titulo-obra" placeholder="Título" class="campo-login">
-        <input type="text" id="link-obra" placeholder="Link/URL" class="campo-login">
-        <button onclick="salvarObra()">Postar Agora</button>
+        <h2>Proteja seu Trabalho 🛡️</h2>
+        <input type="text" id="titulo-obra" placeholder="Título Original" class="campo-login">
+        <input type="text" id="link-obra" placeholder="Link Seguro" class="campo-login">
+        <p style="font-size: 0.7rem; color: #888;">Ao postar, um selo criptografado será gerado.</p>
+        <button onclick="salvarObra()">Publicar e Proteger</button>
         <button onclick="fecharPainel()" style="background:#444;">Cancelar</button>
     </div>
 
     <script>
-        const listaProibida = ["sexo", "porn", "hentai", "+18", "safado", "puta", "ofensa", "morra"];
+        const listaProibida = ["sexo", "porn", "hentai", "+18", "ofensa", "roubo", "plagio", "fake", "copia"];
         let notaAtual = 0;
         let obraSendoAvaliada = "";
 
@@ -208,110 +213,79 @@
             return false;
         }
 
-        // LÓGICA DE AVALIAÇÃO
-        function abrirAvaliacao(nome) {
-            obraSendoAvaliada = nome;
-            document.getElementById('titulo-aval').innerText = "Avaliando: " + nome;
-            document.getElementById('tela-avaliacao').style.display = 'flex';
-            votar(0); // Reseta estrelas
-        }
-
-        function fecharAvaliacao() { document.getElementById('tela-avaliacao').style.display = 'none'; }
-
-        function votar(n) {
-            notaAtual = n;
-            const stars = document.querySelectorAll('#container-estrelas span');
-            stars.forEach((s, i) => {
-                if (i < n) s.classList.add('estrela-ativa');
-                else s.classList.remove('estrela-ativa');
-            });
-        }
-
-        function enviarAvaliacao() {
-            const feedback = document.getElementById('feedback-texto').value;
-            if (verificarImoralidade(feedback)) { aplicarCastigo(); return; }
-            if (notaAtual === 0) return alert("Escolha pelo menos 1 estrela!");
-            
-            alert("Voto de Confiança enviado! Sua avaliação ajudará " + obraSendoAvaliada + " a subir no ranking.");
-            document.getElementById('feedback-texto').value = "";
-            fecharAvaliacao();
-        }
-
-        // CONTINUAÇÃO DAS FUNÇÕES ANTERIORES
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("barra-progresso").style.width = scrolled + "%";
-        };
-
-        window.onload = function() {
-            if (!checarBan()) {
-                const nome = localStorage.getItem('autor_nome');
-                if (nome) mostrarEstante(nome);
-            }
-        };
-
-        function irParaCadastro() {
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('tela-cadastro').style.display = 'flex';
-        }
-
+        // LÓGICA DE CADASTRO (ANTI-ROUBO DE IDENTIDADE)
         function finalizarCadastro() {
-            const nome = document.getElementById('nome-autor').value;
+            const nome = document.getElementById('nome-autor').value.trim();
+            const nomesProtegidos = ["Jemima keise", "Admin", "Mestre"];
+            
+            if (nomesProtegidos.includes(nome) && localStorage.getItem('autor_nome') !== nome) {
+                alert("⚠️ Identidade Protegida! Você não pode clamar este nome.");
+                return;
+            }
             if (verificarImoralidade(nome)) { aplicarCastigo(); return; }
-            if (nome.trim() === "") return alert("Digite um nome!");
+            if (nome === "") return alert("Digite um nome!");
+            
             localStorage.setItem('autor_nome', nome);
             mostrarEstante(nome);
         }
 
-        function entrarConvidado() {
-            localStorage.setItem('autor_nome', 'Convidado');
-            mostrarEstante('Convidado');
-        }
-
-        function mostrarEstante(nome) {
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('tela-cadastro').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-            document.getElementById('user-icon').innerText = nome[0].toUpperCase();
-        }
-
-        function verPerfil() {
-            const nome = localStorage.getItem('autor_nome') || "Herói";
-            document.getElementById("nome-perfil-menu").innerText = nome;
-            document.getElementById("avatar-grande").innerText = nome[0].toUpperCase();
-            document.getElementById("cla-nome").innerText = localStorage.getItem('cla_atual') || "Iniciante 🛡️";
-            document.getElementById("menuLateral").style.width = "280px";
-        }
-
-        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-        function mudarCla(c) { localStorage.setItem('cla_atual', c); }
-
-        function abrirConversor() {
-            let link = prompt("URL para converter em JRG:");
-            if (link) alert("Código gerado: " + btoa(link).substring(0,8) + ".jrg");
-        }
-
-        function abrirPainelCriacao() { 
-            document.getElementById('estante-principal').style.display = 'none';
-            document.getElementById('tela-publicar').style.display = 'flex';
-        }
-
-        function fecharPainel() { 
-            document.getElementById('tela-publicar').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
-
+        // LÓGICA DE PUBLICAÇÃO (CRIPTOGRAFIA)
         function salvarObra() {
             const t = document.getElementById('titulo-obra').value;
             const l = document.getElementById('link-obra').value;
+            const autor = localStorage.getItem('autor_nome');
+
             if (verificarImoralidade(t) || verificarImoralidade(l)) { aplicarCastigo(); return; }
-            if (t && l) { alert("Trabalho enviado para o ranking!"); fecharPainel(); }
+
+            if (t && l) {
+                const selo = btoa(autor + "|" + t + "|" + new Date().getTime());
+                alert("✅ Registrado!\n🛡️ Selo de Autoria: " + selo.substring(0,10) + "\nSeu trabalho está seguro no ranking!");
+                fecharPainel();
+            }
         }
 
+        // AVALIAÇÃO
+        function abrirAvaliacao(nome) {
+            obraSendoAvaliada = nome;
+            document.getElementById('titulo-aval').innerText = "Apoiando: " + nome;
+            document.getElementById('tela-avaliacao').style.display = 'flex';
+            votar(0);
+        }
+        function votar(n) {
+            notaAtual = n;
+            const stars = document.querySelectorAll('#container-estrelas span');
+            stars.forEach((s, i) => { s.classList.toggle('estrela-ativa', i < n); });
+        }
+        function enviarAvaliacao() {
+            const feedback = document.getElementById('feedback-texto').value;
+            if (verificarImoralidade(feedback)) { aplicarCastigo(); return; }
+            if (notaAtual === 0) return alert("Dê seu voto de estrelas!");
+            alert("Voto de Confiança registrado com sucesso!");
+            fecharAvaliacao();
+        }
+
+        // REFORÇO ANTI-CÓPIA (CTRL+C / CTRL+U)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u')) {
+                alert("As leis de Celeste Dragon proíbem a cópia deste material!");
+                e.preventDefault();
+            }
+        });
+
+        // FUNÇÕES BÁSICAS
+        window.onload = () => { if (!checarBan()) { const n = localStorage.getItem('autor_nome'); if (n) mostrarEstante(n); } };
+        function irParaCadastro() { document.getElementById('tela-entrada').style.display = 'none'; document.getElementById('tela-cadastro').style.display = 'flex'; }
+        function entrarConvidado() { localStorage.setItem('autor_nome', 'Convidado'); mostrarEstante('Convidado'); }
+        function mostrarEstante(n) { document.getElementById('tela-entrada').style.display = 'none'; document.getElementById('tela-cadastro').style.display = 'none'; document.getElementById('estante-principal').style.display = 'block'; document.getElementById('user-icon').innerText = n[0].toUpperCase(); }
+        function verPerfil() { const n = localStorage.getItem('autor_nome') || "Herói"; document.getElementById("nome-perfil-menu").innerText = n; document.getElementById("avatar-grande").innerText = n[0].toUpperCase(); document.getElementById("cla-nome").innerText = localStorage.getItem('cla_atual') || "Iniciante 🛡️"; document.getElementById("menuLateral").style.width = "280px"; }
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+        function mudarCla(c) { localStorage.setItem('cla_atual', c); }
+        function abrirConversor() { let l = prompt("URL:"); if (l) alert("JRG Code: " + btoa(l).substring(0,8) + ".jrg"); }
+        function abrirPainelCriacao() { document.getElementById('estante-principal').style.display = 'none'; document.getElementById('tela-publicar').style.display = 'flex'; }
+        function fecharPainel() { document.getElementById('tela-publicar').style.display = 'none'; document.getElementById('estante-principal').style.display = 'block'; }
         function sair() { localStorage.clear(); location.reload(); }
         document.addEventListener('contextmenu', e => e.preventDefault());
+        window.onscroll = () => { let s = (document.documentElement.scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100; document.getElementById("barra-progresso").style.width = s + "%"; };
     </script>
 </body>
 </html>
