@@ -116,7 +116,7 @@
 
     <div id="estante-principal">
         <div class="nav-topo">
-            <button class="btn-top" style="background:#c0392b;" onclick="location.reload()">🏠 Sair</button>
+            <button class="btn-top" style="background:#c0392b;" onclick="sair()">🏠 Sair</button>
             <h3 style="margin:0; font-size: 1rem; color: #55efc4;">Celeste App</h3>
             <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()" alt="Perfil">
         </div>
@@ -190,10 +190,25 @@
     </div>
 
     <script>
+        // Lógica de Persistência de Tela (Fix do botão voltar)
+        window.onload = function() {
+            if (localStorage.getItem('reinoLogado') === 'true') {
+                document.getElementById('tela-entrada').style.display = 'none';
+                document.getElementById('estante-principal').style.display = 'block';
+            }
+        };
+
         function entrar() {
+            localStorage.setItem('reinoLogado', 'true');
             document.getElementById('tela-entrada').style.display = 'none';
             document.getElementById('estante-principal').style.display = 'block';
         }
+
+        function sair() {
+            localStorage.removeItem('reinoLogado');
+            location.reload();
+        }
+
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
