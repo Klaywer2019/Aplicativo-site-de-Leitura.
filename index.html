@@ -8,6 +8,42 @@
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
+        /* TELA DE ENTRADA ÉPICA */
+        #tela-entrada {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: radial-gradient(circle, #1e1e1e 0%, #0a0a0a 100%);
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 4000;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 30px;
+            border: 1px solid rgba(106, 27, 154, 0.3);
+            text-align: center; width: 90%; max-width: 380px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .input-celeste {
+            width: 100%; padding: 12px; margin-bottom: 12px;
+            background: rgba(0,0,0,0.5); border: 1px solid #444;
+            border-radius: 12px; color: #55efc4; outline: none; transition: 0.3s;
+        }
+        .input-celeste:focus { border-color: #6a1b9a; box-shadow: 0 0 10px rgba(106, 27, 154, 0.5); }
+
+        .btn-login {
+            width: 100%; padding: 14px; background: linear-gradient(45deg, #6a1b9a, #4b0082);
+            color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-login:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4); }
+
+        .btn-convidado {
+            background: none; color: #aaa; border: 1px solid #444;
+            padding: 10px 20px; border-radius: 12px; cursor: pointer; margin-top: 10px;
+        }
+
+        /* ESTILO DA HOME */
         .dragao-voando {
             position: fixed; top: 10px; right: -60px; font-size: 2rem;
             z-index: 2500; pointer-events: none;
@@ -27,71 +63,33 @@
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .btn-top {
-            padding: 10px 15px; border-radius: 20px; border: none;
-            color: white; font-weight: bold; cursor: pointer;
-        }
+        .btn-top { padding: 10px 15px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; }
 
-        .prateleira-container {
-            display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 25px 20px;
-            scroll-behavior: smooth; scrollbar-width: none;
-        }
+        .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 25px 20px; scrollbar-width: none; }
         .prateleira-container::-webkit-scrollbar { display: none; }
-
         .prateleira-madeira { border-bottom: 12px solid #3d2b1f; margin-bottom: 30px; }
 
         .item-card {
-            min-width: 260px; flex-shrink: 0;
-            background: #1c1c1c; border-radius: 20px; padding-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center;
-            overflow: hidden;
+            min-width: 260px; flex-shrink: 0; background: #1c1c1c; border-radius: 20px;
+            padding-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; overflow: hidden;
         }
         
-        .item-capa {
-            width: 100%; height: 120px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; text-shadow: 2px 2px 4px black; color: white;
-        }
-
+        .item-capa { width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; font-weight: bold; text-shadow: 2px 2px 4px black; color: white; }
         .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
         .video { background: linear-gradient(to right, #ff0000, #b20000); }
         .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
 
         .botoes-lado-a-lado { display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center; }
-
-        .btn-card {
-            flex: 1; padding: 10px 5px; border-radius: 12px; border: none;
-            color: white; font-weight: bold; cursor: pointer; font-size: 0.85rem;
-            text-decoration: none; display: flex; align-items: center; justify-content: center;
-        }
+        .btn-card { flex: 1; padding: 10px 5px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; justify-content: center; }
 
         .btn-entrar { background: #6a1b9a; border: 1px solid #a29bfe; }
         .btn-avaliar { background: linear-gradient(45deg, #2e7d32, #1b5e20); }
 
-        .perfil-foto {
-            width: 45px; height: 45px; border-radius: 50%;
-            border: 2px solid #55efc4; cursor: pointer; object-fit: cover;
-            background: #444;
-        }
-
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 3500;
-            top: 0; right: 0; background-color: #1e1e1e;
-            overflow-x: hidden; transition: 0.5s; padding-top: 20px;
-            border-left: 3px solid #6a1b9a;
-        }
-
-        .card-rpg {
-            background: #2d3436; border-radius: 15px; padding: 15px;
-            width: 90%; margin: 10px auto; border: 1px solid #444;
-        }
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #55efc4; cursor: pointer; object-fit: cover; background: #444; }
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; background-color: #1e1e1e; overflow-x: hidden; transition: 0.5s; padding-top: 20px; border-left: 3px solid #6a1b9a; }
+        .card-rpg { background: #2d3436; border-radius: 15px; padding: 15px; width: 90%; margin: 10px auto; border: 1px solid #444; }
 
         #estante-principal { display: none; }
-        #tela-entrada {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: #121212; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 4000;
-        }
     </style>
 </head>
 <body>
@@ -99,8 +97,17 @@
     <div class="dragao-voando">🐉</div>
 
     <div id="tela-entrada">
-        <h1 style="color: #55efc4; text-shadow: 0 0 10px #2e7d32;">🛡️ Reino Celeste</h1>
-        <button class="btn-top" style="background:#6a1b9a; padding: 15px 40px;" onclick="entrar()">Entrar no Reino</button>
+        <div class="login-box">
+            <h1 style="color: #55efc4; text-shadow: 0 0 15px #2e7d32; margin-bottom: 5px;">🛡️ Reino Celeste</h1>
+            <p style="color: #aaa; font-size: 0.8rem; margin-bottom: 20px;">Portal de Identificação do Criador</p>
+            
+            <input type="email" id="login-email" placeholder="E-mail do Criador" class="input-celeste">
+            <input type="password" id="login-senha" placeholder="Senha Rúnica" class="input-celeste">
+            
+            <button class="btn-login" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
+            <div style="margin: 15px 0; color: #444; font-size: 0.8rem;">———— ou ————</div>
+            <button class="btn-convidado" onclick="entrarComoConvidado()">Explorar como Convidado 🔍</button>
+        </div>
     </div>
 
     <div id="estante-principal">
@@ -152,33 +159,24 @@
 
     <div id="menuLateral" class="sidebar">
         <div class="card-rpg">
-            <h2 id="nome-perfil" style="margin:0;">Jemima Keise</h2>
-            <p style="color: #55efc4;">Ilha: Iniciante 🛡️</p>
+            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem;">Visitante</h2>
+            <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
         </div>
 
         <div class="card-rpg" style="border: 1px solid #a29bfe;">
             <h4 style="margin:0; color: #a29bfe;">🏛️ Meu Tesouro</h4>
-            <p style="font-size: 0.7rem; color: #aaa; margin-bottom: 10px;">Acesse suas obras seladas e protegidas.</p>
-            <button class="btn-top" style="background: #6a1b9a; width:100%;" onclick="window.location.href='inventario.html'">Abrir Cofre</button>
+            <p style="font-size: 0.7rem; color: #aaa; margin-bottom: 10px;">Acesse suas obras seladas.</p>
+            <button class="btn-top" style="background: #6a1b9a; width:100%;" onclick="abrirCofre()">Abrir Cofre</button>
         </div>
 
         <div class="card-rpg">
-            <h4 style="margin-top:0;">🔗 Ferramentas de Criação</h4>
+            <h4 style="margin-top:0;">🧪 Ferramentas</h4>
             <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
             <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
         </div>
 
         <div class="card-rpg">
-            <h4 style="margin-top:0;">🔗 Conversor JRG/URL</h4>
-            <input type="text" id="input-url" style="width:100%; padding:8px; border-radius:8px; border:none; margin-bottom:10px; background:#121212; color:#55efc4;" placeholder="Cole o link ou nome aqui">
-            <button class="btn-top" style="background:#2e7d32; width:100%; margin-bottom:5px;" onclick="converter('URL')">Gerar URL</button>
-            <button class="btn-top" style="background:#6a1b9a; width:100%;" onclick="converter('JRG')">Gerar JRG</button>
-            <p id="resultado-link" style="font-size: 0.8rem; margin-top: 10px; word-break: break-all; color: #55efc4;"></p>
-        </div>
-
-        <div class="card-rpg">
-            <h4 style="margin-top:0;">📤 Publicar Obra Protegida</h4>
-            <p style="font-size: 0.7rem; color: #aaa;">Seu trabalho será criptografado antes da publicação.</p>
+            <h4 style="margin-top:0;">📤 Publicar Obra</h4>
             <select id="tipo-pub" style="width:100%; padding:8px; border-radius:8px; background:#121212; color:#55efc4; border:1px solid #444; margin-bottom:10px;">
                 <option value="rascunho_livro">📜 Meu Manuscrito</option>
                 <option value="codigo_forja">💻 Meu Código Forjado</option>
@@ -195,56 +193,64 @@
             if (localStorage.getItem('reinoLogado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
+                const user = localStorage.getItem('usuarioEmail');
+                document.getElementById('nome-perfil').innerText = user ? user.split('@')[0] : "Viajante";
             }
         };
 
-        function entrar() {
+        function entrarComoCriador() {
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
+            if (!email || !senha) return alert("🛡️ Informe E-mail e Senha Rúnica!");
+            
             localStorage.setItem('reinoLogado', 'true');
-            document.getElementById('tela-entrada').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-        }
-
-        function sair() {
-            localStorage.removeItem('reinoLogado');
+            localStorage.setItem('tipoUsuario', 'criador');
+            localStorage.setItem('usuarioEmail', email);
             location.reload();
         }
 
+        function entrarComoConvidado() {
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('tipoUsuario', 'convidado');
+            localStorage.setItem('usuarioEmail', 'Convidado');
+            location.reload();
+        }
+
+        function abrirCofre() {
+            if(localStorage.getItem('tipoUsuario') === 'convidado') {
+                alert("🚫 Acesso Negado: Convidados não possuem cofre próprio!");
+            } else {
+                window.location.href = 'inventario.html';
+            }
+        }
+
+        function sair() { localStorage.clear(); location.reload(); }
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
-        function converter(tipo) {
-            const input = document.getElementById('input-url').value;
-            if(!input) return alert("Digite algo primeiro!");
-            const hash = btoa(input).substring(0, 8); 
-            const resultado = tipo === 'JRG' ? `celeste://dragons/${hash}.jrg` : `https://reinoceleste.com/share/${hash}`;
-            document.getElementById('resultado-link').innerText = "Link Gerado: " + resultado;
-        }
-
         function publicarSelado() {
+            if(localStorage.getItem('tipoUsuario') === 'convidado') {
+                return alert("🛡️ Apenas Criadores identificados podem selar obras!");
+            }
+
             const tipo = document.getElementById('tipo-pub').value;
             const status = document.getElementById('status-pub');
             const conteudo = localStorage.getItem(tipo);
 
-            if (!conteudo || conteudo.trim() === "") {
-                alert("🛡️ Escudo de Segurança: Não há conteúdo salvo para publicar! Vá ao laboratório primeiro.");
-                return;
-            }
+            if (!conteudo) return alert("Não há conteúdo para publicar!");
 
             status.style.display = "block";
-            status.innerHTML = "🔒 Selando com criptografia rúnica...";
+            status.innerHTML = "🔒 Selando rúnica...";
 
             setTimeout(() => {
-                const salt = "ID-CELESTE-2026";
-                const hashProtegido = btoa(conteudo + "|" + salt);
+                const userEmail = localStorage.getItem('usuarioEmail');
+                // Criamos uma chave única que vincula o item ao email!
+                localStorage.setItem(userEmail + "_" + tipo + "_status", "publicado");
+                localStorage.setItem(userEmail + "_" + tipo + "_data", new Date().toLocaleDateString());
                 
-                // Salva o registro da publicação para o inventário
-                const data = new Date().toLocaleDateString();
-                localStorage.setItem(tipo + "_status", "publicado");
-                localStorage.setItem(tipo + "_data", data);
-
-                status.innerHTML = "✅ **Obra Publicada!**<br>Seu projeto foi selado no cofre.";
+                status.innerHTML = "✅ **Obra no seu Cofre!**";
                 status.style.color = "#55efc4";
-            }, 1500);
+            }, 1000);
         }
 
         document.addEventListener('contextmenu', e => e.preventDefault());
