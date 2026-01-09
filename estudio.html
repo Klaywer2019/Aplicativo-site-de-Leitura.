@@ -90,13 +90,14 @@
     <div class="header-estudio">
         <button onclick="window.location.href='index.html'" style="background:none; border:none; color:#aaa; cursor:pointer;">⬅ Voltar ao Reino</button>
         <h3 style="margin:0; color:#55efc4;">🎬 Studio Pro <span style="font-size: 0.6rem; background:#444; padding:2px 4px; border-radius:4px;">PRO</span></h3>
-        <button class="btn-save" onclick="alert('Exportando linha do tempo...')">Exportar ⬇️</button>
+        <button class="btn-save" onclick="exportarVideoComoURL()">Exportar ⬇️</button>
     </div>
 
     <div class="workspace">
         <div class="upload-section">
             <label for="importar-video" class="custom-upload">📥 Importar Mídia</label>
             <input type="file" id="importar-video" accept="video/*" style="display: none;">
+            <button onclick="carregarVideoPorLink()" style="background:#444; color:white; border:none; padding:10px 15px; border-radius:20px; font-weight:bold; margin-left:10px;">🔗 Link URL</button>
         </div>
 
         <div class="video-wrapper">
@@ -138,7 +139,6 @@
         const upload = document.getElementById('importar-video');
         const painel = document.getElementById('painel-reliquias');
 
-        // Banco de Dados de Memes e Sons
         const biblioteca = {
             memes: [
                 { nome: "😂 Risada do Zap", tipo: "Vídeo" },
@@ -165,6 +165,24 @@
             }
         });
 
+        function carregarVideoPorLink() {
+            const link = prompt("Cole aqui a URL do vídeo ou meme:");
+            if (link) {
+                video.src = link;
+                video.play();
+            }
+        }
+
+        function exportarVideoComoURL() {
+            if (!video.src) {
+                alert("❌ Erro: Não há vídeo para exportar!");
+                return;
+            }
+            const email = localStorage.getItem('usuarioEmail') || "visitante";
+            localStorage.setItem(email + "_video_projeto", video.src);
+            alert("✨ Sucesso!\nSua obra foi convertida e guardada no seu Tesouro!");
+        }
+
         function abrirPainel(tipo) {
             const titulo = document.getElementById('titulo-painel');
             const conteudo = document.getElementById('conteudo-painel');
@@ -174,23 +192,26 @@
             if (tipo === 'memes') {
                 titulo.innerText = "🧪 Baú de Memes";
                 biblioteca.memes.forEach(m => {
-                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Meme adicionado!')">${m.nome} <span>${m.tipo}</span></div>`;
+                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Meme selecionado!')">${m.nome} <span>${m.tipo}</span></div>`;
                 });
             } else if (tipo === 'sons') {
                 titulo.innerText = "🌌 Sons de Mistério";
                 biblioteca.sons.forEach(s => {
-                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Sons sendo carregados...')">${s.icon} ${s.nome}</div>`;
+                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Tocando prévia...')">${s.icon} ${s.nome}</div>`;
                 });
             } else if (tipo === 'filtros') {
                 titulo.innerText = "📜 Filtros de Memória";
                 biblioteca.filtros.forEach(f => {
                     conteudo.innerHTML += `<div class="item-lista" onclick="video.style.filter='${f.css}'">✨ ${f.nome}</div>`;
                 });
+            } else if (tipo === 'armazenamento') {
+                titulo.innerText = "🔥 Armazém de Mídia";
+                conteudo.innerHTML = `<div class="item-lista">Vídeo Atual: ${video.src ? 'Carregado ✅' : 'Vazio ❌'}</div>`;
             }
         }
 
         function abrirTesoura() {
-            alert("🌪️ FERRAMENTA TESOURA:\n\nToque no vídeo para marcar o início e o fim do corte!");
+            alert("🌪️ FERRAMENTA TESOURA:\n\nSelecione o ponto de corte na linha do tempo!");
         }
 
         function fecharPainel() { painel.style.display = 'none'; }
