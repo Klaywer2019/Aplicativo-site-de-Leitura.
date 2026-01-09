@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cofre de Relíquias - Reino Celeste</title>
+    <style>
+        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        body { 
+            background-color: #121212; 
+            color: white; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding: 20px;
+        }
+
+        /* CABEÇALHO DO INVENTÁRIO */
+        .header-cofre {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #6a1b9a;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-voltar {
+            background: #2d3436;
+            color: #55efc4;
+            border: 1px solid #55efc4;
+            padding: 8px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* GRID DO INVENTÁRIO */
+        .grid-inventario {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .slot-item {
+            aspect-ratio: 1 / 1;
+            background: #1e1e1e;
+            border: 2px solid #444;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .slot-item:hover {
+            border-color: #6a1b9a;
+            box-shadow: 0 0 15px rgba(106, 27, 154, 0.5);
+            transform: scale(1.05);
+        }
+
+        .slot-item i { font-size: 2.5rem; margin-bottom: 10px; }
+        .slot-nome { font-size: 0.75rem; color: #aaa; font-weight: bold; }
+
+        /* STATUS DE CATEGORIA */
+        .badge-tipo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: #6a1b9a;
+        }
+
+        /* MENSAGEM VAZIA */
+        .vazio-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            color: #636e72;
+            border: 2px dashed #2d3436;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-cofre">
+        <a href="index.html" class="btn-voltar">⬅ Voltar ao Reino</a>
+        <h2 style="margin:0; color: #a29bfe;">🏛️ Cofre de Relíquias</h2>
+        <div style="width: 100px;"></div> </div>
+
+    <div class="grid-inventario" id="container-reliquias">
+        </div>
+
+    <script>
+        function carregarInventario() {
+            const container = document.getElementById('container-reliquias');
+            container.innerHTML = ""; // Limpa antes de carregar
+
+            // Buscando o que foi "Selado" (usando as chaves que criamos na sidebar)
+            const manuscrito = localStorage.getItem('rascunho_livro');
+            const codigo = localStorage.getItem('codigo_forja');
+
+            let temItem = false;
+
+            if (manuscrito) {
+                criarCard(container, "📜", "Meu Manuscrito", "LIVRO");
+                temItem = true;
+            }
+
+            if (codigo) {
+                criarCard(container, "💎", "Código Forjado", "FORJA");
+                temItem = true;
+            }
+
+            if (!temItem) {
+                container.innerHTML = `<div class="vazio-msg">
+                    <h3>O cofre está vazio...</h3>
+                    <p>Publique uma obra na Sidebar para selar sua primeira relíquia!</p>
+                </div>`;
+            }
+        }
+
+        function criarCard(container, icone, nome, tipo) {
+            const div = document.createElement('div');
+            div.className = 'slot-item';
+            div.innerHTML = `
+                <span class="badge-tipo">${tipo}</span>
+                <div style="font-size: 3rem;">${icone}</div>
+                <div class="slot-nome">${nome}</div>
+            `;
+            
+            div.onclick = () => alert(`Visualizando relíquia: ${nome}`);
+            container.appendChild(div);
+        }
+
+        // Inicializa o cofre
+        window.onload = carregarInventario;
+    </script>
+</body>
+</html>
