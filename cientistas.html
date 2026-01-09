@@ -3,86 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratório dos Cientistas - Ferramentas de Criação</title>
+    <title>Laboratório Avançado - Cientistas</title>
     <style>
-        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
-        input, textarea, .code-input { -webkit-user-select: text; user-select: text; }
-
+        * { box-sizing: border-box; }
         body { 
-            background-color: #0a0a0a; color: #e0e0e0; 
-            font-family: 'Consolas', monospace; margin: 0; padding-bottom: 50px; 
+            background-color: #0f0f0f; color: #dcdde1; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding-bottom: 50px; 
         }
 
         .nav-topo { 
             display:flex; justify-content:space-around; align-items: center; 
-            padding:15px; background:#111; border-bottom: 3px solid #2e7d32; 
-            box-shadow: 0 0 20px rgba(46, 125, 50, 0.4);
+            padding:15px; background:#161b22; border-bottom: 3px solid #2e7d32; 
         }
 
-        .container-lab { padding: 20px; max-width: 800px; margin: auto; }
+        .container-lab { padding: 20px; max-width: 900px; margin: auto; }
 
         .ferramenta-card {
-            background: #161616; border-radius: 15px; padding: 20px;
+            background: #1c1c1c; border-radius: 15px; padding: 20px;
             margin-bottom: 30px; border: 1px solid #333;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
         }
 
-        h3 { color: #55efc4; border-bottom: 1px solid #2e7d32; padding-bottom: 10px; }
+        h3 { color: #55efc4; margin-top: 0; border-bottom: 1px solid #2e7d32; padding-bottom: 10px; }
 
-        /* ESTILO DO BLOCO DE NOTAS E CÓDIGO */
+        /* EDIÇÃO CONFORTÁVEL (TEXTO E CÓDIGO) */
         textarea {
-            width: 100%; height: 200px; background: #000; color: #00ff00;
-            border: 1px solid #2e7d32; border-radius: 8px; padding: 10px;
+            width: 100%; height: 250px; background: #121212; 
+            color: #f5f5f5; /* Branco marfim para não cansar a vista */
+            border: 2px solid #2e7d32; border-radius: 12px; padding: 15px;
             font-family: 'Consolas', monospace; resize: none;
+            font-size: 16px; line-height: 1.5; outline: none;
         }
 
         .btn-cientista {
             background: linear-gradient(45deg, #2e7d32, #6a1b9a);
-            color: white; border: none; padding: 10px 20px;
-            border-radius: 5px; cursor: pointer; font-weight: bold;
-            margin-top: 10px; width: 100%;
+            color: white; border: none; padding: 12px;
+            border-radius: 8px; cursor: pointer; font-weight: bold;
+            margin-top: 10px; width: 100%; transition: 0.3s;
         }
 
-        /* PREVIEW DE CÓDIGO EM TEMPO REAL */
-        #preview-code {
-            width: 100%; height: 150px; background: white;
-            margin-top: 10px; border-radius: 8px; border: none;
+        /* ESTILO EDITOR DE VÍDEO */
+        #video-canvas {
+            width: 100%; max-width: 500px; height: 280px;
+            background: black; border-radius: 10px; margin-top: 10px;
+            display: block; margin-left: auto; margin-right: auto;
         }
+
+        .controles-video { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .btn-filtro { background: #333; color: #55efc4; border: 1px solid #55efc4; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="nav-topo">
         <button onclick="window.location.href='index.html'" style="background:#333; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">⬅ Sair do Lab</button>
-        <h2 style="color:#55efc4;">🧪 Ala dos Cientistas</h2>
+        <h2 style="color:#55efc4;">🧪 Laboratório de Criação</h2>
     </div>
 
     <div class="container-lab">
         
         <div class="ferramenta-card">
-            <h3>📝 Escritório de Manuscritos</h3>
-            <p style="font-size: 0.8rem;">Escreva seu livro aqui. O progresso é salvo localmente.</p>
-            <textarea id="bloco-notas" placeholder="Comece sua história..." oninput="salvarTexto()"></textarea>
-            <div id="contador" style="font-size: 0.7rem; color: #888; margin-top: 5px;">Palavras: 0</div>
-            <button class="btn-cientista" onclick="baixarTexto()">Exportar Manuscrito (.txt)</button>
+            <h3>📝 Manuscritos Celestes</h3>
+            <p style="font-size: 0.85rem; color: #aaa;">O fundo escuro e letras claras protegem seus olhos durante a escrita.</p>
+            <textarea id="bloco-notas" placeholder="Sua história começa aqui..." oninput="salvarTexto()"></textarea>
+            <div id="contador" style="color: #55efc4; margin-top: 10px; font-weight: bold;">Palavras: 0</div>
+            <button class="btn-cientista" onclick="baixarTexto()">Guardar no Pergaminho (.txt)</button>
         </div>
 
         <div class="ferramenta-card">
-            <h3>💻 Forja de Código (HTML/CSS)</h3>
-            <p style="font-size: 0.8rem;">Crie componentes para seus mini-jogos e veja o resultado.</p>
-            <textarea id="codigo-html" placeholder="<h1>Olá Mundo</h1>" oninput="executarCodigo()"></textarea>
-            <iframe id="preview-code"></iframe>
+            <h3>🎬 Estúdio de Trailers (Beta)</h3>
+            <p style="font-size: 0.85rem; color: #aaa;">Carregue um clipe e aplique energias de dragão.</p>
+            <input type="file" id="upload-video" accept="video/*" style="margin-bottom: 10px;">
+            <video id="video-canvas" controls></video>
+            
+            <div class="controles-video">
+                <button class="btn-filtro" onclick="aplicarFiltro('grayscale(100%)')">Vento Cinza 🌫️</button>
+                <button class="btn-filtro" onclick="aplicarFiltro('sepia(100%)')">Terra Marrom 🪵</button>
+                <button class="btn-filtro" onclick="aplicarFiltro('hue-rotate(90deg) brightness(1.2)')">Radiação Verde 🧪</button>
+                <button class="btn-filtro" onclick="aplicarFiltro('hue-rotate(270deg)')">Gravidade Roxa 🟣</button>
+                <button class="btn-filtro" onclick="aplicarFiltro('none')">Limpar Energias</button>
+            </div>
         </div>
 
     </div>
 
     <script>
-        // SALVAR TEXTO AUTOMATICAMENTE
+        // LÓGICA DO VÍDEO
+        const video = document.getElementById('video-canvas');
+        const upload = document.getElementById('upload-video');
+
+        upload.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                video.src = url;
+            }
+        });
+
+        function aplicarFiltro(filtro) {
+            video.style.filter = filtro;
+        }
+
+        // SALVAR E CONTAR PALAVRAS (CONFORTÁVEL)
         function salvarTexto() {
             const texto = document.getElementById('bloco-notas').value;
             localStorage.setItem('rascunho_livro', texto);
-            const palavras = texto.trim().split(/\s+/).length;
-            document.getElementById('contador').innerText = "Palavras: " + (texto ? palavras : 0);
+            const palavras = texto.trim() === "" ? 0 : texto.trim().split(/\s+/).length;
+            document.getElementById('contador').innerText = "Palavras: " + palavras;
         }
 
         function baixarTexto() {
@@ -90,20 +117,10 @@
             const blob = new Blob([texto], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "meu_livro_celeste.txt";
+            link.download = "manuscrito_celeste.txt";
             link.click();
         }
 
-        // EXECUTAR CÓDIGO EM TEMPO REAL
-        function executarCodigo() {
-            const codigo = document.getElementById('codigo-html').value;
-            const preview = document.getElementById('preview-code').contentWindow.document;
-            preview.open();
-            preview.write(codigo);
-            preview.close();
-        }
-
-        // CARREGAR DADOS SALVOS
         window.onload = function() {
             document.getElementById('bloco-notas').value = localStorage.getItem('rascunho_livro') || "";
             salvarTexto();
