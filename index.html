@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reino Celeste - Home</title>
     <style>
-        /* Mantendo seus estilos originais */
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
@@ -39,9 +38,7 @@
         }
         .prateleira-container::-webkit-scrollbar { display: none; }
 
-        .prateleira-madeira {
-            border-bottom: 12px solid #3d2b1f; margin-bottom: 30px;
-        }
+        .prateleira-madeira { border-bottom: 12px solid #3d2b1f; margin-bottom: 30px; }
 
         .item-card {
             min-width: 260px; flex-shrink: 0;
@@ -60,9 +57,7 @@
         .video { background: linear-gradient(to right, #ff0000, #b20000); }
         .jogos { background: linear-gradient(45deg, #2d3436, #636e72); }
 
-        .botoes-lado-a-lado {
-            display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center;
-        }
+        .botoes-lado-a-lado { display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center; }
 
         .btn-card {
             flex: 1; padding: 10px 5px; border-radius: 12px; border: none;
@@ -161,6 +156,12 @@
             <p style="color: #55efc4;">Ilha: Iniciante 🛡️</p>
         </div>
 
+        <div class="card-rpg" style="border: 1px solid #a29bfe;">
+            <h4 style="margin:0; color: #a29bfe;">🏛️ Meu Tesouro</h4>
+            <p style="font-size: 0.7rem; color: #aaa; margin-bottom: 10px;">Acesse suas obras seladas e protegidas.</p>
+            <button class="btn-top" style="background: #6a1b9a; width:100%;" onclick="window.location.href='inventario.html'">Abrir Cofre</button>
+        </div>
+
         <div class="card-rpg">
             <h4 style="margin-top:0;">🔗 Ferramentas de Criação</h4>
             <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
@@ -220,9 +221,9 @@
         }
 
         function publicarSelado() {
-            const chaveLocal = document.getElementById('tipo-pub').value;
+            const tipo = document.getElementById('tipo-pub').value;
             const status = document.getElementById('status-pub');
-            const conteudo = localStorage.getItem(chaveLocal);
+            const conteudo = localStorage.getItem(tipo);
 
             if (!conteudo || conteudo.trim() === "") {
                 alert("🛡️ Escudo de Segurança: Não há conteúdo salvo para publicar! Vá ao laboratório primeiro.");
@@ -235,8 +236,13 @@
             setTimeout(() => {
                 const salt = "ID-CELESTE-2026";
                 const hashProtegido = btoa(conteudo + "|" + salt);
-                console.log("Obra enviada com segurança:", hashProtegido);
-                status.innerHTML = "✅ **Obra Publicada!**<br>Seu projeto foi selado e protegido com sucesso.";
+                
+                // Salva o registro da publicação para o inventário
+                const data = new Date().toLocaleDateString();
+                localStorage.setItem(tipo + "_status", "publicado");
+                localStorage.setItem(tipo + "_data", data);
+
+                status.innerHTML = "✅ **Obra Publicada!**<br>Seu projeto foi selado no cofre.";
                 status.style.color = "#55efc4";
             }, 1500);
         }
