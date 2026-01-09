@@ -8,35 +8,41 @@
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* --- ESTILO DO ALERTA PERSONALIZADO --- */
+        /* --- DESIGN DO ALERTA RÚNICO (QUADRADO BRANCO BANIDO) --- */
+        #overlay-alerta {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 4999;
+            backdrop-filter: blur(5px); /* Efeito de desfoque profissional */
+        }
         #alerta-celeste {
             display: none;
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 5000;
-            width: 90%;
+            width: 85%;
             max-width: 320px;
-            background: #1e1e1e;
+            background: #1a1a1a;
             border: 2px solid #6a1b9a;
             border-radius: 20px;
             padding: 25px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(106, 27, 154, 0.6);
+            box-shadow: 0 0 40px rgba(106, 27, 154, 0.6);
+            animation: surgir 0.3s ease-out;
         }
-        .alerta-titulo { color: #55efc4; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; }
-        .alerta-msg { color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4; white-space: pre-wrap; }
+        @keyframes surgir {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        .alerta-titulo { color: #55efc4; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; text-shadow: 0 0 10px rgba(85, 239, 196, 0.3); }
+        .alerta-msg { color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; white-space: pre-wrap; }
         .btn-alerta-ok {
             background: linear-gradient(45deg, #6a1b9a, #4b0082);
-            color: white; border: none; padding: 12px 30px;
+            color: white; border: none; padding: 12px;
             border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%;
-        }
-        #overlay-alerta {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 4999;
-            backdrop-filter: blur(3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         /* TELA DE ENTRADA ÉPICA */
@@ -228,7 +234,7 @@
     </div>
 
     <script>
-        /* FUNÇÕES DO NOVO ALERTA */
+        /* FUNÇÕES DO ALERTA PERSONALIZADO */
         function exibirAlerta(texto, titulo = "🛡️ Mensagem do Reino") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
@@ -256,7 +262,7 @@
             let email = document.getElementById('login-email').value.trim().toLowerCase();
             const senha = document.getElementById('login-senha').value;
             
-            if (!email || !senha) return exibirAlerta("Informe E-mail e Senha Rúnica!");
+            if (!email || !senha) return exibirAlerta("Por favor, informe seu E-mail e Senha Rúnica para atravessar o portal!", "⚠️ Identificação Necessária");
             
             registrarUsuarioVigia(email);
             localStorage.setItem('reinoLogado', 'true');
@@ -268,23 +274,20 @@
         function registrarUsuarioVigia(email) {
             let lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
             const dataHora = new Date().toLocaleString('pt-BR');
-            
-            // Registra a entrada com e-mail e horário exato
             lista.push(`👤 ${email}\n🕒 Acesso em: ${dataHora}`);
             localStorage.setItem('vigia_usuarios', JSON.stringify(lista));
         }
 
         function verVigiaSecreta() {
-            // AJUSTE: COLOQUE SEU EMAIL ABAIXO EXATAMENTE COMO VOCÊ DIGITA NO LOGIN
             const admEmail = "keisejemima@gmail.com".toLowerCase().trim(); 
             const usuarioLogado = (localStorage.getItem('usuarioEmail') || "").toLowerCase().trim();
 
             if (usuarioLogado !== admEmail) {
-                return exibirAlerta("Apenas a Administradora pode ver os registros!", "🚫 Acesso Negado");
+                return exibirAlerta("Apenas a Administradora Suprema pode acessar os arquivos da Vigia!", "🚫 Acesso Negado");
             }
             
             const lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
-            exibirAlerta(lista.length === 0 ? "Nenhum usuário registrado." : "📋 REGISTROS DE ACESSO:\n\n" + lista.join("\n\n"), "📜 Arquivos da Vigia");
+            exibirAlerta(lista.length === 0 ? "O pergaminho de registros está vazio no momento." : "📋 REGISTROS DE ACESSO:\n\n" + lista.join("\n\n"), "📜 Arquivos da Vigia");
         }
 
         function entrarComoConvidado() {
@@ -295,16 +298,16 @@
         }
 
         function sair() { 
-            exibirAlerta("Limpando acesso rúnico...", "🏠 Saindo");
+            exibirAlerta("Sua conexão rúnica está sendo desfeita. Voltando para o portal de entrada...", "🏠 Saindo");
             setTimeout(() => {
                 localStorage.clear(); 
                 location.reload();
-            }, 1000);
+            }, 2000);
         }
 
         function abrirCofre() {
             if(localStorage.getItem('tipoUsuario') === 'convidado') {
-                exibirAlerta("Convidados não possuem cofre próprio!", "🚫 Acesso Restrito");
+                exibirAlerta("Convidados ainda não possuem um baú no Tesouro Real!", "🚫 Acesso Restrito");
             } else {
                 window.location.href = 'inventario.html';
             }
@@ -314,16 +317,16 @@
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
         function publicarSelado() {
-            if(localStorage.getItem('tipoUsuario') === 'convidado') return exibirAlerta("Apenas Criadores podem selar obras!", "🛡️ Erro de Classe");
+            if(localStorage.getItem('tipoUsuario') === 'convidado') return exibirAlerta("Apenas Criadores com selo oficial podem publicar obras no Reino!", "🛡️ Erro de Classe");
             
             const tipo = document.getElementById('tipo-pub').value;
             const status = document.getElementById('status-pub');
             const conteudo = localStorage.getItem(tipo);
 
-            if (!conteudo) return exibirAlerta("Não há nada na mesa de trabalho! Vá nas ferramentas primeiro.", "⚒️ Forja Fria");
+            if (!conteudo) return exibirAlerta("Sua mesa de trabalho está vazia! Forje algo nas ferramentas antes de tentar selar.", "⚒️ Forja Vazia");
 
             status.style.display = "block";
-            status.innerHTML = "🔒 Selando rúnica...";
+            status.innerHTML = "🔒 Selando energia rúnica...";
 
             setTimeout(() => {
                 const userEmail = localStorage.getItem('usuarioEmail');
@@ -334,8 +337,8 @@
                 
                 status.innerHTML = "✅ **Obra no seu Cofre!**";
                 status.style.color = "#55efc4";
-                exibirAlerta("Sua obra foi selada e guardada no seu Tesouro com sucesso!", "✨ Sucesso!");
-            }, 1000);
+                exibirAlerta("Seu rascunho foi selado com sucesso e guardado com segurança no seu Tesouro!", "✨ Obra Selada!");
+            }, 1500);
         }
 
         document.addEventListener('contextmenu', e => e.preventDefault());
