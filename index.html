@@ -8,6 +8,37 @@
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
 
+        /* --- ESTILO DO ALERTA PERSONALIZADO --- */
+        #alerta-celeste {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5000;
+            width: 90%;
+            max-width: 320px;
+            background: #1e1e1e;
+            border: 2px solid #6a1b9a;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(106, 27, 154, 0.6);
+        }
+        .alerta-titulo { color: #55efc4; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; }
+        .alerta-msg { color: #ccc; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4; }
+        .btn-alerta-ok {
+            background: linear-gradient(45deg, #6a1b9a, #4b0082);
+            color: white; border: none; padding: 12px 30px;
+            border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%;
+        }
+        #overlay-alerta {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 4999;
+            backdrop-filter: blur(3px);
+        }
+
         /* TELA DE ENTRADA ÉPICA */
         #tela-entrada {
             position: fixed; top:0; left:0; width:100%; height:100%;
@@ -93,6 +124,13 @@
     </style>
 </head>
 <body>
+
+    <div id="overlay-alerta"></div>
+    <div id="alerta-celeste">
+        <div class="alerta-titulo" id="alerta-titulo">🛡️ Mensagem do Reino</div>
+        <div class="alerta-msg" id="msg-texto"></div>
+        <button class="btn-alerta-ok" onclick="fecharAlerta()">Entendido</button>
+    </div>
 
     <div class="dragao-voando">🐉</div>
 
@@ -190,6 +228,19 @@
     </div>
 
     <script>
+        /* FUNÇÕES DO NOVO ALERTA */
+        function exibirAlerta(texto, titulo = "🛡️ Mensagem do Reino") {
+            document.getElementById('alerta-titulo').innerText = titulo;
+            document.getElementById('msg-texto').innerText = texto;
+            document.getElementById('overlay-alerta').style.display = 'block';
+            document.getElementById('alerta-celeste').style.display = 'block';
+        }
+
+        function fecharAlerta() {
+            document.getElementById('overlay-alerta').style.display = 'none';
+            document.getElementById('alerta-celeste').style.display = 'none';
+        }
+
         window.onload = function() {
             const logado = localStorage.getItem('reinoLogado');
             const email = localStorage.getItem('usuarioEmail');
@@ -204,7 +255,7 @@
         function entrarComoCriador() {
             const email = document.getElementById('login-email').value;
             const senha = document.getElementById('login-senha').value;
-            if (!email || !senha) return alert("🛡️ Informe E-mail e Senha Rúnica!");
+            if (!email || !senha) return exibirAlerta("Informe E-mail e Senha Rúnica!");
             registrarUsuarioVigia(email);
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('tipoUsuario', 'criador');
@@ -223,9 +274,9 @@
         function verVigiaSecreta() {
             const admEmail = "seuemail@exemplo.com"; 
             const usuarioLogado = localStorage.getItem('usuarioEmail');
-            if (usuarioLogado !== admEmail) return alert("🛡️ Apenas a Administradora pode ver os registros!");
+            if (usuarioLogado !== admEmail) return exibirAlerta("Apenas a Administradora pode ver os registros!", "🚫 Acesso Negado");
             const lista = JSON.parse(localStorage.getItem('vigia_usuarios') || "[]");
-            alert(lista.length === 0 ? "Nenhum usuário." : "📋 REGISTROS:\n\n" + lista.join("\n"));
+            exibirAlerta(lista.length === 0 ? "Nenhum usuário." : "📋 REGISTROS:\n\n" + lista.join("\n"), "📜 Arquivos da Vigia");
         }
 
         function entrarComoConvidado() {
@@ -236,15 +287,16 @@
         }
 
         function sair() { 
-            if(confirm("Deseja sair e limpar o acesso automático?")) {
+            exibirAlerta("Acesso automático limpo. Até a próxima!", "🏠 Saindo...");
+            setTimeout(() => {
                 localStorage.clear(); 
-                location.reload(); 
-            }
+                location.reload();
+            }, 1500);
         }
 
         function abrirCofre() {
             if(localStorage.getItem('tipoUsuario') === 'convidado') {
-                alert("🚫 Acesso Negado!");
+                exibirAlerta("Convidados não possuem cofre próprio!", "🚫 Acesso Restrito");
             } else {
                 window.location.href = 'inventario.html';
             }
@@ -254,13 +306,13 @@
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
         function publicarSelado() {
-            if(localStorage.getItem('tipoUsuario') === 'convidado') return alert("🛡️ Acesso apenas para Criadores!");
+            if(localStorage.getItem('tipoUsuario') === 'convidado') return exibirAlerta("Apenas Criadores podem selar obras!", "🛡️ Erro de Classe");
             
             const tipo = document.getElementById('tipo-pub').value;
             const status = document.getElementById('status-pub');
             const conteudo = localStorage.getItem(tipo);
 
-            if (!conteudo) return alert("Não há nada na mesa de trabalho! Vá nas ferramentas primeiro.");
+            if (!conteudo) return exibirAlerta("Não há nada na mesa de trabalho! Vá nas ferramentas primeiro.", "⚒️ Forja Fria");
 
             status.style.display = "block";
             status.innerHTML = "🔒 Selando rúnica...";
@@ -268,16 +320,13 @@
             setTimeout(() => {
                 const userEmail = localStorage.getItem('usuarioEmail');
                 const dataAtual = new Date().toLocaleDateString();
-                
-                // Salva a obra vinculada ao e-mail
                 localStorage.setItem(userEmail + "_" + tipo + "_obra", conteudo);
                 localStorage.setItem(userEmail + "_" + tipo + "_data", dataAtual);
-                
-                // Limpa o rascunho temporário para a próxima criação
                 localStorage.removeItem(tipo);
                 
                 status.innerHTML = "✅ **Obra no seu Cofre!**";
                 status.style.color = "#55efc4";
+                exibirAlerta("Sua obra foi selada e guardada no seu Tesouro com sucesso!", "✨ Sucesso!");
             }, 1000);
         }
 
