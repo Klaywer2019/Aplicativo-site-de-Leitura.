@@ -10,6 +10,7 @@
             background-color: #0a0a0a; color: white; 
             font-family: 'Segoe UI', sans-serif; margin: 0; 
             display: flex; flex-direction: column; height: 100vh;
+            overflow: hidden;
         }
 
         /* HEADER DO ESTÚDIO */
@@ -32,39 +33,49 @@
             overflow: hidden; background: #000;
         }
 
-        video { width: 100%; display: block; filter: none; transition: 0.3s; }
+        video { width: 100%; display: block; }
 
-        /* PAINEL DE CONTROLE (BOTTOM) */
+        /* PAINEL DE CONTROLE */
         .painel-edicao {
             background: #161b22; padding: 20px;
             border-top: 2px solid #2e7d32;
         }
 
         .controles-grade {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 12px; max-width: 1000px; margin: auto;
         }
 
-        /* BOTÕES PROFISSIONAIS */
         .btn-ferramenta {
             background: #21262d; color: #55efc4; border: 1px solid #30363d;
             padding: 12px; border-radius: 8px; cursor: pointer;
-            font-weight: bold; font-size: 0.9rem; transition: 0.2s;
+            font-weight: bold; font-size: 0.8rem; transition: 0.2s;
             display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
 
-        .btn-ferramenta:hover { background: #30363d; border-color: #55efc4; }
-        .btn-ferramenta.ativo { background: #2e7d32; color: white; }
+        .btn-ferramenta:hover { background: #30363d; border-color: #a29bfe; }
 
-        /* INPUT DE UPLOAD ESTILIZADO */
-        .upload-section {
-            margin-bottom: 20px; text-align: center;
+        /* MODAL DE FERRAMENTAS (PAINEL FLUTUANTE) */
+        #painel-reliquias {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 90%; max-width: 350px;
+            background: #1e1e1e; border: 2px solid #6a1b9a; border-radius: 20px;
+            padding: 20px; z-index: 5000; box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
+
+        .item-lista {
+            background: #2d3436; margin: 8px 0; padding: 12px;
+            border-radius: 10px; cursor: pointer; display: flex;
+            justify-content: space-between; border: 1px solid #444;
+        }
+
+        .item-lista:hover { border-color: #55efc4; background: #353b48; }
+
         .custom-upload {
             background: linear-gradient(45deg, #6a1b9a, #4b0082);
             color: white; padding: 12px 25px; border-radius: 25px;
             cursor: pointer; display: inline-block; font-weight: bold;
-            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+            margin-bottom: 15px;
         }
 
         .btn-save {
@@ -72,22 +83,19 @@
             padding: 10px 20px; border-radius: 20px; font-weight: bold;
             cursor: pointer;
         }
-
     </style>
 </head>
 <body>
 
     <div class="header-estudio">
-        <button onclick="window.location.href='cientistas.html'" style="background:none; border:none; color:#aaa; cursor:pointer;">⬅ Voltar ao Lab</button>
-        <h3 style="margin:0; color:#55efc4;">🎬 Studio Pro <span style="font-size: 0.7rem; background:#444; padding:2px 6px; border-radius:4px;">BETA</span></h3>
-        <button class="btn-save" onclick="alert('Funcionalidade de exportação em desenvolvimento!')">Exportar ⬇️</button>
+        <button onclick="window.location.href='index.html'" style="background:none; border:none; color:#aaa; cursor:pointer;">⬅ Voltar ao Reino</button>
+        <h3 style="margin:0; color:#55efc4;">🎬 Studio Pro <span style="font-size: 0.6rem; background:#444; padding:2px 4px; border-radius:4px;">PRO</span></h3>
+        <button class="btn-save" onclick="alert('Exportando linha do tempo...')">Exportar ⬇️</button>
     </div>
 
     <div class="workspace">
         <div class="upload-section">
-            <label for="importar-video" class="custom-upload">
-                📥 Importar Mídia para o Estúdio
-            </label>
+            <label for="importar-video" class="custom-upload">📥 Importar Mídia</label>
             <input type="file" id="importar-video" accept="video/*" style="display: none;">
         </div>
 
@@ -96,26 +104,31 @@
         </div>
     </div>
 
+    <div id="painel-reliquias">
+        <h3 id="titulo-painel" style="color:#a29bfe; margin-top:0;">📂 Biblioteca</h3>
+        <div id="conteudo-painel"></div>
+        <button onclick="fecharPainel()" style="width:100%; margin-top:15px; background:#d63031; color:white; border:none; padding:10px; border-radius:10px;">Fechar</button>
+    </div>
+
     <div class="painel-edicao">
-        <div style="text-align: center; margin-bottom: 15px; color: #aaa; font-size: 0.8rem;">FILTROS E ENERGIAS</div>
         <div class="controles-grade">
-            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'grayscale(100%)')">
-                <span>🌪️</span> Vento Cinza
+            <button class="btn-ferramenta" onclick="abrirTesoura()">
+                <span>🌪️</span> Cortar (Tesoura)
             </button>
-            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'hue-rotate(90deg) brightness(1.2)')">
-                <span>🧪</span> Radiação Verde
+            <button class="btn-ferramenta" onclick="abrirPainel('memes')">
+                <span>🧪</span> Baú de Memes
             </button>
-            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'invert(1) hue-rotate(180deg)')">
-                <span>🌌</span> Gravidade Roxa
+            <button class="btn-ferramenta" onclick="abrirPainel('sons')">
+                <span>🌌</span> Sons Mistério
             </button>
-            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'sepia(1) saturate(2)')">
+            <button class="btn-ferramenta" onclick="abrirPainel('filtros')">
                 <span>📜</span> Memória Antiga
             </button>
-            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'contrast(1.5) brightness(0.8)')">
-                <span>🔥</span> Brasa Viva
+            <button class="btn-ferramenta" onclick="abrirPainel('armazenamento')">
+                <span>🔥</span> Armazém
             </button>
-            <button class="btn-ferramenta" onclick="aplicarFiltro(this, 'none')" style="color: #ff7675;">
-                <span>❌</span> Limpar Tudo
+            <button class="btn-ferramenta" onclick="location.reload()" style="color: #ff7675;">
+                <span>❌</span> Limpar
             </button>
         </div>
     </div>
@@ -123,29 +136,64 @@
     <script>
         const video = document.getElementById('main-player');
         const upload = document.getElementById('importar-video');
+        const painel = document.getElementById('painel-reliquias');
 
-        // Carregar o vídeo selecionado
+        // Banco de Dados de Memes e Sons
+        const biblioteca = {
+            memes: [
+                { nome: "😂 Risada do Zap", tipo: "Vídeo" },
+                { nome: "🤔 Confused Lady", tipo: "Imagem" },
+                { nome: "🐱 Gato Dançando", tipo: "Vídeo" }
+            ],
+            sons: [
+                { nome: "👻 Suspense/Mistério", icon: "🎻" },
+                { nome: "🤣 Som de Pateta", icon: "🤡" },
+                { nome: "💥 Explosão", icon: "🧨" }
+            ],
+            filtros: [
+                { nome: "Preto e Branco", css: "grayscale(1)" },
+                { nome: "Visão Noturna", css: "hue-rotate(90deg) green" },
+                { nome: "Cinema Antigo", css: "sepia(1)" }
+            ]
+        };
+
         upload.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
-                const url = URL.createObjectURL(file);
-                video.src = url;
+                video.src = URL.createObjectURL(file);
                 video.play();
             }
         });
 
-        // Função para aplicar filtros e marcar botão ativo
-        function aplicarFiltro(btn, filtro) {
-            video.style.filter = filtro;
-            
-            // Remove a classe 'ativo' de todos os botões
-            document.querySelectorAll('.btn-ferramenta').forEach(b => b.classList.remove('ativo'));
-            
-            // Adiciona ao botão clicado (se não for o de limpar)
-            if(filtro !== 'none') {
-                btn.classList.add('ativo');
+        function abrirPainel(tipo) {
+            const titulo = document.getElementById('titulo-painel');
+            const conteudo = document.getElementById('conteudo-painel');
+            conteudo.innerHTML = "";
+            painel.style.display = 'block';
+
+            if (tipo === 'memes') {
+                titulo.innerText = "🧪 Baú de Memes";
+                biblioteca.memes.forEach(m => {
+                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Meme adicionado!')">${m.nome} <span>${m.tipo}</span></div>`;
+                });
+            } else if (tipo === 'sons') {
+                titulo.innerText = "🌌 Sons de Mistério";
+                biblioteca.sons.forEach(s => {
+                    conteudo.innerHTML += `<div class="item-lista" onclick="alert('Sons sendo carregados...')">${s.icon} ${s.nome}</div>`;
+                });
+            } else if (tipo === 'filtros') {
+                titulo.innerText = "📜 Filtros de Memória";
+                biblioteca.filtros.forEach(f => {
+                    conteudo.innerHTML += `<div class="item-lista" onclick="video.style.filter='${f.css}'">✨ ${f.nome}</div>`;
+                });
             }
         }
+
+        function abrirTesoura() {
+            alert("🌪️ FERRAMENTA TESOURA:\n\nToque no vídeo para marcar o início e o fim do corte!");
+        }
+
+        function fecharPainel() { painel.style.display = 'none'; }
     </script>
 </body>
 </html>
