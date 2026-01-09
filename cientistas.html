@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório dos Cientistas - Ferramentas de Criação</title>
+    <style>
+        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+        input, textarea, .code-input { -webkit-user-select: text; user-select: text; }
+
+        body { 
+            background-color: #0a0a0a; color: #e0e0e0; 
+            font-family: 'Consolas', monospace; margin: 0; padding-bottom: 50px; 
+        }
+
+        .nav-topo { 
+            display:flex; justify-content:space-around; align-items: center; 
+            padding:15px; background:#111; border-bottom: 3px solid #2e7d32; 
+            box-shadow: 0 0 20px rgba(46, 125, 50, 0.4);
+        }
+
+        .container-lab { padding: 20px; max-width: 800px; margin: auto; }
+
+        .ferramenta-card {
+            background: #161616; border-radius: 15px; padding: 20px;
+            margin-bottom: 30px; border: 1px solid #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        h3 { color: #55efc4; border-bottom: 1px solid #2e7d32; padding-bottom: 10px; }
+
+        /* ESTILO DO BLOCO DE NOTAS E CÓDIGO */
+        textarea {
+            width: 100%; height: 200px; background: #000; color: #00ff00;
+            border: 1px solid #2e7d32; border-radius: 8px; padding: 10px;
+            font-family: 'Consolas', monospace; resize: none;
+        }
+
+        .btn-cientista {
+            background: linear-gradient(45deg, #2e7d32, #6a1b9a);
+            color: white; border: none; padding: 10px 20px;
+            border-radius: 5px; cursor: pointer; font-weight: bold;
+            margin-top: 10px; width: 100%;
+        }
+
+        /* PREVIEW DE CÓDIGO EM TEMPO REAL */
+        #preview-code {
+            width: 100%; height: 150px; background: white;
+            margin-top: 10px; border-radius: 8px; border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-topo">
+        <button onclick="window.location.href='index.html'" style="background:#333; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">⬅ Sair do Lab</button>
+        <h2 style="color:#55efc4;">🧪 Ala dos Cientistas</h2>
+    </div>
+
+    <div class="container-lab">
+        
+        <div class="ferramenta-card">
+            <h3>📝 Escritório de Manuscritos</h3>
+            <p style="font-size: 0.8rem;">Escreva seu livro aqui. O progresso é salvo localmente.</p>
+            <textarea id="bloco-notas" placeholder="Comece sua história..." oninput="salvarTexto()"></textarea>
+            <div id="contador" style="font-size: 0.7rem; color: #888; margin-top: 5px;">Palavras: 0</div>
+            <button class="btn-cientista" onclick="baixarTexto()">Exportar Manuscrito (.txt)</button>
+        </div>
+
+        <div class="ferramenta-card">
+            <h3>💻 Forja de Código (HTML/CSS)</h3>
+            <p style="font-size: 0.8rem;">Crie componentes para seus mini-jogos e veja o resultado.</p>
+            <textarea id="codigo-html" placeholder="<h1>Olá Mundo</h1>" oninput="executarCodigo()"></textarea>
+            <iframe id="preview-code"></iframe>
+        </div>
+
+    </div>
+
+    <script>
+        // SALVAR TEXTO AUTOMATICAMENTE
+        function salvarTexto() {
+            const texto = document.getElementById('bloco-notas').value;
+            localStorage.setItem('rascunho_livro', texto);
+            const palavras = texto.trim().split(/\s+/).length;
+            document.getElementById('contador').innerText = "Palavras: " + (texto ? palavras : 0);
+        }
+
+        function baixarTexto() {
+            const texto = document.getElementById('bloco-notas').value;
+            const blob = new Blob([texto], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "meu_livro_celeste.txt";
+            link.click();
+        }
+
+        // EXECUTAR CÓDIGO EM TEMPO REAL
+        function executarCodigo() {
+            const codigo = document.getElementById('codigo-html').value;
+            const preview = document.getElementById('preview-code').contentWindow.document;
+            preview.open();
+            preview.write(codigo);
+            preview.close();
+        }
+
+        // CARREGAR DADOS SALVOS
+        window.onload = function() {
+            document.getElementById('bloco-notas').value = localStorage.getItem('rascunho_livro') || "";
+            salvarTexto();
+        };
+    </script>
+</body>
+</html>
