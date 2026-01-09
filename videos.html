@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ala de Vídeos - Reino Celeste</title>
+    <style>
+        /* 1. PADRÃO DE SEGURANÇA E VISUAL */
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
+        body { 
+            background-color: #121212; color: white; 
+            font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; 
+        }
+
+        .nav-topo { 
+            display:flex; justify-content:space-around; align-items: center; 
+            padding:15px; background:#1e1e1e; border-bottom: 2px solid #6a1b9a; 
+        }
+
+        /* 2. CARD DE VÍDEO (ESTILO TRAILER) */
+        .video-container { padding: 20px; text-align: center; }
+
+        .video-card {
+            width: 95%; max-width: 500px; margin: 25px auto;
+            background: #1e1e1e; border-radius: 20px; overflow: hidden;
+            border: 1px solid #444; box-shadow: 0 8px 15px rgba(0,0,0,0.6);
+        }
+
+        .video-preview {
+            width: 100%; height: 220px; 
+            background: linear-gradient(to right, #ff0000, #b20000); /* Cor dos Trailers */
+            display: flex; justify-content: center; align-items: center; 
+            font-weight: bold; font-size: 1.1rem; border-bottom: 3px solid #6a1b9a;
+        }
+
+        .video-info { padding: 20px; }
+
+        /* BOTÃO AVALIAR CELESTE */
+        .btn-avaliar {
+            background: linear-gradient(45deg, #6a1b9a, #2e7d32); 
+            color: white; border: 1px solid #a29bfe; padding: 10px 25px;
+            border-radius: 15px; font-size: 0.9rem; cursor: pointer;
+            font-weight: bold; transition: 0.3s; width: 100%;
+        }
+        .btn-avaliar:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* 3. TELAS DE INTERAÇÃO E BANIN-HAL */
+        #tela-ban, #tela-avaliacao {
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; height: 100vh; width: 100%; text-align: center;
+            position: fixed; top: 0; left: 0; background: rgba(18,18,18,0.98); z-index: 4000;
+        }
+
+        .input-feedback {
+            width: 85%; max-width: 350px; height: 90px; padding: 12px;
+            background: #1e1e1e; color: white; border: 1px solid #6a1b9a;
+            border-radius: 12px; margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-topo">
+        <button onclick="window.location.href='index.html'" style="background:#444; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">⬅ Voltar Home</button>
+        <h2 style="color:#ff7675;">🎥 Galeria de Trailers</h2>
+    </div>
+
+    <div class="video-container">
+        <div class="video-card">
+            <div class="video-preview">VÍDEO: CELESTE DRAGON 🎬</div>
+            <div class="video-info">
+                <h3>Trailers Oficiais</h3>
+                <p style="color:#888; font-size: 0.8rem; margin-bottom: 15px;">Assista e ajude o autor no Ranking!</p>
+                <button class="btn-avaliar" onclick="abrirAvaliacao('Trailers Oficiais')">Avaliar e Apoiar ⭐</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-avaliacao">
+        <h2 id="titulo-aval">Avaliar Vídeo</h2>
+        <textarea id="feedback-texto" placeholder="Dê uma ideia ou elogie o trailer..." class="input-feedback"></textarea>
+        <button onclick="enviarAvaliacao()" style="background:#6a1b9a; color:white; padding:12px 30px; border-radius:25px; border:none; font-weight:bold;">Confirmar Voto</button>
+        <button onclick="fecharAvaliacao()" style="background:none; color:#888; border:none; margin-top:15px; cursor:pointer;">Cancelar</button>
+    </div>
+
+    <div id="tela-ban" style="color: red;">
+        <h1>⚠️ REINO SOB ATAQUE ⚠️</h1>
+        <p>Tentativa de plágio ou comportamento impróprio detectada.</p>
+        <p>Seu acesso foi revogado por 48 horas.</p>
+    </div>
+
+    <script>
+        // FILTRO DE PROTEÇÃO CONTRA ROUBO E OFENSAS
+        const listaProibida = ["sexo", "porn", "+18", "roubo", "plagio", "copia", "ofensa", "fake"];
+
+        function verificarImoralidade(texto) {
+            return listaProibida.some(p => texto.toLowerCase().includes(p));
+        }
+
+        function abrirAvaliacao(nome) {
+            document.getElementById('titulo-aval').innerText = "Apoiando: " + nome;
+            document.getElementById('tela-avaliacao').style.display = 'flex';
+        }
+
+        function fecharAvaliacao() { document.getElementById('tela-avaliacao').style.display = 'none'; }
+
+        function enviarAvaliacao() {
+            const f = document.getElementById('feedback-texto').value;
+            if (verificarImoralidade(f)) {
+                localStorage.setItem('ban_tempo', new Date().getTime() + (48 * 60 * 60 * 1000));
+                location.reload();
+                return;
+            }
+            alert("✅ Seu apoio foi registrado! Isso ajuda muito o canal do autor.");
+            fecharAvaliacao();
+        }
+
+        // BLOQUEIOS ANTI-CÓPIA
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if(e.ctrlKey && (e.key === 'c' || e.key === 'u')) e.preventDefault();
+        });
+
+        // CHECAR BANIMENTO
+        window.onload = function() {
+            const banAte = localStorage.getItem('ban_tempo');
+            if (banAte && new Date().getTime() < banAte) {
+                document.body.innerHTML = "";
+                document.body.appendChild(document.getElementById('tela-ban'));
+                document.getElementById('tela-ban').style.display = 'flex';
+            }
+        };
+    </script>
+</body>
+</html>
