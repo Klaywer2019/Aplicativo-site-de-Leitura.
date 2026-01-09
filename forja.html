@@ -35,19 +35,58 @@
 
     <div class="container-editores">
         <div class="painel">
-            <label>HTML</label>
-            <textarea id="html-code" placeholder="<div>Olá Mundo</div>" oninput="atualizarPreview()"></textarea>
+            <label>HTML (Estrutura)</label>
+            <textarea id="html-code" oninput="atualizarPreview()">
+<div class="cartao-reino">
+  <h1>Minha Obra ⚔️</h1>
+  <p>Edite este código para criar sua própria magia rúnica!</p>
+  <button class="btn-teste">Magia</button>
+</div>
+            </textarea>
         </div>
         <div class="painel">
-            <label>CSS</label>
-            <textarea id="css-code" placeholder="div { color: red; }" oninput="atualizarPreview()"></textarea>
+            <label>CSS (Estilo)</label>
+            <textarea id="css-code" oninput="atualizarPreview()">
+body { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  margin: 0; 
+  background: #121212;
+}
+
+.cartao-reino {
+  background: #1e1e1e;
+  color: #55efc4;
+  padding: 30px;
+  border-radius: 20px;
+  border: 2px solid #6a1b9a;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.btn-teste {
+  background: #6a1b9a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+            </textarea>
         </div>
     </div>
 
-    <label style="margin-left: 5px;">👁️ Visão da Obra (Preview)</label>
+    <label style="margin-left: 5px; font-size: 0.8rem; color: #aaa;">👁️ Visão da Obra (Preview)</label>
     <iframe id="preview"></iframe>
 
     <script>
+        // Inicia o preview assim que a página carrega
+        window.onload = function() {
+            atualizarPreview();
+        };
+
         function atualizarPreview() {
             const html = document.getElementById('html-code').value;
             const css = "<style>" + document.getElementById('css-code').value + "</style>";
