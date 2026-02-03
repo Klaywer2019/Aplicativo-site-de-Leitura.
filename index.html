@@ -45,7 +45,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        /* TELA DE ENTRADA ÉPICA */
+        /* TELA DE ENTRADA */
         #tela-entrada {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: radial-gradient(circle, #1e1e1e 0%, #0a0a0a 100%);
@@ -112,15 +112,29 @@
         .btn-avaliar { background: linear-gradient(45deg, #2e7d32, #1b5e20); }
 
         .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #55efc4; cursor: pointer; object-fit: cover; background: #444; }
-        .sidebar { height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; background-color: #1e1e1e; overflow-x: hidden; transition: 0.5s; padding-top: 20px; border-left: 3px solid #6a1b9a; }
+        
+        /* SIDEBAR AJUSTADA */
+        .sidebar { 
+            height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
+            background-color: #1e1e1e; overflow-x: hidden; transition: 0.5s; 
+            border-left: 3px solid #6a1b9a;
+            display: flex; flex-direction: column; /* Para empurrar o botão de fechar pro fim */
+        }
         .card-rpg { background: #2d3436; border-radius: 15px; padding: 15px; width: 90%; margin: 10px auto; border: 1px solid #444; }
         
         #estante-principal { display: none; }
+
+        /* FOOTER DOS CRÉDITOS */
+        .footer-creditos {
+            margin-top: 40px;
+            padding: 30px 20px;
+            background: #161616;
+            border-top: 1px solid #333;
+            text-align: center;
+        }
     </style>
 </head>
-<body>
-
-    <div id="overlay-alerta"></div>
+<body oncontextmenu="return false;"> <div id="overlay-alerta"></div>
     <div id="alerta-celeste">
         <div class="alerta-titulo" id="alerta-titulo">🛡️ Mensagem do Reino</div>
         <div class="alerta-msg" id="msg-texto"></div>
@@ -193,7 +207,7 @@
         <h3 style="margin: 20px 20px 5px; color:#55efc4;">🕹️ Reino de Elgecon (Jogos)</h3>
         <p style="margin: 0 20px 20px; color: #aaa; font-size: 0.8rem;">Explore as aventuras e deixe seu feedback!</p>
         
-        <div style="padding: 0 20px 50px;">
+        <div style="padding: 0 20px 20px;">
             <div class="item-card" style="width: 100%; max-width: 450px; margin: 0 auto 25px; min-width: unset;">
                 <div class="item-capa jogos" style="height: 180px;">
                     <span style="font-size: 1.3rem;">AVENTURA NO REINO 🕹️</span>
@@ -212,27 +226,54 @@
                 </div>
             </div>
         </div>
+
+        <footer class="footer-creditos">
+            <div style="background: rgba(106, 27, 154, 0.05); padding: 20px; border-radius: 20px; border: 1px dashed #6a1b9a;">
+                <h4 style="margin: 0; color: #55efc4; letter-spacing: 1px;">⭐ MEUS CRÉDITOS</h4>
+                <p style="font-size: 0.85rem; color: #aaa; margin: 10px 0;">Este reino foi forjado com dedicação por <span style="color:#a29bfe; font-weight:bold;">[Seu Nome/Nick]</span></p>
+                <div style="font-size: 0.7rem; color: #555;">© 2026 Reino Celeste - Todos os direitos protegidos por runas de segurança.</div>
+            </div>
+        </footer>
     </div>
 
     <div id="menuLateral" class="sidebar">
-        <div class="card-rpg">
-            <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;">Visitante</h2>
-            <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
+        <div style="flex: 1; padding-top: 20px;"> <div class="card-rpg">
+                <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;">Visitante</h2>
+                <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
+            </div>
+            <div class="card-rpg" style="border: 1px solid #a29bfe;">
+                <h4 style="margin:0; color: #a29bfe;">🏛️ Meu Tesouro</h4>
+                <button class="btn-top" style="background: #6a1b9a; width:100%;" onclick="abrirCofre()">Abrir Cofre</button>
+            </div>
+            <div class="card-rpg">
+                <h4 style="margin-top:0;">🧪 Ferramentas</h4>
+                <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
+                <button class="btn-top" style="background: linear-gradient(45deg, #2d3436, #636e72); width:100%; margin-bottom:10px;" onclick="window.location.href='forja.html'">⚒️ Forja de Códigos</button>
+                <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
+            </div>
         </div>
-        <div class="card-rpg" style="border: 1px solid #a29bfe;">
-            <h4 style="margin:0; color: #a29bfe;">🏛️ Meu Tesouro</h4>
-            <button class="btn-top" style="background: #6a1b9a; width:100%;" onclick="abrirCofre()">Abrir Cofre</button>
+
+        <div style="padding: 20px; border-top: 1px solid #333; background: #1e1e1e;">
+            <button class="btn-top" style="background:#c0392b; width:100%;" onclick="fecharMenu()">✖ Fechar Menu</button>
         </div>
-        <div class="card-rpg">
-            <h4 style="margin-top:0;">🧪 Ferramentas</h4>
-            <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
-            <button class="btn-top" style="background: linear-gradient(45deg, #2d3436, #636e72); width:100%; margin-bottom:10px;" onclick="window.location.href='forja.html'">⚒️ Forja de Códigos</button>
-            <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
-        </div>
-        <button class="btn-top" style="background:none; color:red; width:100%; margin-top: 20px;" onclick="fecharMenu()">✖ Fechar Menu</button>
     </div>
 
     <script>
+        // PROTEÇÃO DE CÓDIGO (ANTI-CÓPIA)
+        document.addEventListener('contextmenu', e => e.preventDefault()); // Bloqueia clique direito
+        document.addEventListener('keydown', function(e) {
+            // Bloqueia F12, Ctrl+Shift+I, Ctrl+U, Ctrl+C, Ctrl+V
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+                (e.ctrlKey && e.keyCode == 85) ||
+                (e.ctrlKey && e.keyCode == 67) ||
+                (e.ctrlKey && e.keyCode == 86)) {
+                exibirAlerta("🛡️ As runas de proteção impedem o acesso ao código deste reino!", "Segurança Ativa");
+                e.preventDefault();
+                return false;
+            }
+        });
+
         function exibirAlerta(texto, titulo = "🛡️ Mensagem do Reino") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
@@ -272,7 +313,6 @@
         function abrirCofre() { window.location.href = 'inventario.html'; }
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
