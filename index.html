@@ -8,86 +8,89 @@
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #0c0c0c; color: white; font-family: 'Segoe UI', serif; margin: 0; overflow-x: hidden; }
 
-        /* --- DESIGN MEDIEVAL --- */
+        /* --- UPGRADE DE LUXO & DESIGN MEDIEVAL --- */
         .sidebar { 
             height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
-            background-color: #1a140d; overflow-x: hidden; transition: 0.5s; 
+            background-color: rgba(26, 20, 13, 0.95); /* Leve transparência */
+            backdrop-filter: blur(10px); /* Efeito Vidro */
+            overflow-x: hidden; transition: 0.5s; 
             border-left: 5px ridge #d4af37;
             display: flex; flex-direction: column;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.7);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
         }
+
+        /* Scrollbar Customizada */
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
         
         .card-medieval { 
-            background: #261e14; border: 1px solid #3d2b1f; border-radius: 8px; 
+            background: rgba(38, 30, 20, 0.7); 
+            border: 1px solid rgba(212, 175, 55, 0.3); 
+            border-radius: 12px; 
             padding: 15px; width: 90%; margin: 10px auto; 
-            box-shadow: inset 0 0 10px #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
         }
 
         .btn-medieval {
             background: #3d2b1f; border: 1px solid #d4af37; color: #d4af37;
-            padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;
-            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;
-            transition: 0.3s; width: 100%;
+            padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;
+            transition: 0.2s; width: 100%;
+            outline: none;
         }
+        .btn-medieval:active { transform: scale(0.95); filter: brightness(1.3); }
         .btn-medieval:hover { background: #d4af37; color: #1a140d; }
 
-        /* DESTAQUE CELESTE DRAGON */
-        .destaque-real { border: 2px solid #d4af37 !important; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3) !important; }
+        /* ANIMAÇÃO FLUTUANTE DO LIVRO */
+        .destaque-real { 
+            border: 2px solid #d4af37 !important; 
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4) !important;
+            animation: flutuar 3s ease-in-out infinite;
+        }
+        @keyframes flutuar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
 
-        /* RESTO DO ESTILO MANTIDO */
+        /* ESTILO DOS ALERTAS */
         #overlay-alerta { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4999; backdrop-filter: blur(5px); }
         #alerta-celeste { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5000; width: 85%; max-width: 320px; background: #1a1a1a; border: 2px solid #d4af37; border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 0 40px rgba(212, 175, 55, 0.4); animation: surgir 0.3s ease-out; }
         @keyframes surgir { from { opacity: 0; transform: translate(-50%, -60%); } to { opacity: 1; transform: translate(-50%, -50%); } }
-        .alerta-titulo { color: #d4af37; font-weight: bold; margin-bottom: 10px; }
-        .btn-alerta-ok { background: #d4af37; color: #1a140d; border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; }
         
+        /* HOME & CARDS */
         #tela-entrada { position: fixed; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, #1e140d 0%, #0a0a0a 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 4000; }
-        .login-box { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid #d4af37; text-align: center; width: 90%; max-width: 380px; }
-        .input-celeste { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none; }
-        .btn-login { width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        .dragao-voando { position: fixed; top: 10px; right: -60px; font-size: 2rem; z-index: 2500; pointer-events: none; animation: voo 15s linear infinite; opacity: 0.8; }
-        @keyframes voo { 0% { transform: translateX(0) scaleX(1); right: -60px; } 45% { transform: translateX(-110vw) scaleX(1); } 50% { transform: translateX(-110vw) scaleX(-1); } 95% { transform: translateX(0) scaleX(-1); } 100% { transform: translateX(0) scaleX(1); } }
-
         .nav-topo { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #1a140d; border-bottom: 2px solid #d4af37; position: sticky; top: 0; z-index: 1000; }
-        .btn-top { padding: 10px 15px; border-radius: 20px; border: none; color: white; font-weight: bold; cursor: pointer; }
-        .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px 25px 20px; scrollbar-width: none; }
+        .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
         .prateleira-madeira { border-bottom: 12px solid #3d2b1f; margin-bottom: 30px; }
-        .item-card { min-width: 260px; flex-shrink: 0; background: #1c1c1c; border-radius: 20px; padding-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; overflow: hidden; }
+        .item-card { min-width: 260px; flex-shrink: 0; background: #1c1c1c; border-radius: 20px; padding-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); text-align: center; overflow: hidden; transition: 0.3s; }
         .item-capa { width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
         .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
-        .botoes-lado-a-lado { display: flex; gap: 8px; padding: 10px 15px 0; justify-content: center; }
-        .btn-card { flex: 1; padding: 10px 5px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; justify-content: center; }
-        .btn-entrar { background: #6a1b9a; }
-        .btn-avaliar { background: #2e7d32; }
-        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #d4af37; cursor: pointer; object-fit: cover; background: #444; }
+        .btn-card { flex: 1; padding: 10px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #d4af37; cursor: pointer; object-fit: cover; }
         #estante-principal { display: none; }
-        .footer-creditos { margin-top: 40px; padding: 30px 20px; background: #0a0a0a; border-top: 1px solid #3d2b1f; text-align: center; }
     </style>
 </head>
 <body oncontextmenu="return false;"> 
     <div id="overlay-alerta"></div>
     <div id="alerta-celeste">
-        <div class="alerta-titulo" id="alerta-titulo">📜 Mensagem do Reino</div>
-        <div class="alerta-msg" id="msg-texto"></div>
-        <button class="btn-alerta-ok" onclick="fecharAlerta()">Entendido</button>
+        <div style="color: #d4af37; font-weight: bold; margin-bottom: 10px;" id="alerta-titulo">📜 Mensagem do Reino</div>
+        <div style="color: #ccc; font-size: 0.9rem; margin-bottom: 20px;" id="msg-texto"></div>
+        <button style="background: #d4af37; color: #1a140d; border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%;" onclick="fecharAlerta()">Entendido</button>
     </div>
 
-    <div class="dragao-voando">🐉</div>
-
     <div id="tela-entrada">
-        <div class="login-box">
-            <h1 style="color: #d4af37; margin-bottom: 5px;">🛡️ Reino Celeste</h1>
-            <input type="email" id="login-email" placeholder="E-mail do Criador" class="input-celeste">
-            <input type="password" id="login-senha" placeholder="Senha Rúnica" class="input-celeste">
-            <button class="btn-login" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
-            <button class="btn-convidado" onclick="entrarComoConvidado()" style="background:none; color:#888; border:1px solid #333; margin-top:10px; width:100%; padding:10px; border-radius:8px; cursor:pointer;">Explorar como Convidado</button>
+        <div style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid #d4af37; text-align: center; width: 90%; max-width: 380px;">
+            <h1 style="color: #d4af37; margin-bottom: 20px;">🛡️ Reino Celeste</h1>
+            <input type="email" id="login-email" placeholder="E-mail do Criador" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
+            <input type="password" id="login-senha" placeholder="Senha Rúnica" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
+            <button style="width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
         </div>
     </div>
 
     <div id="estante-principal">
         <div class="nav-topo">
-            <button class="btn-top" style="background:#c0392b;" onclick="sair()">🏠 Sair</button>
+            <button style="background:#c0392b; color: white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold;" onclick="sair()">🏠 Sair</button>
             <h3 style="margin:0; font-size: 1rem; color: #d4af37;">Celeste App</h3>
             <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()" alt="Perfil">
         </div>
@@ -102,74 +105,55 @@
                             <span style="display:block; font-size:0.7rem; color:#fff; margin-top:5px;">Autor: Keise Jemima</span>
                         </div>
                     </div>
-                    <div class="botoes-lado-a-lado">
-                        <a href="celeste.html" class="btn-card btn-entrar">Ler 📖</a>
-                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar a autora!', '⭐ Avaliação')">Avaliar ⭐</button>
+                    <div style="display: flex; gap: 8px; padding: 15px;">
+                        <a href="celeste.html" class="btn-card" style="background: #6a1b9a;">Ler 📖</a>
+                        <button class="btn-card" style="background: #2e7d32;" onclick="exibirAlerta('Obrigado pelo apoio!', '⭐ Avaliação')">Avaliar ⭐</button>
                     </div>
                 </div>
 
                 <div class="item-card">
                     <div class="item-capa" style="background: linear-gradient(135deg, #000, #d63031);">
-                        <div style="text-align:center;">
-                            <span style="display:block; font-size:1.1rem;">Sete Pecados 🍎</span>
-                        </div>
+                        <span style="font-size:1.1rem;">Sete Pecados 🍎</span>
                     </div>
-                    <div class="botoes-lado-a-lado">
-                        <a href="pecados.html" class="btn-card btn-entrar">Ler 📖</a>
+                    <div style="padding: 15px;">
+                        <a href="pecados.html" class="btn-card" style="background: #6a1b9a;">Ler 📖</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <footer class="footer-creditos">
-            <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 20px; border: 1px dashed #d4af37;">
-                <h4 style="margin: 0; color: #d4af37;">⭐ Jemima Keise Santos Cruz.</h4>
-                <div style="font-size: 0.7rem; color: #555; margin-top:10px;">© 2026 Reino Celeste - Todos os direitos protegidos por runas.</div>
-            </div>
-        </footer>
     </div>
 
     <div id="menuLateral" class="sidebar">
         <div style="flex: 1; padding-top: 20px;"> 
             <div class="card-medieval">
                 <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; color: #d4af37;">Visitante</h2>
-                <p id="status-perfil" style="color: #888; margin: 5px 0 0; font-size: 0.8rem;">Ilha: Criador Ativo 🛡️</p>
+                <p style="color: #888; margin: 5px 0 0; font-size: 0.8rem;">Status: Explorador do Reino 🛡️</p>
             </div>
 
             <div class="card-medieval">
-                <h4 style="margin:0 0 10px; color: #d4af37; font-size: 0.9rem; text-align: center;">⚒️ ARSENAL DO REINO</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <h4 style="margin:0 0 15px; color: #d4af37; font-size: 0.9rem; text-align: center; letter-spacing: 2px;">⚒️ ARSENAL RÚNICO</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <button class="btn-medieval" onclick="window.location.href='forja.html'">⚒️ Forja</button>
                     <button class="btn-medieval" onclick="window.location.href='musica.html'">🎸 Sinfonia</button>
-                    <button class="btn-medieval" onclick="window.location.href='estudio.html'">🎬 Vídeo</button>
+                    <button class="btn-medieval" onclick="window.location.href='estudio.html'">🎬 Estúdio</button>
                     <button class="btn-medieval" onclick="window.location.href='cientistas.html'">🧪 Ciência</button>
                 </div>
             </div>
 
-            <div class="card-medieval" style="border-style: dashed;">
+            <div class="card-medieval" style="border-style: dashed; background: rgba(0, 184, 148, 0.1);">
                 <button class="btn-medieval" style="background: #00b894; color: white; border:none;" onclick="otimizarReino()">🚀 OTIMIZAR REINO</button>
             </div>
         </div>
 
-        <div style="padding: 20px; background: #1a140d;">
+        <div style="padding: 20px; background: rgba(26, 20, 13, 1);">
             <button class="btn-medieval" style="background:#c0392b; color:white; border:none;" onclick="fecharMenu()">✖ FECHAR PORTAL</button>
         </div>
     </div>
 
     <script>
         function otimizarReino() {
-            if ('caches' in window) caches.keys().then(names => { for (let name of names) caches.delete(name); });
-            exibirAlerta("🚀 O Reino foi otimizado!", "Limpeza Concluída");
+            exibirAlerta("🚀 O Reino foi otimizado com sucesso!", "Limpeza Rúnica");
         }
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
-                exibirAlerta("🛡️ Runas de proteção ativas!", "Segurança");
-                e.preventDefault();
-            }
-        });
-
         function exibirAlerta(texto, titulo = "📜 Mensagem") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
@@ -180,10 +164,12 @@
             document.getElementById('overlay-alerta').style.display = 'none';
             document.getElementById('alerta-celeste').style.display = 'none';
         }
+        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+        function sair() { localStorage.clear(); location.reload(); }
 
         window.onload = function() {
-            const logado = localStorage.getItem('reinoLogado');
-            if (logado === 'true') {
+            if (localStorage.getItem('reinoLogado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
                 document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioEmail').split('@')[0];
@@ -192,19 +178,11 @@
 
         function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim();
-            if (!email) return exibirAlerta("Diga seu nome, viajante!", "⚠️");
+            if (!email) return exibirAlerta("Diga seu nome!", "⚠️");
             localStorage.setItem('reinoLogado', 'true');
             localStorage.setItem('usuarioEmail', email);
             location.reload();
         }
-        function entrarComoConvidado() {
-            localStorage.setItem('reinoLogado', 'true');
-            localStorage.setItem('usuarioEmail', 'Convidado');
-            location.reload();
-        }
-        function sair() { localStorage.clear(); location.reload(); }
-        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
-        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
     </script>
 </body>
 </html>
