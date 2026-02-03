@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal de Entrada - Reino Celeste</title>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .painel-login { background: #1a1a1a; padding: 30px; border-radius: 20px; border: 2px solid #6a1b9a; width: 350px; text-align: center; box-shadow: 0 0 20px #6a1b9a; }
+        input { width: 100%; padding: 10px; margin: 10px 0; background: #0a0a0a; border: 1px solid #333; color: #55efc4; border-radius: 5px; }
+        .btn-portal { width: 100%; padding: 10px; background: linear-gradient(45deg, #6a1b9a, #4b0082); border: none; color: white; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .trocar-modo { font-size: 0.8rem; color: #aaa; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="painel-login">
+        <h2 id="titulo">🏰 Login do Reino</h2>
+        
+        <div id="campos-cadastro" style="display: none;">
+            <input type="text" id="nome" placeholder="Nome do Mestre">
+        </div>
+        
+        <input type="email" id="email" placeholder="Seu E-mail Rúnico">
+        <input type="password" id="senha" placeholder="Sua Senha Secreta">
+        
+        <button class="btn-portal" onclick="executarAcao()">Entrar no Reino</button>
+        
+        <span class="trocar-modo" id="btn-alternar" onclick="alternarModo()">Não tem conta? Cadastre-se aqui</span>
+    </div>
+
+    <script>
+        let modoLogin = true;
+
+        function alternarModo() {
+            modoLogin = !modoLogin;
+            const titulo = document.getElementById('titulo');
+            const camposCadastro = document.getElementById('campos-cadastro');
+            const btnAlternar = document.getElementById('btn-alternar');
+
+            if (modoLogin) {
+                titulo.innerText = "🏰 Login do Reino";
+                camposCadastro.style.display = "none";
+                btnAlternar.innerText = "Não tem conta? Cadastre-se aqui";
+            } else {
+                titulo.innerText = "⚒️ Novo Cadastro";
+                camposCadastro.style.display = "block";
+                btnAlternar.innerText = "Já tem conta? Faça Login";
+            }
+        }
+
+        async function executarAcao() {
+            const rota = modoLogin ? '/login' : '/cadastrar';
+            const dados = {
+                email: document.getElementById('email').value,
+                senha: document.getElementById('senha').value,
+                nome: document.getElementById('nome').value
+            };
+
+            const response = await fetch(`http://127.0.0.1:5000${rota}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dados)
+            });
+
+            const result = await response.json();
+            alert(result.msg);
+
+            if (result.status === "sucesso") {
+                // Se logar ou cadastrar com sucesso, guarda o nome e vai pra Home
+                localStorage.setItem('usuario_logado', dados.nome || result.usuario);
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
