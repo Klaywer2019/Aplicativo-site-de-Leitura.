@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Recrutamento - Reino Celeste</title>
+    <style>
+        body { background: radial-gradient(circle, #1e140d 0%, #0a0a0a 100%); color: white; font-family: 'Segoe UI', serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .caixa-cadastro { background: rgba(0, 0, 0, 0.7); padding: 30px; border-radius: 20px; border: 2px solid #d4af37; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none; }
+        .btn-registrar { width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-registrar:hover { filter: brightness(1.2); transform: scale(1.02); }
+        a { color: #888; text-decoration: none; font-size: 0.8rem; margin-top: 15px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="caixa-cadastro">
+    <h2 style="color: #d4af37;">📜 Recrutamento Real</h2>
+    <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 20px;">Registre seu nome nas crônicas do Reino</p>
+    
+    <input type="text" id="reg-nome" placeholder="Nome do Guerreiro">
+    <input type="email" id="reg-email" placeholder="E-mail de Contato">
+    <input type="password" id="reg-senha" placeholder="Senha Rúnica">
+    
+    <button class="btn-registrar" onclick="registrarGuerreiro()">Selo de Registro 🖋️</button>
+    
+    <a href="index.html">Já sou um mestre? Voltar ao login</a>
+</div>
+
+<script>
+    async function registrarGuerreiro() {
+        const nome = document.getElementById('reg-nome').value;
+        const email = document.getElementById('reg-email').value;
+        const senha = document.getElementById('reg-senha').value;
+
+        if(!nome || !email || !senha) return alert("Preencha todos os campos, parça!");
+
+        try {
+            const response = await fetch('http://127.0.0.1:5000/registrar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, senha })
+            });
+
+            const result = await response.json();
+            if(result.status === "sucesso") {
+                alert("⚔️ Registro concluído! Bem-vindo ao Reino.");
+                window.location.href = 'index.html';
+            } else {
+                alert("❌ Erro: " + result.msg);
+            }
+        } catch (error) {
+            alert("⚠️ O Motor Python está offline!");
+        }
+    }
+</script>
+
+</body>
+</html>
