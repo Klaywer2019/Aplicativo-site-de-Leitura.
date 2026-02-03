@@ -5,56 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinfonia Rúnica - Estúdio</title>
     <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; margin: 0; padding: 20px; text-align: center; }
+        body { background: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; text-align: center; }
         
-        .wave-container {
-            height: 100px; background: #1a1a1a; border-radius: 15px; 
-            margin-bottom: 20px; display: flex; align-items: center; justify-content: center;
-            border: 1px solid #6a1b9a; overflow: hidden;
+        /* Cabeçalho Pro */
+        .header-studio { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-back { background: #1e1e1e; border: 1px solid #6a1b9a; color: #a29bfe; padding: 10px; border-radius: 12px; cursor: pointer; }
+
+        /* Visualizador de Áudio */
+        .vibe-visualizer {
+            height: 120px; background: #000; border-radius: 20px; border: 2px solid #fdcb6e;
+            display: flex; align-items: center; justify-content: space-around; padding: 0 20px; margin-bottom: 20px;
+            box-shadow: inset 0 0 20px rgba(253, 203, 110, 0.2);
         }
+        .bar { width: 8px; background: #fdcb6e; border-radius: 4px; animation: pulse 1s infinite ease-in-out; }
+        @keyframes pulse { 0%, 100% { height: 20px; } 50% { height: 80px; } }
 
-        .pad-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px;
+        /* Launchpad de Batidas */
+        .launchpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .pad { 
+            height: 90px; background: #2d3436; border: none; border-radius: 18px; 
+            color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 6px #1a1a1a; transition: 0.1s;
         }
+        .pad:active { transform: translateY(4px); box-shadow: 0 2px #1a1a1a; background: #fdcb6e; color: #000; }
+        .pad.kick { border-bottom: 4px solid #ff7675; }
+        .pad.snare { border-bottom: 4px solid #a29bfe; }
+        .pad.synth { border-bottom: 4px solid #55efc4; }
 
-        .music-pad {
-            height: 80px; background: #2d3436; border-radius: 12px;
-            border: none; color: white; font-weight: bold; cursor: pointer;
-            transition: 0.2s; box-shadow: 0 4px #000;
-        }
-
-        .music-pad:active { transform: translateY(4px); box-shadow: 0 0 #000; background: #6a1b9a; }
-
-        .controles {
-            background: #1e1e1e; padding: 20px; border-radius: 20px; margin-top: 30px;
+        /* Barra de Gravação */
+        .rec-bar { background: #1e1e1e; padding: 20px; border-radius: 25px; border: 1px solid #333; }
+        .btn-rec { 
+            width: 70px; height: 70px; border-radius: 50%; background: #d63031; border: 5px solid #2d3436;
+            cursor: pointer; box-shadow: 0 0 15px rgba(214, 48, 49, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <h2 style="color: #a29bfe;">🎹 Sinfonia Rúnica</h2>
-    
-    <div class="wave-container">
-        <div style="color: #55efc4; font-size: 0.8rem; letter-spacing: 5px;">||||||||||||||||||||||</div>
+    <div class="header-studio">
+        <button class="btn-back" onclick="window.location.href='index.html'">← Voltar</button>
+        <h2 style="margin:0; color: #fdcb6e;">🎹 Sinfonia</h2>
     </div>
 
-    <div class="controles">
-        <button onclick="window.location.href='index.html'" style="background:#444; color:white; border:none; padding:10px; border-radius:10px; margin-bottom:10px;">← Voltar</button>
-        <h4>🎚️ Mesa de Batidas</h4>
-        <div class="pad-grid">
-            <button class="music-pad" onclick="playEffect('Kick')">BUM</button>
-            <button class="music-pad" onclick="playEffect('Snare')">CA</button>
-            <button class="music-pad" onclick="playEffect('HiHat')">TCHÍ</button>
-            <button class="music-pad" style="background: #e17055;">REC 🔴</button>
-            <button class="music-pad" style="background: #00b894;">PLAY ▶️</button>
-            <button class="music-pad" style="background: #0984e3;">SAVE 💾</button>
+    <div class="vibe-visualizer">
+        <div class="bar" style="animation-delay: 0.1s"></div>
+        <div class="bar" style="animation-delay: 0.3s"></div>
+        <div class="bar" style="animation-delay: 0.5s"></div>
+        <div class="bar" style="animation-delay: 0.2s"></div>
+        <div class="bar" style="animation-delay: 0.4s"></div>
+    </div>
+
+    <p style="color: #888; font-size: 0.9rem;">Toque nos pads para criar o som ⚡</p>
+
+    <div class="launchpad">
+        <button class="pad kick">BUM</button>
+        <button class="pad kick">BASE</button>
+        <button class="pad snare">TÁ!</button>
+        <button class="pad snare">CLAP</button>
+        <button class="pad synth">RUNA</button>
+        <button class="pad synth">VIBE</button>
+    </div>
+
+    <div class="rec-bar">
+        <p style="margin-top:0;">Gravador de Obras</p>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 30px;">
+            <button class="btn-rec" id="recBtn" onclick="toggleRec()"></button>
+            <div id="statusRec" style="color: #ff7675; font-weight: bold;">PRONTO</div>
         </div>
     </div>
 
     <script>
-        function playEffect(som) {
-            console.log("Tocando: " + som);
-            // Aqui você vai colocar os arquivos de áudio depois
+        function toggleRec() {
+            const btn = document.getElementById('recBtn');
+            const status = document.getElementById('statusRec');
+            if (status.innerText === "PRONTO") {
+                status.innerText = "GRAVANDO...";
+                btn.style.animation = "blink 1s infinite";
+            } else {
+                status.innerText = "PRONTO";
+                btn.style.animation = "none";
+                alert("Sua música rúnica foi salva no cache! 💾");
+            }
         }
     </script>
 </body>
