@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE,
+    sigla TEXT DEFAULT '[CD-👑]'
+);
+
+CREATE TABLE IF NOT EXISTS tesouros (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario TEXT,
+    codigo TEXT,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS capitulos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    numero INTEGER,
+    titulo TEXT,
+    conteudo TEXT
+);
