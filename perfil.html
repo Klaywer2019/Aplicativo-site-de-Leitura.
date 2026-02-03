@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil do Mestre - Reino Celeste</title>
+    <style>
+        body { background: #0c0c0c; color: white; font-family: 'Segoe UI', serif; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header-perfil { border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .card-dados { background: #1a140d; border: 2px ridge #d4af37; padding: 20px; border-radius: 15px; margin-bottom: 30px; }
+        .dado-linha { margin: 10px 0; font-size: 1.1rem; }
+        .label { color: #d4af37; font-weight: bold; }
+        .grid-obras { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .obra-card { background: #1c1c1c; border-radius: 12px; padding: 15px; border: 1px solid #333; }
+        iframe { width: 100%; height: 150px; border: none; background: white; border-radius: 8px; }
+        .btn-voltar { background: #d4af37; color: #1a140d; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-perfil">
+        <h1 id="titulo-nome">Carregando Mestre...</h1>
+        <a href="index.html" class="btn-voltar">⬅ Voltar</a>
+    </div>
+
+    <div class="card-dados">
+        <h3>📜 Registro Real</h3>
+        <div class="dado-linha"><span class="label">E-mail:</span> <span id="p-email">...</span></div>
+        <div class="dado-linha"><span class="label">Senha:</span> <span id="p-senha">...</span></div>
+        <div class="dado-linha"><span class="label">Rank:</span> <span id="p-sigla" style="color: #55efc4;">...</span></div>
+    </div>
+
+    <h3>⚒️ Suas Obras Forjadas</h3>
+    <div id="minhas-obras" class="grid-obras">
+        </div>
+</div>
+
+<script>
+    async function carregarPerfil() {
+        const email = localStorage.getItem('usuarioEmail');
+        if (!email) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/meu_perfil/${email}`);
+            const dados = await response.json();
+
+            document.getElementById('titulo-nome').innerText = "Mestre " + dados.nome;
+            document.getElementById('p-email').innerText = dados.email;
+            document.getElementById('p-senha').innerText = dados.senha;
+            document.getElementById('p-sigla').innerText = dados.sigla;
+
+            const lista = document.getElementById('minhas-obras');
+            lista.innerHTML = '';
+
+            if (dados.obras.length === 0) {
+                lista.innerHTML = "<p>Você ainda não forjou nenhuma obra.</p>";
+                return;
+            }
+
+            dados.obras.forEach(obra => {
+                const card = document.createElement('div');
+                card.className = 'obra-card';
+                // Lógica de split para HTML/CSS
+                const partes = obra.codigo.split(' | CSS: ');
+                const html = partes[0].replace('HTML: ', '');
+                const css = partes[1] || '';
+
+                card.innerHTML = `
+                    <iframe srcdoc="${html}<style>${css}</style>"></iframe>
+                    <p style="font-size: 0.8rem; color: #aaa; margin-top: 10px;">Forjado em: ${obra.data}</p>
+                `;
+                lista.appendChild(card);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar perfil:", error);
+        }
+    }
+
+    window.onload = carregarPerfil;
+</script>
+
+</body>
+</html>
