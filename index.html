@@ -152,15 +152,12 @@
             const campo = document.getElementById('login-senha');
             const icone = document.getElementById('toggle-senha');
             if (campo.type === 'password') {
-                campo.type = 'text';
-                icone.innerText = '🔓';
+                campo.type = 'text'; icone.innerText = '🔓';
             } else {
-                campo.type = 'password';
-                icone.innerText = '👁️';
+                campo.type = 'password'; icone.innerText = '👁️';
             }
         }
 
-        // Funções de Interface
         function exibirAlerta(texto, titulo = "📜 Mensagem") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
@@ -175,16 +172,16 @@
             location.reload(); 
         }
 
+        // --- CARREGAMENTO AUTOMÁTICO ---
         window.onload = function() {
-            const mestreLogado = localStorage.getItem('reinoLogado');
-            const nomeMestre = localStorage.getItem('usuarioNome');
-            if (mestreLogado === 'true') {
+            if (localStorage.getItem('reinoLogado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                if(nomeMestre) document.getElementById('nome-perfil').innerText = nomeMestre;
+                document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome') || "Mestre";
             }
         };
 
+        // --- LÓGICA DE LOGIN APRIMORADA ---
         async function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim();
             let senha = document.getElementById('login-senha').value.trim();
@@ -196,16 +193,29 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email, senha: senha })
                 });
+
                 const result = await response.json();
+
                 if (result.status === "sucesso") {
+                    // 1. Salva no navegador
                     localStorage.setItem('reinoLogado', 'true');
                     localStorage.setItem('usuarioEmail', result.email);
                     localStorage.setItem('usuarioNome', result.usuario);
-                    location.reload();
+
+                    // 2. Transição Visual Imediata (Site entra na hora)
+                    document.getElementById('tela-entrada').style.display = 'none';
+                    document.getElementById('estante-principal').style.display = 'block';
+                    document.getElementById('nome-perfil').innerText = result.usuario;
+
+                    exibirAlerta(`Bem-vindo, Mestre ${result.usuario}!`, "✨ Acesso Autorizado");
+                    
+                    // 3. Opcional: Recarregar suavemente após o alerta para firmar os dados
+                    setTimeout(() => { location.reload(); }, 1500);
                 } else {
                     exibirAlerta(result.msg, "🚫 Acesso Negado");
                 }
             } catch (error) {
+                console.error("Erro:", error);
                 exibirAlerta("O Motor Python está offline!", "⚠️ Erro de Link");
             }
         }
