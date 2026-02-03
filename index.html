@@ -113,18 +113,16 @@
 
         .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #55efc4; cursor: pointer; object-fit: cover; background: #444; }
         
-        /* SIDEBAR AJUSTADA */
         .sidebar { 
             height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
             background-color: #1e1e1e; overflow-x: hidden; transition: 0.5s; 
             border-left: 3px solid #6a1b9a;
-            display: flex; flex-direction: column; /* Para empurrar o botão de fechar pro fim */
+            display: flex; flex-direction: column;
         }
         .card-rpg { background: #2d3436; border-radius: 15px; padding: 15px; width: 90%; margin: 10px auto; border: 1px solid #444; }
         
         #estante-principal { display: none; }
 
-        /* FOOTER DOS CRÉDITOS */
         .footer-creditos {
             margin-top: 40px;
             padding: 30px 20px;
@@ -134,7 +132,8 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="overlay-alerta"></div>
+<body oncontextmenu="return false;"> 
+    <div id="overlay-alerta"></div>
     <div id="alerta-celeste">
         <div class="alerta-titulo" id="alerta-titulo">🛡️ Mensagem do Reino</div>
         <div class="alerta-msg" id="msg-texto"></div>
@@ -185,7 +184,7 @@
                     </div>
                     <div class="botoes-lado-a-lado">
                         <a href="pecados.html" class="btn-card btn-entrar">Ler 📖</a>
-                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar o autor DESCONHECIDO AINDA!', '⭐ Avaliação')">Avaliar ⭐</button>
+                        <button class="btn-card btn-avaliar" onclick="exibirAlerta('Obrigado por apoiar o autor Yuri Otávio!', '⭐ Avaliação')">Avaliar ⭐</button>
                     </div>
                 </div>
             </div>
@@ -237,7 +236,8 @@
     </div>
 
     <div id="menuLateral" class="sidebar">
-        <div style="flex: 1; padding-top: 20px;"> <div class="card-rpg">
+        <div style="flex: 1; padding-top: 20px;"> 
+            <div class="card-rpg">
                 <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; cursor: pointer;">Visitante</h2>
                 <p id="status-perfil" style="color: #55efc4; margin: 5px 0 0;">Ilha: Iniciante 🛡️</p>
             </div>
@@ -249,7 +249,9 @@
                 <h4 style="margin-top:0;">🧪 Ferramentas</h4>
                 <button class="btn-top" style="background: linear-gradient(45deg, #2e7d32, #1b5e20); width:100%; margin-bottom:10px;" onclick="window.location.href='cientistas.html'">🧪 Ala dos Cientistas</button>
                 <button class="btn-top" style="background: linear-gradient(45deg, #2d3436, #636e72); width:100%; margin-bottom:10px;" onclick="window.location.href='forja.html'">⚒️ Forja de Códigos</button>
-                <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
+                <button class="btn-top" style="background: linear-gradient(45deg, #6a1b9a, #4b0082); width:100%; margin-bottom:10px;" onclick="window.location.href='estudio.html'">🎬 Estúdio de Vídeo</button>
+                <button class="btn-top" style="background: linear-gradient(45deg, #fdcb6e, #e17055); width:100%; margin-bottom:10px;" onclick="window.location.href='musica.html'">🎸 Sinfonia Rúnica</button>
+                <button class="btn-top" style="background: linear-gradient(45deg, #00b894, #00cec9); width:100%;" onclick="otimizarReino()">🚀 Otimizar Sistema</button>
             </div>
         </div>
 
@@ -259,15 +261,24 @@
     </div>
 
     <script>
+        // --- SISTEMA DE LIMPEZA AUTOMÁTICA (BOOSTER) ---
+        function otimizarReino() {
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    for (let name of names) caches.delete(name);
+                });
+            }
+            const manter = ['reinoLogado', 'usuarioEmail', 'tipoUsuario'];
+            Object.keys(localStorage).forEach(key => {
+                if (!manter.includes(key)) localStorage.removeItem(key);
+            });
+            exibirAlerta("🚀 O Reino foi otimizado! O site agora está mais leve.", "Limpeza Concluída");
+        }
+
         // PROTEÇÃO DE CÓDIGO (ANTI-CÓPIA)
-        document.addEventListener('contextmenu', e => e.preventDefault()); // Bloqueia clique direito
+        document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', function(e) {
-            // Bloqueia F12, Ctrl+Shift+I, Ctrl+U, Ctrl+C, Ctrl+V
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
-                (e.ctrlKey && e.keyCode == 85) ||
-                (e.ctrlKey && e.keyCode == 67) ||
-                (e.ctrlKey && e.keyCode == 86)) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85) || (e.ctrlKey && e.keyCode == 67) || (e.ctrlKey && e.keyCode == 86)) {
                 exibirAlerta("🛡️ As runas de proteção impedem o acesso ao código deste reino!", "Segurança Ativa");
                 e.preventDefault();
                 return false;
