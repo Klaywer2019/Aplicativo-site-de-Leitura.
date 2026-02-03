@@ -1,37 +1,26 @@
 #include <iostream>
 #include <string>
-#include <algorithm> // Para std::reverse
 
-// Função que simula uma criptografia rúnica simples
-// Na vida real, usaria algoritmos de criptografia robustos como AES
-std::string criptografarRuna(const std::string& textoClaro) {
-    std::string textoCifrado = textoClaro;
-    std::reverse(textoCifrado.begin(), textoCifrado.end()); // Inverte o texto
-    for (char &c : textoCifrado) {
-        c += 1; // Desloca cada caractere por 1 (exemplo simples)
+// Função rúnica de embaralhamento (Criptografia simples para teste)
+std::string aplicarRuna(std::string texto) {
+    for(int i = 0; i < texto.length(); i++) {
+        texto[i] = texto[i] + 3; // Desloca os caracteres (Estilo Cifra de César)
     }
-    return textoCifrado;
+    return texto;
 }
 
-// Função que simula a descriptografia
-std::string descriptografarRuna(const std::string& textoCifrado) {
-    std::string textoClaro = textoCifrado;
-    for (char &c : textoClaro) {
-        c -= 1; // Desfaz o deslocamento
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cout << "Erro: Nenhuma runa enviada!";
+        return 1;
     }
-    std::reverse(textoClaro.begin(), textoClaro.end()); // Inverte de volta
-    return textoClaro;
-}
 
-int main() {
-    std::cout << "--- Oraculo de C++ Ativado ---" << std::endl;
-    std::string mensagemSecreta = "Mensagem Secreta do Reino Celeste";
-    
-    std::string cifrado = criptografarRuna(mensagemSecreta);
-    std::cout << "Texto Cifrado: " << cifrado << std::endl;
-    
-    std::string decifrado = descriptografarRuna(cifrado);
-    std::cout << "Texto Decifrado: " << decifrado << std::endl;
-    
+    // O Python manda o texto pelo primeiro argumento
+    std::string mensagem = argv[1];
+    std::string mensagemCriptografada = aplicarRuna(mensagem);
+
+    // O C++ devolve o texto embaralhado para o Python ler
+    std::cout << mensagemCriptografada;
+
     return 0;
 }
