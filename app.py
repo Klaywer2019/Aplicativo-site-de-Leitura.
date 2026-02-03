@@ -9,18 +9,54 @@ CORS(app)
 def conectar_banco():
     return sqlite3.connect('reino_celeste.db')
 
-# --- 🧪 ORÁCULO C++: A PONTE DE PERFORMANCE ---
-# Agora ele aceita um modo: 'c' para criptografar e 'd' para descriptografar
+# --- 🧪 ORÁCULO C++: CRIPTO/DESCRIPTO ---
 def usar_oraculo_cpp(texto, modo):
     try:
-        # Garante que o Oráculo está compilado
         subprocess.run(['g++', 'runas_seguranca.cpp', '-o', 'oraculo'], check=True)
-        # Executa passando o modo e o texto
         processo = subprocess.run(['./oraculo', modo, texto], capture_output=True, text=True)
         return processo.stdout.strip()
     except Exception as e:
         print(f"⚠️ Falha no Oráculo C++: {e}")
         return texto
+
+# --- 🆕 ROTA: CADASTRAR NOVO MESTRE ---
+@app.route('/cadastrar', methods=['POST'])
+def cadastrar():
+    dados = request.json
+    nome = dados.get('nome')
+    email = dados.get('email')
+    senha = dados.get('senha')
+
+    try:
+        conn = conectar_banco()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)", (nome, email, senha))
+        conn.commit()
+        conn.close()
+        return jsonify({"status": "sucesso", "msg": "✨ Cadastro Realizado! Agora faça login."})
+    except Exception as e:
+        return jsonify({"status": "erro", "msg": "E-mail já existe no Reino!"}), 400
+
+# --- 🆕 ROTA: LOGIN (CHAMA O GUARDIÃO JAVA) ---
+@app.route('/login', methods=['POST'])
+def login():
+    dados = request.json
+    email = dados.get('email')
+    senha = dados.get('senha')
+
+    try:
+        # O Python grita pro Java: "Ei, esse email e senha batem?"
+        subprocess.run(['javac', 'ValidadorReal.java'], check=True)
+        validacao = subprocess.run(['java', 'ValidadorReal', 'login', email, senha], capture_output=True, text=True)
+        
+        if "autorizado" in validacao.stdout.lower():
+            # Pegamos o nome que o Java achou no banco
+            nome_user = validacao.stdout.split(":")[1].strip()
+            return jsonify({"status": "sucesso", "msg": f"Bem-vindo, {nome_user}!", "usuario": nome_user})
+        else:
+            return jsonify({"status": "erro", "msg": "🚫 Acesso Negado: Dados incorretos!"}), 401
+    except Exception as e:
+        return jsonify({"status": "erro", "msg": f"Erro no Guardião: {e}"}), 500
 
 @app.route('/salvar_tesouro', methods=['POST'])
 def salvar_tesouro():
@@ -28,22 +64,17 @@ def salvar_tesouro():
     usuario = dados.get('usuario')
     codigo_puro = dados.get('codigo')
 
-    print(f"--- 🛡️ Iniciando Protocolo Ultra para: {usuario} ---")
-
-    # 1. ☕ VALIDAÇÃO JAVA
+    # Validação simples com Java antes de salvar
     try:
         subprocess.run(['javac', 'ValidadorReal.java'], check=True)
-        validacao = subprocess.run(['java', 'ValidadorReal', usuario], capture_output=True, text=True)
+        validacao = subprocess.run(['java', 'ValidadorReal', 'autorizar', usuario], capture_output=True, text=True)
         if "autorizado" not in validacao.stdout.lower():
-            return jsonify({"status": "erro", "msg": "🚫 Bloqueado pelo Guardião Java!"}), 403
-    except Exception as e:
-        return jsonify({"status": "erro", "msg": "Erro no sistema de segurança Java"}), 500
+            return jsonify({"status": "erro", "msg": "🚫 Bloqueado pelo Guardião!"}), 403
+    except Exception:
+        return jsonify({"status": "erro", "msg": "Erro de segurança"}), 500
 
-    # 2. 💎 CRIPTOGRAFIA C++ (Modo 'c')
-    print("🔮 Criptografando com C++...")
     codigo_selado = usar_oraculo_cpp(codigo_puro, 'c')
 
-    # 3. 🗄️ ARMAZENAMENTO SQL
     try:
         conn = conectar_banco()
         cursor = conn.cursor()
@@ -52,39 +83,21 @@ def salvar_tesouro():
         conn.close()
         return jsonify({"status": "sucesso", "msg": "✅ Tesouro salvo!"})
     except Exception as e:
-        return jsonify({"status": "erro", "msg": f"Erro no SQL: {e}"}), 500
+        return jsonify({"status": "erro", "msg": str(e)}), 500
 
-# --- 🏛️ NOVA ROTA: SALÃO DE LEITURA ---
 @app.route('/listar_tesouros', methods=['GET'])
 def listar_tesouros():
     try:
-        print("📜 Abrindo o Salão de Leitura...")
         conn = conectar_banco()
         cursor = conn.cursor()
         cursor.execute("SELECT usuario, codigo, data_criacao FROM tesouros ORDER BY data_criacao DESC")
         linhas = cursor.fetchall()
         conn.close()
-
-        tesouros_limpos = []
-        for usuario, codigo_cripto, data in linhas:
-            # 🔓 DESCRIPTOGRAFIA C++ (Modo 'd')
-            # O Python pede pro C++ limpar o código pro site entender
-            codigo_aberto = usar_oraculo_cpp(codigo_cripto, 'd')
-            
-            tesouros_limpos.append({
-                "usuario": usuario,
-                "codigo": codigo_aberto,
-                "data": data
-            })
-
+        tesouros_limpos = [{"usuario": u, "codigo": usar_oraculo_cpp(c, 'd'), "data": d} for u, c, d in linhas]
         return jsonify(tesouros_limpos)
     except Exception as e:
         return jsonify({"status": "erro", "msg": str(e)}), 500
 
 if __name__ == '__main__':
-    print("\n" + "="*40)
-    print("🔥 SOFTWARE ULTRA REINO CELESTE ATIVADO 🔥")
-    print("ESTADO: Python + Java + C++ + SQL conectados!")
-    print("ROTAS: /salvar_tesouro | /listar_tesouros")
-    print("="*40 + "\n")
+    print("\n🔥 MOTOR ULTRA LIGADO: LOGIN | CADASTRO | FORJA | INVENTÁRIO 🔥\n")
     app.run(port=5000, debug=True)
