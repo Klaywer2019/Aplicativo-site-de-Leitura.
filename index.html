@@ -142,6 +142,7 @@
     </div>
 
     <script>
+        // Funções de Interface
         function exibirAlerta(texto, titulo = "📜 Mensagem") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
@@ -156,21 +157,33 @@
             location.reload(); 
         }
 
+        // --- CONTROLE DE ACESSO ---
         window.onload = function() {
-            if (localStorage.getItem('reinoLogado') === 'true') {
+            const mestreLogado = localStorage.getItem('reinoLogado');
+            const nomeMestre = localStorage.getItem('usuarioNome');
+
+            if (mestreLogado === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome') || "Mestre";
+                // Garante que o nome real apareça no menu lateral
+                if(nomeMestre) {
+                    document.getElementById('nome-perfil').innerText = nomeMestre;
+                }
             }
         };
 
+        // --- CONEXÃO COM O MOTOR PYTHON ---
         async function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim();
             let senha = document.getElementById('login-senha').value.trim();
 
-            if (!email || !senha) return alert("Preencha as runas de acesso!");
+            if (!email || !senha) {
+                exibirAlerta("Preencha as runas de acesso!", "⚠️ Atenção");
+                return;
+            }
 
             try {
+                // Tenta conectar ao motor local na porta 5000
                 const response = await fetch('http://127.0.0.1:5000/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -180,15 +193,19 @@
                 const result = await response.json();
 
                 if (result.status === "sucesso") {
+                    // Grava as runas na memória do navegador
                     localStorage.setItem('reinoLogado', 'true');
                     localStorage.setItem('usuarioEmail', result.email);
                     localStorage.setItem('usuarioNome', result.usuario);
+                    
+                    // Recarrega o Reino com o novo mestre
                     location.reload();
                 } else {
                     exibirAlerta(result.msg, "🚫 Acesso Negado");
                 }
             } catch (error) {
-                exibirAlerta("O Motor Python está offline!", "⚠️ Erro de Conexão");
+                console.error("Erro de conexão:", error);
+                exibirAlerta("O Motor Python está offline! Ative o app.py para conectar.", "⚠️ Erro de Link");
             }
         }
     </script>
