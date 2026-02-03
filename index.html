@@ -69,7 +69,12 @@
         <div style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid #d4af37; text-align: center; width: 90%; max-width: 380px;">
             <h1 style="color: #d4af37; margin-bottom: 20px;">🛡️ Reino Celeste</h1>
             <input type="email" id="login-email" placeholder="E-mail do Criador" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
-            <input type="password" id="login-senha" placeholder="Senha Rúnica" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
+            
+            <div style="position: relative; width: 100%; margin-bottom: 12px;">
+                <input type="password" id="login-senha" placeholder="Senha Rúnica" style="width: 100%; padding: 12px; padding-right: 40px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
+                <span id="toggle-senha" onclick="toggleSenha()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.1rem; filter: grayscale(1);">👁️</span>
+            </div>
+
             <button style="width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
             
             <p style="font-size: 0.7rem; color: #888; margin-top: 15px; cursor: pointer; text-decoration: underline;" 
@@ -142,6 +147,19 @@
     </div>
 
     <script>
+        // --- FUNÇÃO PARA VER SENHA ---
+        function toggleSenha() {
+            const campo = document.getElementById('login-senha');
+            const icone = document.getElementById('toggle-senha');
+            if (campo.type === 'password') {
+                campo.type = 'text';
+                icone.innerText = '🔓';
+            } else {
+                campo.type = 'password';
+                icone.innerText = '👁️';
+            }
+        }
+
         // Funções de Interface
         function exibirAlerta(texto, titulo = "📜 Mensagem") {
             document.getElementById('alerta-titulo').innerText = titulo;
@@ -157,55 +175,38 @@
             location.reload(); 
         }
 
-        // --- CONTROLE DE ACESSO ---
         window.onload = function() {
             const mestreLogado = localStorage.getItem('reinoLogado');
             const nomeMestre = localStorage.getItem('usuarioNome');
-
             if (mestreLogado === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                // Garante que o nome real apareça no menu lateral
-                if(nomeMestre) {
-                    document.getElementById('nome-perfil').innerText = nomeMestre;
-                }
+                if(nomeMestre) document.getElementById('nome-perfil').innerText = nomeMestre;
             }
         };
 
-        // --- CONEXÃO COM O MOTOR PYTHON ---
         async function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim();
             let senha = document.getElementById('login-senha').value.trim();
-
-            if (!email || !senha) {
-                exibirAlerta("Preencha as runas de acesso!", "⚠️ Atenção");
-                return;
-            }
+            if (!email || !senha) return exibirAlerta("Preencha as runas de acesso!", "⚠️ Atenção");
 
             try {
-                // Tenta conectar ao motor local na porta 5000
                 const response = await fetch('http://127.0.0.1:5000/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email, senha: senha })
                 });
-
                 const result = await response.json();
-
                 if (result.status === "sucesso") {
-                    // Grava as runas na memória do navegador
                     localStorage.setItem('reinoLogado', 'true');
                     localStorage.setItem('usuarioEmail', result.email);
                     localStorage.setItem('usuarioNome', result.usuario);
-                    
-                    // Recarrega o Reino com o novo mestre
                     location.reload();
                 } else {
                     exibirAlerta(result.msg, "🚫 Acesso Negado");
                 }
             } catch (error) {
-                console.error("Erro de conexão:", error);
-                exibirAlerta("O Motor Python está offline! Ative o app.py para conectar.", "⚠️ Erro de Link");
+                exibirAlerta("O Motor Python está offline!", "⚠️ Erro de Link");
             }
         }
     </script>
