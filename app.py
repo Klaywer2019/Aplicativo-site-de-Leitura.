@@ -26,7 +26,6 @@ def cadastrar():
     nome = dados.get('nome')
     email = dados.get('email')
     senha = dados.get('senha')
-
     try:
         conn = conectar_banco()
         cursor = conn.cursor()
@@ -43,28 +42,54 @@ def login():
     dados = request.json
     email = dados.get('email')
     senha = dados.get('senha')
-
     try:
-        # O Python grita pro Java: "Ei, esse email e senha batem?"
         subprocess.run(['javac', 'ValidadorReal.java'], check=True)
         validacao = subprocess.run(['java', 'ValidadorReal', 'login', email, senha], capture_output=True, text=True)
-        
         if "autorizado" in validacao.stdout.lower():
-            # Pegamos o nome que o Java achou no banco
             nome_user = validacao.stdout.split(":")[1].strip()
-            return jsonify({"status": "sucesso", "msg": f"Bem-vindo, {nome_user}!", "usuario": nome_user})
+            # Retornamos o email também para o Front-end guardar
+            return jsonify({"status": "sucesso", "msg": f"Bem-vindo, {nome_user}!", "usuario": nome_user, "email": email})
         else:
             return jsonify({"status": "erro", "msg": "🚫 Acesso Negado: Dados incorretos!"}), 401
     except Exception as e:
         return jsonify({"status": "erro", "msg": f"Erro no Guardião: {e}"}), 500
+
+# --- 🆕 ROTA: BUSCAR PERFIL COMPLETO ---
+@app.route('/meu_perfil/<email>', methods=['GET'])
+def meu_perfil(email):
+    try:
+        conn = conectar_banco()
+        cursor = conn.cursor()
+        # Puxa os dados do usuário
+        cursor.execute("SELECT nome, email, senha, sigla FROM usuarios WHERE email = ?", (email,))
+        user = cursor.fetchone()
+        
+        if not user:
+            return jsonify({"status": "erro", "msg": "Mestre não encontrado!"}), 404
+
+        # Puxa só as obras desse usuário específico
+        cursor.execute("SELECT codigo, data_criacao FROM tesouros WHERE usuario = ?", (user[0],))
+        obras = cursor.fetchall()
+        conn.close()
+
+        # O Oráculo C++ limpa o código das obras para exibir no perfil
+        lista_obras = [{"codigo": usar_oraculo_cpp(o[0], 'd'), "data": o[1]} for o in obras]
+
+        return jsonify({
+            "nome": user[0],
+            "email": user[1],
+            "senha": user[2], # Depois vamos esconder isso com C++
+            "sigla": user[3],
+            "obras": lista_obras
+        })
+    except Exception as e:
+        return jsonify({"status": "erro", "msg": str(e)}), 500
 
 @app.route('/salvar_tesouro', methods=['POST'])
 def salvar_tesouro():
     dados = request.json
     usuario = dados.get('usuario')
     codigo_puro = dados.get('codigo')
-
-    # Validação simples com Java antes de salvar
     try:
         subprocess.run(['javac', 'ValidadorReal.java'], check=True)
         validacao = subprocess.run(['java', 'ValidadorReal', 'autorizar', usuario], capture_output=True, text=True)
@@ -74,7 +99,6 @@ def salvar_tesouro():
         return jsonify({"status": "erro", "msg": "Erro de segurança"}), 500
 
     codigo_selado = usar_oraculo_cpp(codigo_puro, 'c')
-
     try:
         conn = conectar_banco()
         cursor = conn.cursor()
@@ -99,5 +123,5 @@ def listar_tesouros():
         return jsonify({"status": "erro", "msg": str(e)}), 500
 
 if __name__ == '__main__':
-    print("\n🔥 MOTOR ULTRA LIGADO: LOGIN | CADASTRO | FORJA | INVENTÁRIO 🔥\n")
+    print("\n🔥 MOTOR ULTRA LIGADO: PERFIL HABILITADO 🔥\n")
     app.run(port=5000, debug=True)
