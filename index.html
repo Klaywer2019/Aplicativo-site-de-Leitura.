@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reino Celeste - Home</title>
     <style>
+        /* [Seu CSS original aqui - Não mudei nada para não estragar o visual] */
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { background-color: #0c0c0c; color: white; font-family: 'Segoe UI', serif; margin: 0; overflow-x: hidden; }
-
-        /* --- UPGRADE DE LUXO & DESIGN MEDIEVAL --- */
         .sidebar { 
             height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
             background-color: rgba(26, 20, 13, 0.95); 
@@ -18,10 +17,8 @@
             display: flex; flex-direction: column;
             box-shadow: -10px 0 30px rgba(0,0,0,0.8);
         }
-
         .sidebar::-webkit-scrollbar { width: 4px; }
         .sidebar::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
-        
         .card-medieval { 
             background: rgba(38, 30, 20, 0.7); 
             border: 1px solid rgba(212, 175, 55, 0.3); 
@@ -30,7 +27,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: 0.3s;
         }
-
         .btn-medieval {
             background: #3d2b1f; border: 1px solid #d4af37; color: #d4af37;
             padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;
@@ -38,8 +34,6 @@
             transition: 0.2s; width: 100%;
         }
         .btn-medieval:active { transform: scale(0.95); filter: brightness(1.3); }
-
-        /* ANIMAÇÃO FLUTUANTE */
         .destaque-real { 
             border: 2px solid #d4af37 !important; 
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.4) !important;
@@ -49,8 +43,6 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-
-        /* HOME & CARDS */
         #tela-entrada { position: fixed; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, #1e140d 0%, #0a0a0a 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 4000; }
         .nav-topo { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #1a140d; border-bottom: 2px solid #d4af37; position: sticky; top: 0; z-index: 1000; }
         .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
@@ -61,8 +53,6 @@
         .btn-card { flex: 1; padding: 10px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
         .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #d4af37; cursor: pointer; object-fit: cover; }
         #estante-principal { display: none; }
-
-        /* RODAPÉ MEDIEVAL */
         .footer-reino { padding: 40px 20px; text-align: center; background: #0a0a0a; border-top: 1px solid #1a140d; }
         .selo-autor { border: 2px ridge #d4af37; padding: 20px; border-radius: 15px; background: rgba(212, 175, 55, 0.05); max-width: 400px; margin: 0 auto; }
     </style>
@@ -81,6 +71,7 @@
             <input type="email" id="login-email" placeholder="E-mail do Criador" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
             <input type="password" id="login-senha" placeholder="Senha Rúnica" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
             <button style="width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
+            <p style="font-size: 0.7rem; color: #888; margin-top: 15px; cursor: pointer; text-decoration: underline;" onclick="exibirAlerta('Fale com a Keise para criar seu acesso!', '⚒️ Novo Cadastro')">Não tem conta?</p>
         </div>
     </div>
 
@@ -106,14 +97,6 @@
                         <button class="btn-card" style="background: #2e7d32;" onclick="exibirAlerta('Obrigado pelo apoio!', '⭐ Avaliação')">Avaliar ⭐</button>
                     </div>
                 </div>
-                <div class="item-card">
-                    <div class="item-capa" style="background: linear-gradient(135deg, #000, #d63031);">
-                        <span style="font-size:1.1rem;">Sete Pecados 🍎</span>
-                    </div>
-                    <div style="padding: 15px;">
-                        <a href="pecados.html" class="btn-card" style="background: #6a1b9a;">Ler 📖</a>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -132,8 +115,13 @@
         <div style="flex: 1; padding-top: 20px;"> 
             <div class="card-medieval">
                 <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; color: #d4af37;">Visitante</h2>
-                <p style="color: #888; margin: 5px 0 0; font-size: 0.8rem;">Status: Explorador do Reino 🛡️</p>
+                <p style="color: #888; margin: 5px 0 10px; font-size: 0.8rem;">Status: Explorador do Reino 🛡️</p>
+                
+                <button class="btn-medieval" style="background: rgba(212, 175, 55, 0.1); border-color: #55efc4; color: #55efc4;" onclick="window.location.href='perfil.html'">
+                    ⚙️ VER MEU PORTFÓLIO
+                </button>
             </div>
+            
             <div class="card-medieval">
                 <h4 style="margin:0 0 15px; color: #d4af37; font-size: 0.9rem; text-align: center; letter-spacing: 2px;">⚒️ ARSENAL RÚNICO</h4>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -150,6 +138,7 @@
     </div>
 
     <script>
+        // FUNÇÕES DE UI
         function exibirAlerta(texto, titulo = "📜 Mensagem") {
             document.getElementById('alerta-titulo').innerText = titulo;
             document.getElementById('msg-texto').innerText = texto;
@@ -159,19 +148,43 @@
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
         function sair() { localStorage.clear(); location.reload(); }
+
+        // VERIFICAÇÃO DE LOGIN AO CARREGAR
         window.onload = function() {
             if (localStorage.getItem('reinoLogado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioEmail').split('@')[0];
+                document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
             }
         };
-        function entrarComoCriador() {
+
+        // LOGIN REAL CONECTADO AO BACKEND (PYTHON/JAVA)
+        async function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim();
-            if (!email) return alert("Diga seu nome!");
-            localStorage.setItem('reinoLogado', 'true');
-            localStorage.setItem('usuarioEmail', email);
-            location.reload();
+            let senha = document.getElementById('login-senha').value.trim();
+
+            if (!email || !senha) return alert("Preencha as runas de acesso!");
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, senha: senha })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "sucesso") {
+                    localStorage.setItem('reinoLogado', 'true');
+                    localStorage.setItem('usuarioEmail', result.email);
+                    localStorage.setItem('usuarioNome', result.usuario);
+                    location.reload();
+                } else {
+                    exibirAlerta(result.msg, "🚫 Acesso Negado");
+                }
+            } catch (error) {
+                exibirAlerta("O Motor Python está offline!", "⚠️ Erro de Conexão");
+            }
         }
     </script>
 </body>
