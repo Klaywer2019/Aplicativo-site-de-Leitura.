@@ -71,7 +71,11 @@
             <input type="email" id="login-email" placeholder="E-mail do Criador" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
             <input type="password" id="login-senha" placeholder="Senha Rúnica" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
             <button style="width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
-            <p style="font-size: 0.7rem; color: #888; margin-top: 15px; cursor: pointer; text-decoration: underline;" onclick="exibirAlerta('Fale com a Keise para criar seu acesso!', '⚒️ Novo Cadastro')">Não tem conta?</p>
+            
+            <p style="font-size: 0.7rem; color: #888; margin-top: 15px; cursor: pointer; text-decoration: underline;" 
+               onclick="window.location.href='cadastro.html'">
+               Não tem conta? Aliste-se aqui! 🖋️
+            </p>
         </div>
     </div>
 
@@ -156,12 +160,10 @@
             if (localStorage.getItem('reinoLogado') === 'true') {
                 document.getElementById('tela-entrada').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
-                // Puxa o nome real validado pelo Java
                 document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome') || "Mestre";
             }
         };
 
-        // --- CONEXÃO COM O BACKEND PYTHON/JAVA ---
         async function entrarComoCriador() {
             let email = document.getElementById('login-email').value.trim();
             let senha = document.getElementById('login-senha').value.trim();
@@ -169,7 +171,6 @@
             if (!email || !senha) return alert("Preencha as runas de acesso!");
 
             try {
-                // Chama o Python que por sua vez chama o Guardião Java
                 const response = await fetch('http://127.0.0.1:5000/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -179,7 +180,6 @@
                 const result = await response.json();
 
                 if (result.status === "sucesso") {
-                    // Salva as credenciais para o arquivo perfil.html usar
                     localStorage.setItem('reinoLogado', 'true');
                     localStorage.setItem('usuarioEmail', result.email);
                     localStorage.setItem('usuarioNome', result.usuario);
@@ -188,7 +188,7 @@
                     exibirAlerta(result.msg, "🚫 Acesso Negado");
                 }
             } catch (error) {
-                exibirAlerta("O Motor Python está offline! Ligue o app.py", "⚠️ Erro de Conexão");
+                exibirAlerta("O Motor Python está offline!", "⚠️ Erro de Conexão");
             }
         }
     </script>
