@@ -3,42 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lendo: Celeste Dragon</title>
+    <title>Lendo: Celeste Dragon [CD-👑]</title>
     <style>
-        body { background-color: #0c0c0c; color: #ccc; font-family: 'Segoe UI', serif; margin: 0; line-height: 1.6; }
+        body { background-color: #0c0c0c; color: #ccc; font-family: 'Segoe UI', serif; margin: 0; line-height: 1.8; }
         
-        /* Cabeçalho Fixo */
         .header-leitura { 
             position: fixed; top: 0; width: 100%; background: #1a140d; 
             padding: 15px; border-bottom: 2px solid #d4af37; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        /* Container do Texto */
         .conteudo-livro { 
-            max-width: 600px; margin: 80px auto; padding: 25px; 
-            min-height: 80vh; transition: 0.5s;
+            max-width: 650px; margin: 80px auto; padding: 30px; 
+            min-height: 80vh; transition: opacity 0.4s;
         }
 
-        .titulo-capitulo { color: #d4af37; font-size: 1.8rem; margin-bottom: 20px; text-align: center; }
+        .titulo-capitulo { color: #d4af37; font-size: 2rem; margin-bottom: 25px; text-align: center; border-bottom: 1px ridge rgba(212,175,55,0.3); padding-bottom: 10px; }
 
-        /* Navegação Inferior */
         .controles { 
-            display: flex; justify-content: space-between; padding: 20px; 
-            max-width: 600px; margin: 0 auto;
+            display: flex; justify-content: space-around; padding: 25px; 
+            max-width: 650px; margin: 0 auto; background: #111; border-top: 1px solid #222;
         }
 
         .btn-nav { 
             background: #3d2b1f; color: #d4af37; border: 1px solid #d4af37; 
-            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;
+            padding: 12px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
         }
 
-        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-nav:disabled { opacity: 0.2; filter: grayscale(1); }
 
-        /* Sigla da Criadora no Menu */
+        /* Menu de Índice (Estilo Wattpad) */
+        #menu-capitulos {
+            display: none; position: fixed; top: 60px; right: 20px; 
+            background: #1a140d; border: 2px solid #d4af37; border-radius: 10px;
+            max-height: 400px; overflow-y: auto; width: 200px; z-index: 200;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .item-indice { padding: 10px; border-bottom: 1px solid #332b24; cursor: pointer; color: #aaa; font-size: 0.85rem; }
+        .item-indice:hover { background: #d4af37; color: #1a140d; }
+
         .sigla-criadora { 
-            background: linear-gradient(45deg, #d4af37, #f1c40f);
-            color: #1a140d; padding: 2px 6px; border-radius: 4px;
+            background: #d4af37; color: #1a140d; padding: 2px 6px; border-radius: 4px;
             font-size: 0.7rem; font-weight: bold; margin-left: 5px;
         }
     </style>
@@ -46,53 +51,54 @@
 <body>
 
     <div class="header-leitura">
-        <a href="index.html" style="color: #d4af37; text-decoration: none;">← Voltar</a>
-        <div style="font-weight: bold; color: #d4af37;">Celeste Dragon <span class="sigla-criadora">[CD-👑]</span></div>
+        <a href="index.html" style="color: #d4af37; text-decoration: none; font-weight: bold;">← SAIR</a>
+        <div style="font-weight: bold; color: #d4af37;">CELESTE DRAGON <span class="sigla-criadora">[CD-👑]</span></div>
+        <button class="btn-nav" style="padding: 5px 10px;" onclick="toggleIndice()">☰</button>
     </div>
+
+    <div id="menu-capitulos"></div>
 
     <div class="conteudo-livro" id="area-texto">
         </div>
 
     <div class="controles">
-        <button class="btn-nav" id="btn-ant" onclick="mudarCapitulo(-1)">← Anterior</button>
-        <button class="btn-nav" id="btn-prox" onclick="mudarCapitulo(1)">Próximo →</button>
+        <button class="btn-nav" id="btn-ant" onclick="mudarCapitulo(-1)">Anterior</button>
+        <span id="progresso" style="color: #666; font-size: 0.8rem; align-self: center;"></span>
+        <button class="btn-nav" id="btn-prox" onclick="mudarCapitulo(1)">Próximo</button>
     </div>
 
     <script>
-        // AQUI VOCÊ SÓ PRECISA ADICIONAR OS TEXTOS DOS CAPÍTULOS!
+        // AQUI ESTÁ SUA BIBLIOTECA - SÓ IR ADICIONANDO ATÉ O 76!
         const capitulos = [
-            {
-                titulo: "Capítulo 1",
-                texto: "A presença da radiação gama era tão sufocante que comecei a achar que iria morrer, de novo. Ela era uma prisão que não me permitia sair do chão..."
-            },
-            {
-                titulo: "Capítulo 2",
-                texto: "Aqui começa o novo capítulo que você ainda não escreveu! Viu como é fácil? Não precisa de outro arquivo, é só colocar o texto aqui dentro."
-            },
-            {
-                titulo: "Capítulo 3",
-                texto: "Os enigmas agora estão em mãos. O lugar morto e perdido parece estar mais perto do que eles imaginavam..."
-            }
+            { titulo: "Capítulo 1: O Despertar", texto: "A presença da radiação gama era tão sufocante..." },
+            { titulo: "Capítulo 2: Enigmas de Sangue", texto: "Os enigmas agora estão em mãos. O lugar morto..." },
+            { titulo: "Capítulo 3: Runas Perdidas", texto: "O céu escureceu enquanto o dragão rugia..." },
+            // ... ADICIONE OS OUTROS AQUI SEGUINDO O MESMO MODELO ...
+            { titulo: "Capítulo 76: O Trono de Vidro", texto: "A jornada finalmente chegou ao fim. Jemima olhou para o Reino..." }
         ];
 
         let capAtual = 0;
 
-        function carregarCapitulo() {
+        function carregarCapitulo(index = null) {
+            if(index !== null) capAtual = index;
+            
             const area = document.getElementById('area-texto');
-            area.style.opacity = 0; // Efeito de fade
+            const menu = document.getElementById('menu-capitulos');
+            area.style.opacity = 0;
+            menu.style.display = 'none';
 
             setTimeout(() => {
                 area.innerHTML = `
                     <h2 class="titulo-capitulo">${capitulos[capAtual].titulo}</h2>
-                    <p>${capitulos[capAtual].texto}</p>
+                    <div style="text-align: justify;">${capitulos[capAtual].texto}</div>
                 `;
                 area.style.opacity = 1;
                 
-                // Bloqueia botões se não houver mais páginas
                 document.getElementById('btn-ant').disabled = (capAtual === 0);
                 document.getElementById('btn-prox').disabled = (capAtual === capitulos.length - 1);
+                document.getElementById('progresso').innerText = `${capAtual + 1} de ${capitulos.length}`;
                 
-                window.scrollTo(0, 0); // Volta pro topo
+                window.scrollTo(0, 0);
             }, 300);
         }
 
@@ -101,7 +107,21 @@
             carregarCapitulo();
         }
 
-        // Inicia o livro
+        function toggleIndice() {
+            const menu = document.getElementById('menu-capitulos');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Criar o índice automaticamente
+        const listaIndice = document.getElementById('menu-capitulos');
+        capitulos.forEach((cap, i) => {
+            const div = document.createElement('div');
+            div.className = 'item-indice';
+            div.innerText = cap.titulo;
+            div.onclick = () => carregarCapitulo(i);
+            listaIndice.appendChild(div);
+        });
+
         carregarCapitulo();
     </script>
 </body>
