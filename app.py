@@ -2,25 +2,58 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
 import subprocess
+import os
 
 app = Flask(__name__)
-CORS(app)
+
+# --- 🛡️ CONFIGURAÇÃO DE ACESSO TOTAL ---
+# Isso permite que o GitHub Pages fale com seu Python sem o navegador barrar
+CORS(app, resources={r"/*": {"origins": "*"}}) 
 
 def conectar_banco():
     return sqlite3.connect('reino_celeste.db')
 
+# --- 🛠️ INICIALIZADOR DO REINO ---
+def inicializar_reino():
+    """Garante que o cofre (banco) tenha todas as colunas necessárias"""
+    conn = conectar_banco()
+    cursor = conn.cursor()
+    # Cria a tabela de usuários se não existir
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            senha TEXT NOT NULL,
+            sigla TEXT DEFAULT '[Explorador-🛡️]'
+        )
+    """)
+    # Cria a tabela de tesouros se não existir
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS tesouros (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario TEXT NOT NULL,
+            codigo TEXT NOT NULL,
+            data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    conn.close()
+
 # --- 🧪 ORÁCULO C++: CRIPTO/DESCRIPTO ---
 def usar_oraculo_cpp(texto, modo):
     try:
-        # Nota: Ideal compilar uma vez fora do loop, mas mantive sua lógica original
-        subprocess.run(['g++', 'runas_seguranca.cpp', '-o', 'oraculo'], check=False) 
+        # Se o oraculo já existir, não precisa compilar toda hora (mais rápido)
+        if not os.path.exists('./oraculo'):
+            subprocess.run(['g++', 'runas_seguranca.cpp', '-o', 'oraculo'], check=False) 
+        
         processo = subprocess.run(['./oraculo', modo, texto], capture_output=True, text=True)
         return processo.stdout.strip()
     except Exception as e:
         print(f"⚠️ Falha no Oráculo C++: {e}")
         return texto
 
-# --- 🆕 ROTA: CADASTRAR NOVO MESTRE (Ajustada) ---
+# --- 🆕 ROTA: CADASTRAR NOVO MESTRE ---
 @app.route('/cadastrar', methods=['POST'])
 def cadastrar():
     dados = request.json
@@ -34,14 +67,13 @@ def cadastrar():
     try:
         conn = conectar_banco()
         cursor = conn.cursor()
-        # Adicionamos a 'sigla' padrão para novos membros
         cursor.execute("INSERT INTO usuarios (nome, email, senha, sigla) VALUES (?, ?, ?, ?)", 
                        (nome, email, senha, "[Explorador-🛡️]"))
         conn.commit()
         conn.close()
         return jsonify({"status": "sucesso", "msg": "✨ Cadastro Realizado! Agora faça login."})
     except Exception as e:
-        return jsonify({"status": "erro", "msg": "E-mail já existe no Reino ou Tabela incompleta!"}), 400
+        return jsonify({"status": "erro", "msg": "E-mail já existe ou erro no Reino!"}), 400
 
 # --- 🆕 ROTA: LOGIN (CHAMA O GUARDIÃO JAVA) ---
 @app.route('/login', methods=['POST'])
@@ -50,12 +82,11 @@ def login():
     email = dados.get('email')
     senha = dados.get('senha')
     try:
-        # Garante que o Java está compilado
+        # Garante que o Java está pronto
         subprocess.run(['javac', 'ValidadorReal.java'], check=True)
         validacao = subprocess.run(['java', 'ValidadorReal', 'login', email, senha], capture_output=True, text=True)
         
         if "autorizado" in validacao.stdout.lower():
-            # O Java retorna "Autorizado: NomeDoUsuario"
             nome_user = validacao.stdout.split(":")[1].strip()
             return jsonify({
                 "status": "sucesso", 
@@ -74,7 +105,6 @@ def meu_perfil(email):
     try:
         conn = conectar_banco()
         cursor = conn.cursor()
-        # Puxa os dados do usuário
         cursor.execute("SELECT nome, email, senha, sigla FROM usuarios WHERE email = ?", (email,))
         user = cursor.fetchone()
         
@@ -83,13 +113,10 @@ def meu_perfil(email):
             return jsonify({"status": "erro", "msg": "Mestre não encontrado!"}), 404
 
         nome_usuario = user[0]
-        
-        # Puxa só as obras desse usuário específico usando o NOME como chave
         cursor.execute("SELECT codigo, data_criacao FROM tesouros WHERE usuario = ?", (nome_usuario,))
         obras = cursor.fetchall()
         conn.close()
 
-        # O Oráculo C++ limpa o código das obras (modo 'd' de descripto)
         lista_obras = [{"codigo": usar_oraculo_cpp(o[0], 'd'), "data": o[1]} for o in obras]
 
         return jsonify({
@@ -102,14 +129,13 @@ def meu_perfil(email):
     except Exception as e:
         return jsonify({"status": "erro", "msg": str(e)}), 500
 
-# --- SALVAR E LISTAR TESOUROS (MANTIDOS) ---
+# --- ROTAS DE TESOUROS ---
 @app.route('/salvar_tesouro', methods=['POST'])
 def salvar_tesouro():
     dados = request.json
     usuario = dados.get('usuario')
     codigo_puro = dados.get('codigo')
     
-    # Chama o Guardião Java para autorizar a forja
     try:
         subprocess.run(['javac', 'ValidadorReal.java'], check=True)
         validacao = subprocess.run(['java', 'ValidadorReal', 'autorizar', usuario], capture_output=True, text=True)
@@ -143,5 +169,8 @@ def listar_tesouros():
         return jsonify({"status": "erro", "msg": str(e)}), 500
 
 if __name__ == '__main__':
-    print("\n🔥 MOTOR ULTRA LIGADO: PERFIL E CADASTRO ATIVOS 🔥\n")
-    app.run(port=5000, debug=True)
+    inicializar_reino()
+    print("\n🔥 MOTOR ULTRA LIGADO: PERFIL E CADASTRO ATIVOS 🔥")
+    print("📡 Aguardando sinais do GitHub Pages...\n")
+    # Host 0.0.0.0 permite conexões externas mais facilmente
+    app.run(host='0.0.0.0', port=5000, debug=True)
