@@ -7,28 +7,31 @@
         body { background: #0c0c0c; color: white; font-family: 'Segoe UI', serif; margin: 0; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; }
         .header-perfil { border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
-        .card-dados { background: #1a140d; border: 2px ridge #d4af37; padding: 20px; border-radius: 15px; margin-bottom: 30px; }
-        .dado-linha { margin: 10px 0; font-size: 1.1rem; }
-        .label { color: #d4af37; font-weight: bold; }
+        .card-dados { background: #1a140d; border: 2px ridge #d4af37; padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); }
+        .dado-linha { margin: 10px 0; font-size: 1.1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding-bottom: 5px; }
+        .label { color: #d4af37; font-weight: bold; margin-right: 10px; }
         .grid-obras { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .obra-card { background: #1c1c1c; border-radius: 12px; padding: 15px; border: 1px solid #333; }
+        .obra-card { background: #1c1c1c; border-radius: 12px; padding: 15px; border: 1px solid #d4af37; transition: 0.3s; }
+        .obra-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); }
         iframe { width: 100%; height: 150px; border: none; background: white; border-radius: 8px; }
-        .btn-voltar { background: #d4af37; color: #1a140d; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; }
+        .btn-voltar { background: #d4af37; color: #1a140d; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; transition: 0.2s; }
+        .btn-voltar:hover { filter: brightness(1.2); }
+        .status-erro { color: #ff7675; font-weight: bold; text-align: center; padding: 20px; border: 1px dashed #ff7675; border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-perfil">
-        <h1 id="titulo-nome">Carregando Mestre...</h1>
-        <a href="index.html" class="btn-voltar">⬅ Voltar</a>
+        <h1 id="titulo-nome">📜 Identificando Mestre...</h1>
+        <a href="index.html" class="btn-voltar">⬅ Voltar ao Reino</a>
     </div>
 
-    <div class="card-dados">
-        <h3>📜 Registro Real</h3>
-        <div class="dado-linha"><span class="label">E-mail:</span> <span id="p-email">...</span></div>
-        <div class="dado-linha"><span class="label">Senha:</span> <span id="p-senha">...</span></div>
-        <div class="dado-linha"><span class="label">Rank:</span> <span id="p-sigla" style="color: #55efc4;">...</span></div>
+    <div class="card-dados" id="painel-dados">
+        <h3>🛡️ Registro Real</h3>
+        <div class="dado-linha"><span class="label">E-mail:</span> <span id="p-email">Aguardando Oráculo...</span></div>
+        <div class="dado-linha"><span class="label">Senha:</span> <span id="p-senha">••••••••</span></div>
+        <div class="dado-linha"><span class="label">Rank:</span> <span id="p-sigla" style="color: #55efc4;">Verificando...</span></div>
     </div>
 
     <h3>⚒️ Suas Obras Forjadas</h3>
@@ -39,47 +42,65 @@
 <script>
     async function carregarPerfil() {
         const email = localStorage.getItem('usuarioEmail');
+        const lista = document.getElementById('minhas-obras');
+        
         if (!email) {
             window.location.href = 'index.html';
             return;
         }
 
         try {
+            // Tentativa de conexão com o Python
             const response = await fetch(`http://127.0.0.1:5000/meu_perfil/${email}`);
+            
+            if (!response.ok) throw new Error("Portal Fechado");
+
             const dados = await response.json();
 
-            document.getElementById('titulo-nome').innerText = "Mestre " + dados.nome;
+            // Preenche os dados reais
+            document.getElementById('titulo-nome').innerText = "Mestre " + (dados.nome || "Desconhecido");
             document.getElementById('p-email').innerText = dados.email;
             document.getElementById('p-senha').innerText = dados.senha;
-            document.getElementById('p-sigla').innerText = dados.sigla;
+            document.getElementById('p-sigla').innerText = dados.sigla || "Explorador 🛡️";
 
-            const lista = document.getElementById('minhas-obras');
             lista.innerHTML = '';
 
-            if (dados.obras.length === 0) {
-                lista.innerHTML = "<p>Você ainda não forjou nenhuma obra.</p>";
+            if (!dados.obras || dados.obras.length === 0) {
+                lista.innerHTML = "<p style='color: #888;'>O inventário está vazio. Vá até a Forja!</p>";
                 return;
             }
 
             dados.obras.forEach(obra => {
                 const card = document.createElement('div');
                 card.className = 'obra-card';
-                // Lógica de split para HTML/CSS
+                
+                // Separa o código selado
                 const partes = obra.codigo.split(' | CSS: ');
-                const html = partes[0].replace('HTML: ', '');
+                const html = partes[0] ? partes[0].replace('HTML: ', '') : '';
                 const css = partes[1] || '';
 
                 card.innerHTML = `
                     <iframe srcdoc="${html}<style>${css}</style>"></iframe>
-                    <p style="font-size: 0.8rem; color: #aaa; margin-top: 10px;">Forjado em: ${obra.data}</p>
+                    <p style="font-size: 0.8rem; color: #d4af37; margin-top: 10px; font-weight: bold;">📜 Obra de ${obra.data}</p>
                 `;
                 lista.appendChild(card);
             });
+
         } catch (error) {
-            console.error("Erro ao carregar perfil:", error);
+            // Se o Python estiver offline, mostra o aviso brabo
+            document.getElementById('titulo-nome').innerText = "⚠️ Portal Offline";
+            document.getElementById('painel-dados').innerHTML = `
+                <div class="status-erro">
+                    <p>O Motor Python não respondeu ao chamado!</p>
+                    <p style="font-size: 0.8rem;">Verifique se o arquivo <b>app.py</b> está rodando no terminal.</p>
+                </div>
+            `;
+            lista.innerHTML = "<p style='text-align:center; color:#555;'>As obras estão trancadas no cofre offline.</p>";
+            console.error("Erro de conexão:", error);
         }
     }
 
+    // Inicia a busca assim que o portal abre
     window.onload = carregarPerfil;
 </script>
 
