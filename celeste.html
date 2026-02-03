@@ -1,58 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<a href="celeste-cap1.html.">Capítulo 1</a>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Livro</title>
+    <title>Lendo: Celeste Dragon</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0;
+        body { background-color: #0c0c0c; color: #ccc; font-family: 'Segoe UI', serif; margin: 0; line-height: 1.6; }
+        
+        /* Cabeçalho Fixo */
+        .header-leitura { 
+            position: fixed; top: 0; width: 100%; background: #1a140d; 
+            padding: 15px; border-bottom: 2px solid #d4af37; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .container { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-            width: 100%; 
-            max-width: 400px; 
-            border-top: 8px solid #3498db; 
+
+        /* Container do Texto */
+        .conteudo-livro { 
+            max-width: 600px; margin: 80px auto; padding: 25px; 
+            min-height: 80vh; transition: 0.5s;
         }
-        .btn-voltar { 
-            display: inline-block; 
-            margin-bottom: 20px; 
-            text-decoration: none; 
-            color: #3498db; 
-            font-weight: bold; 
+
+        .titulo-capitulo { color: #d4af37; font-size: 1.8rem; margin-bottom: 20px; text-align: center; }
+
+        /* Navegação Inferior */
+        .controles { 
+            display: flex; justify-content: space-between; padding: 20px; 
+            max-width: 600px; margin: 0 auto;
         }
-        h1 { color: #2c3e50; margin-top: 0; }
-        p { color: #555; line-height: 1.6; }
+
+        .btn-nav { 
+            background: #3d2b1f; color: #d4af37; border: 1px solid #d4af37; 
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
+
+        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* Sigla da Criadora no Menu */
+        .sigla-criadora { 
+            background: linear-gradient(45deg, #d4af37, #f1c40f);
+            color: #1a140d; padding: 2px 6px; border-radius: 4px;
+            font-size: 0.7rem; font-weight: bold; margin-left: 5px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <a href="index.html" class="btn-voltar">← Voltar para a Estante</a>
-        
-        <h1>Celeste Dragon 🐉</h1>
-        
-        <p><strong>Sinopse:</strong></p>
-        <p> Você encontrou um livro de Dragões achando que vai ter alegria e será uma história fácil de ser contada? se sim você errou feio, por que em celeste Dragons tudo que você vai ver vai ser os 5 primeiros personagens principais entrando em confusão e encontrando enigmas que nunca DIVIA ser encontrados. agora com os enigmas em mãos eles tem que achar o tal lugar morto e perdido.</p>
-
-<h3>Capítulos:</h3>
-<ul style="list-style: none; padding: 0;">
-    <li><a href="celeste-cap1.html" class="livro" style="display:block; text-decoration:none;">Capítulo 1</a></li>
-    
-
+    <div class="header-leitura">
+        <a href="index.html" style="color: #d4af37; text-decoration: none;">← Voltar</a>
+        <div style="font-weight: bold; color: #d4af37;">Celeste Dragon <span class="sigla-criadora">[CD-👑]</span></div>
     </div>
 
+    <div class="conteudo-livro" id="area-texto">
+        </div>
+
+    <div class="controles">
+        <button class="btn-nav" id="btn-ant" onclick="mudarCapitulo(-1)">← Anterior</button>
+        <button class="btn-nav" id="btn-prox" onclick="mudarCapitulo(1)">Próximo →</button>
+    </div>
+
+    <script>
+        // AQUI VOCÊ SÓ PRECISA ADICIONAR OS TEXTOS DOS CAPÍTULOS!
+        const capitulos = [
+            {
+                titulo: "Capítulo 1",
+                texto: "A presença da radiação gama era tão sufocante que comecei a achar que iria morrer, de novo. Ela era uma prisão que não me permitia sair do chão..."
+            },
+            {
+                titulo: "Capítulo 2",
+                texto: "Aqui começa o novo capítulo que você ainda não escreveu! Viu como é fácil? Não precisa de outro arquivo, é só colocar o texto aqui dentro."
+            },
+            {
+                titulo: "Capítulo 3",
+                texto: "Os enigmas agora estão em mãos. O lugar morto e perdido parece estar mais perto do que eles imaginavam..."
+            }
+        ];
+
+        let capAtual = 0;
+
+        function carregarCapitulo() {
+            const area = document.getElementById('area-texto');
+            area.style.opacity = 0; // Efeito de fade
+
+            setTimeout(() => {
+                area.innerHTML = `
+                    <h2 class="titulo-capitulo">${capitulos[capAtual].titulo}</h2>
+                    <p>${capitulos[capAtual].texto}</p>
+                `;
+                area.style.opacity = 1;
+                
+                // Bloqueia botões se não houver mais páginas
+                document.getElementById('btn-ant').disabled = (capAtual === 0);
+                document.getElementById('btn-prox').disabled = (capAtual === capitulos.length - 1);
+                
+                window.scrollTo(0, 0); // Volta pro topo
+            }, 300);
+        }
+
+        function mudarCapitulo(direcao) {
+            capAtual += direcao;
+            carregarCapitulo();
+        }
+
+        // Inicia o livro
+        carregarCapitulo();
+    </script>
 </body>
 </html>
