@@ -1,23 +1,29 @@
 import sqlite3
+import os
 
 def inicializar_reino():
-    # Cria o arquivo do banco de dados (o nosso cofre)
+    # Remove o banco antigo para não dar conflito de colunas
+    if os.path.exists('reino_celeste.db'):
+        os.remove('reino_celeste.db')
+        print("🗑️ Resetando banco antigo...")
+
     conn = sqlite3.connect('reino_celeste.db')
     cursor = conn.cursor()
 
-    print("⚒️ Construindo as fundações do Reino...")
+    print("⚒️ Construindo as fundações reais...")
 
-    # Tabela de Usuários (Pra saber quem é Criador Real)
+    # Tabela de Usuários (Agora com SENHA!)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
-            email TEXT UNIQUE,
-            sigla TEXT DEFAULT '[CD-👑]'
+            email TEXT UNIQUE NOT NULL,
+            senha TEXT NOT NULL,
+            sigla TEXT DEFAULT '[Explorador-🛡️]'
         )
     ''')
 
-    # Tabela de Tesouros (Onde os códigos da Forja vão morar)
+    # Tabela de Tesouros
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tesouros (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,20 +33,9 @@ def inicializar_reino():
         )
     ''')
 
-    # Tabela de Livros (Para os seus 76 capítulos!)
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS capitulos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            livro TEXT DEFAULT 'Celeste Dragon',
-            numero INTEGER,
-            titulo TEXT,
-            conteudo TEXT
-        )
-    ''')
-
     conn.commit()
     conn.close()
-    print("✅ Cofre Real construído com sucesso! O SQL está pronto.")
+    print("✅ Cofre Real reconstruído com SENHA inclusa!")
 
 if __name__ == "__main__":
     inicializar_reino()
