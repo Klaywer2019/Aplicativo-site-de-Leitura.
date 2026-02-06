@@ -29,28 +29,33 @@
 
 <script>
     async function registrarGuerreiro() {
-        const nome = document.getElementById('reg-nome').value;
-        const email = document.getElementById('reg-email').value;
-        const senha = document.getElementById('reg-senha').value;
+        const nome = document.getElementById('reg-nome').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const senha = document.getElementById('reg-senha').value.trim();
 
         if(!nome || !email || !senha) return alert("Preencha todos os campos, parça!");
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/registrar', {
+            // LINK ATUALIZADO PELO GEMINI - CONEXÃO COM O MOTOR REAL
+            const linkCodespaces = "https://bookish-space-invention-694g4j6g4pr725ppr-5000.app.github.dev";
+            
+            const response = await fetch(`${linkCodespaces}/cadastro`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome, email, senha })
             });
 
             const result = await response.json();
-            if(result.status === "sucesso") {
+            
+            if(response.ok && result.status === "sucesso") {
                 alert("⚔️ Registro concluído! Bem-vindo ao Reino.");
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // Volta para o login após o sucesso
             } else {
-                alert("❌ Erro: " + result.msg);
+                alert("❌ Erro do Reino: " + (result.msg || "Falha no registro"));
             }
         } catch (error) {
-            alert("⚠️ O Motor Python está offline!");
+            console.error("Erro de conexão:", error);
+            alert("⚠️ O Motor Python está offline! Ligue o app.py no Codespaces e verifique se a porta 5000 está PÚBLICA.");
         }
     }
 </script>
