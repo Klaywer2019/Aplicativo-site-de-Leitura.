@@ -110,8 +110,6 @@
     </div>
 
     <script>
-        // --- LÓGICA DO PORTAL (CIRURGIA FINALIZADA 💉) ---
-        
         function toggleSenha() {
             const campo = document.getElementById('login-senha');
             campo.type = campo.type === 'password' ? 'text' : 'password';
@@ -147,8 +145,8 @@
             if (!email || !senha) return exibirAlerta("Preencha as runas de acesso!", "⚠️ Atenção");
 
             try {
-                // FETCH CONECTADO AO MOTOR PYTHON
-                const response = await fetch('http://127.0.0.1:5000/login', {
+                // LINK ATUALIZADO PELO GEMINI - CONEXÃO COM CODESPACES
+                const response = await fetch('https://bookish-space-invention-694g4j6g4pr725ppr-5000.app.github.dev/login', {
                     method: 'POST',
                     mode: 'cors',
                     headers: { 'Content-Type': 'application/json' },
@@ -172,7 +170,7 @@
                 }
             } catch (error) {
                 console.error("Erro de conexão:", error);
-                exibirAlerta("O Motor Python está offline! Ligue o app.py no terminal.", "⚠️ Erro de Link");
+                exibirAlerta("O Motor Python está offline! Verifique se o app.py está rodando no Codespaces.", "⚠️ Erro de Link");
             }
         }
     </script>
