@@ -9,12 +9,12 @@
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
     <style>
-        /* 2. ESTÉTICA DO REINO (CSS) */
         :root {
             --ouro: #d4af37;
             --fundo: #0c0c0c;
             --madeira: #1a140d;
             --perigo: #c0392b;
+            --vidro: rgba(255, 255, 255, 0.05);
         }
 
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,6 +26,7 @@
             overflow-x: hidden; 
         }
 
+        /* --- Telas de Autenticação --- */
         .tela-cheia { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
@@ -35,14 +36,11 @@
         .card-auth {
             background: rgba(0, 0, 0, 0.6); 
             backdrop-filter: blur(10px); 
-            padding: 30px; 
-            border-radius: 20px; 
-            border: 1px solid var(--ouro); 
-            text-align: center; 
-            width: 90%; max-width: 380px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+            padding: 30px; border-radius: 20px; border: 1px solid var(--ouro); 
+            text-align: center; width: 90%; max-width: 380px;
         }
 
+        /* --- Botões e Inputs --- */
         input {
             width: 100%; padding: 12px; margin-bottom: 12px; 
             background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; 
@@ -53,7 +51,7 @@
             width: 100%; padding: 14px; background: var(--ouro); 
             color: #1a140d; border: none; border-radius: 8px; 
             font-weight: bold; cursor: pointer; transition: 0.3s;
-            margin-bottom: 10px;
+            margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
         .btn-visitante {
@@ -62,35 +60,35 @@
             color: var(--ouro) !important;
         }
 
-        .btn-principal:hover { filter: brightness(1.2); transform: translateY(-2px); }
-
+        /* --- Navegação e Abas --- */
         .nav-topo { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 15px 20px; background: var(--madeira); 
             border-bottom: 2px solid var(--ouro); position: sticky; top: 0; z-index: 1000; 
         }
 
-        .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
-        .prateleira-madeira { border-bottom: 12px solid #3d2b1f; margin-bottom: 30px; }
-        
+        .secao-conteudo { display: none; padding: 20px; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         .item-card { 
-            min-width: 260px; background: #1c1c1c; border-radius: 20px; 
+            background: #1c1c1c; border-radius: 20px; 
             text-align: center; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2);
+            margin-bottom: 20px;
         }
 
-        .destaque-real { 
-            border: 2px solid var(--ouro) !important; 
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-            animation: flutuar 3s ease-in-out infinite;
-        }
-
-        @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
+        /* --- Menu Lateral --- */
         .sidebar { 
             height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
-            background-color: rgba(26, 20, 13, 0.95); backdrop-filter: blur(10px); 
-            overflow-x: hidden; transition: 0.5s; border-left: 5px ridge var(--ouro);
+            background-color: rgba(26, 20, 13, 0.98); backdrop-filter: blur(15px); 
+            overflow-x: hidden; transition: 0.5s; border-left: 3px solid var(--ouro);
         }
+
+        .link-menu {
+            padding: 15px; text-decoration: none; font-size: 1.1rem; color: white;
+            display: block; transition: 0.3s; border-radius: 10px; margin-bottom: 5px;
+        }
+
+        .link-menu:hover { background: var(--vidro); color: var(--ouro); }
 
         #alerta-celeste {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
@@ -98,24 +96,10 @@
             border: 2px solid var(--ouro); border-radius: 20px; padding: 25px; text-align: center;
         }
 
-        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; object-fit: cover; }
-
-        py-script { display: none; }
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; }
     </style>
 </head>
-<body oncontextmenu="return false;"> 
-
-    <script type="py">
-        from pyscript import window
-
-        def validar_escrituras(email, senha, nome=None):
-            if "@" not in email: return "E-mail sem o selo '@'!"
-            if len(senha) < 4: return "A senha rúnica é muito curta!"
-            if nome is not None and len(nome) < 2: return "O nome do mestre é muito breve!"
-            return "OK"
-
-        window.validar_python = validar_escrituras
-    </script>
+<body> 
 
     <div id="alerta-celeste">
         <div style="color: var(--ouro); font-weight: bold; margin-bottom: 10px;" id="alerta-titulo">📜 Mensagem</div>
@@ -124,19 +108,12 @@
     </div>
 
     <div id="sessao-auth" class="tela-cheia">
-        
         <div id="bloco-login" class="card-auth">
             <h1 style="color: var(--ouro); margin-bottom: 20px;">🛡️ Reino Celeste</h1>
             <input type="email" id="login-email" placeholder="E-mail do Criador">
-            <div style="position: relative;">
-                <input type="password" id="login-senha" placeholder="Senha Rúnica">
-                <span onclick="toggleSenha('login-senha')" style="position: absolute; right: 12px; top: 10px; cursor: pointer;">👁️</span>
-            </div>
-            
+            <input type="password" id="login-senha" placeholder="Senha Rúnica">
             <button class="btn-principal" onclick="entrar()">Entrar no Cofre 🔐</button>
-            
             <button class="btn-principal btn-visitante" onclick="entrarComoVisitante()">Entrar como Visitante 👤</button>
-
             <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
                 Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('cadastro')">Aliste-se aqui</span>
             </p>
@@ -154,125 +131,119 @@
         </div>
     </div>
 
-    <div id="estante-principal" style="display: none;">
+    <div id="interface-reino" style="display: none;">
         <div class="nav-topo">
             <button style="background: var(--perigo); color: white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor: pointer;" onclick="sair()">Sair</button>
-            <h3 style="color: var(--ouro);">Celeste App</h3>
+            <h3 id="titulo-aba" style="color: var(--ouro);">Estante</h3>
             <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()">
         </div>
 
-        <h3 style="margin: 20px; color: var(--ouro);">📖 Obras Sagradas</h3>
-        <div class="prateleira-madeira">
-            <div class="prateleira-container">
-                <div class="item-card destaque-real">
-                    <div class="item-capa" style="background: linear-gradient(135deg, #4B0082, #00FF00); height: 120px; display: flex; align-items: center; justify-content: center;">
-                        <span style="font-weight: bold;">Celeste Dragon 🔥🐲</span>
-                    </div>
-                    <div style="padding: 15px;">
-                        <a href="celeste.html" class="btn-principal" style="text-decoration: none; display: block;">Ler Obra</a>
-                    </div>
+        <section id="aba-estante" class="secao-conteudo" style="display: block;">
+            <h3 style="margin-bottom: 20px; color: var(--ouro);">📖 Minhas Obras</h3>
+            <div class="item-card">
+                <div style="background: linear-gradient(135deg, #4B0082, #00FF00); height: 150px; display: flex; align-items: center; justify-content: center;">
+                    <h2 style="text-shadow: 2px 2px 10px black;">Celeste Dragon 🔥</h2>
+                </div>
+                <div style="padding: 20px;">
+                    <button class="btn-principal">Continuar Leitura</button>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="aba-cientistas" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🧬 Ala dos Cientistas</h3>
+            <div class="item-card" style="padding: 20px; text-align: left;">
+                <p style="color: #aaa;">Bem-vinda à Prometheia. Aqui os segredos do DNA são revelados.</p>
+                <div style="margin-top: 20px; border-left: 3px solid var(--ouro); padding-left: 15px;">
+                    <h4>Projeto: Genética Dragão</h4>
+                    <p style="font-size: 0.8rem; margin-top: 5px;">Status: Pesquisando mutações rúnicas...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="aba-forja" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🔨 Forja de Códigos</h3>
+            <div class="item-card" style="padding: 20px;">
+                <p>Compile suas ideias em Python e JavaScript aqui.</p>
+                <div style="background: #000; padding: 15px; border-radius: 10px; font-family: monospace; margin-top: 15px; color: #0f0;">
+                    > Keime_Bot: Online<br>
+                    > Status: Aguardando comandos...
+                </div>
+            </div>
+        </section>
+
+        <section id="aba-videos" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🎬 Galeria de Vídeos</h3>
+            <div class="item-card" style="padding: 40px;">
+                <p>Nenhum vídeo sagrado encontrado ainda.</p>
+            </div>
+        </section>
+
+        <section id="aba-editor" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">✂️ Editor de Vídeo</h3>
+            <div class="item-card" style="padding: 20px;">
+                <button class="btn-principal" style="background: #444;">📁 Carregar Arquivo</button>
+                <p style="margin-top: 10px; font-size: 0.8rem;">Ferramenta de corte em desenvolvimento...</p>
+            </div>
+        </section>
     </div>
 
     <div id="menuLateral" class="sidebar">
-        <div style="padding: 20px;"> 
-            <div style="background: rgba(38, 30, 20, 0.7); padding: 15px; border-radius: 12px; border: 1px solid var(--ouro);">
+        <div style="padding: 30px 20px;">
+            <div style="text-align: center; margin-bottom: 30px;">
                 <h2 id="nome-perfil" style="color: var(--ouro);">Mestre</h2>
-                <button class="btn-principal" style="margin-top:20px; background: #3d2b1f; color: var(--ouro);" onclick="fecharMenu()">Fechar</button>
+                <hr style="border: 0; border-top: 1px solid #333; margin-top: 15px;">
             </div>
+            
+            <a href="#" class="link-menu" onclick="irPara('aba-estante', 'Estante')">📖 Estante Sagrada</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-cientistas', 'Cientistas')">🧬 Ala dos Cientistas</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-forja', 'Forja')">🔨 Forja de Códigos</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-videos', 'Vídeos')">🎬 Galeria de Vídeos</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-editor', 'Editor')">✂️ Editor de Vídeo</a>
+            
+            <button class="btn-principal" style="margin-top: 40px; background: #222; color: var(--ouro);" onclick="fecharMenu()">Fechar Menu</button>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://SUA-URL-DO-CODESPACES-AQUI-5000.app.github.dev';
-
-        document.onkeydown = (e) => {
-            if (e.keyCode == 123 || (e.ctrlKey && (e.key=='u' || e.key=='i' || e.key=='j'))) return false;
-        };
-
-        function toggleSenha(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === 'password' ? 'text' : 'password';
+        // --- Navegação entre Abas ---
+        function irPara(idAba, titulo) {
+            // Esconde todas as seções
+            document.querySelectorAll('.secao-conteudo').forEach(secao => {
+                secao.style.display = 'none';
+            });
+            // Mostra a selecionada
+            document.getElementById(idAba).style.display = 'block';
+            document.getElementById('titulo-aba').innerText = titulo;
+            fecharMenu();
         }
+
+        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+        
+        function entrarComoVisitante() {
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('usuarioNome', 'Visitante');
+            carregarInterface();
+        }
+
+        function carregarInterface() {
+            document.getElementById('sessao-auth').style.display = 'none';
+            document.getElementById('interface-reino').style.display = 'block';
+            document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
+        }
+
+        function sair() { localStorage.clear(); location.reload(); }
 
         function alternarTelas(tipo) {
             document.getElementById('bloco-login').style.display = tipo === 'login' ? 'block' : 'none';
             document.getElementById('bloco-cadastro').style.display = tipo === 'cadastro' ? 'block' : 'none';
         }
 
-        function exibirAlerta(msg, titulo = "📜 Mensagem") {
-            document.getElementById('alerta-titulo').innerText = titulo;
-            document.getElementById('msg-texto').innerText = msg;
-            document.getElementById('alerta-celeste').style.display = 'block';
-        }
-
         function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
-        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
-        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-        function sair() { localStorage.clear(); location.reload(); }
-
-        // --- FUNÇÃO DO VISITANTE (A MÁGICA) ---
-        function entrarComoVisitante() {
-            localStorage.setItem('reinoLogado', 'true');
-            localStorage.setItem('usuarioNome', 'Visitante');
-            
-            document.getElementById('sessao-auth').style.display = 'none';
-            document.getElementById('estante-principal').style.display = 'block';
-            document.getElementById('nome-perfil').innerText = 'Visitante';
-            
-            exibirAlerta("Entrou como visitante! O motor Python não é necessário agora.", "🛡️ Modo Preview");
-        }
-
-        async function entrar() {
-            const email = document.getElementById('login-email').value;
-            const senha = document.getElementById('login-senha').value;
-            if(window.validar_python) {
-                const check = window.validar_python(email, senha);
-                if(check !== "OK") return exibirAlerta(check);
-            }
-            try {
-                const res = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({email, senha})
-                });
-                const data = await res.json();
-                if(res.ok) {
-                    localStorage.setItem('reinoLogado', 'true');
-                    localStorage.setItem('usuarioNome', data.usuario);
-                    location.reload();
-                } else { exibirAlerta(data.msg); }
-            } catch(e) { exibirAlerta("Motor Offline! Use o modo Visitante."); }
-        }
-
-        async function cadastrar() {
-            const nome = document.getElementById('cad-nome').value;
-            const email = document.getElementById('cad-email').value;
-            const senha = document.getElementById('cad-senha').value;
-            if(window.validar_python) {
-                const check = window.validar_python(email, senha, nome);
-                if(check !== "OK") return exibirAlerta(check);
-            }
-            try {
-                const res = await fetch(`${API_URL}/cadastro`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({nome, email, senha})
-                });
-                const data = await res.json();
-                exibirAlerta(data.msg);
-                if(res.ok) alternarTelas('login');
-            } catch(e) { exibirAlerta("Erro ao registrar no portal."); }
-        }
 
         window.onload = () => {
-            if (localStorage.getItem('reinoLogado') === 'true') {
-                document.getElementById('sessao-auth').style.display = 'none';
-                document.getElementById('estante-principal').style.display = 'block';
-                document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
-            }
+            if (localStorage.getItem('reinoLogado') === 'true') carregarInterface();
         };
     </script>
 </body>
