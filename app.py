@@ -5,12 +5,29 @@ import sqlite3
 app = Flask(__name__)
 
 # --- 🛡️ PONTE DE CRISTAL (CORS) ---
-CORS(app, resources={r"/*": {"origins": "*"}}) 
+# Liberando para que o navegador aceite as requisições do seu site
+CORS(app) 
+
+# --- 🏗️ CONSTRUTOR DE REINO (DATABASE) ---
+def init_db():
+    """Cria o banco e a tabela se não existirem ao iniciar"""
+    conn = sqlite3.connect('usuarios.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            senha TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
 # Rota de teste
 @app.route('/')
 def home():
-    return "🔥 O MOTOR ESTÁ LIGADO! 🔥"
+    return "🔥 O MOTOR DO REINO CELESTE ESTÁ LIGADO! 🔥"
 
 # --- 🆕 ROTA DE LOGIN ---
 @app.route('/login', methods=['POST'])
@@ -20,9 +37,9 @@ def login():
     senha = dados.get('senha')
     
     try:
-        # Ajustado para 'usuarios.db' que é o que você criou no terminal
         conn = sqlite3.connect('usuarios.db')
         cursor = conn.cursor()
+        # Busca o guerreiro nas runas do banco
         cursor.execute("SELECT nome, email FROM usuarios WHERE email = ? AND senha = ?", (email, senha))
         user = cursor.fetchone()
         conn.close()
@@ -31,7 +48,8 @@ def login():
             return jsonify({
                 "status": "sucesso", 
                 "usuario": user[0], 
-                "email": user[1]
+                "email": user[1],
+                "msg": "✨ Acesso ao Cofre autorizado!"
             })
         else:
             return jsonify({"status": "erro", "msg": "🚫 Dados incorretos ou não cadastrados!"}), 401
@@ -53,16 +71,17 @@ def cadastro():
     try:
         conn = sqlite3.connect('usuarios.db')
         cursor = conn.cursor()
-        # Salva o novo cidadão no banco de dados
         cursor.execute("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)", (nome, email, senha))
         conn.commit()
         conn.close()
-        return jsonify({"status": "sucesso", "msg": "✨ Alistamento concluído! Agora é só logar."})
+        return jsonify({"status": "sucesso", "msg": "✨ Alistamento concluído! O portal está aberto para você."})
     except sqlite3.IntegrityError:
         return jsonify({"status": "erro", "msg": "🚫 Este e-mail já pertence a outro guerreiro!"}), 400
     except Exception as e:
         return jsonify({"status": "erro", "msg": f"Erro no portal: {str(e)}"}), 500
 
 if __name__ == '__main__':
+    init_db() # Liga os alicerces do banco
     print("\n🚀 REINO CELESTE: AGUARDANDO CONEXÃO NA PORTA 5000...")
+    # host='0.0.0.0' é essencial para funcionar no Codespaces ou Nuvem
     app.run(host='0.0.0.0', port=5000, debug=True)
