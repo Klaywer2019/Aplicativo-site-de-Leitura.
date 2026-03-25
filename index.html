@@ -15,6 +15,7 @@
             --madeira: #1a140d;
             --perigo: #c0392b;
             --vidro: rgba(255, 255, 255, 0.05);
+            --keime-neon: #00ff41;
         }
 
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,6 +98,14 @@
         }
 
         .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; }
+        
+        /* Estilo Keime Beats */
+        .keime-terminal {
+            background: #000; color: var(--keime-neon); 
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px; border-radius: 10px; font-size: 0.85rem;
+            text-align: left; margin-bottom: 15px; border: 1px solid #111;
+        }
     </style>
 </head>
 <body> 
@@ -118,18 +127,7 @@
                 Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('cadastro')">Aliste-se aqui</span>
             </p>
         </div>
-
-        <div id="bloco-cadastro" class="card-auth" style="display: none;">
-            <h1 style="color: var(--ouro); margin-bottom: 20px;">🖋️ Alistamento</h1>
-            <input type="text" id="cad-nome" placeholder="Nome do Mestre">
-            <input type="email" id="cad-email" placeholder="E-mail rúnico">
-            <input type="password" id="cad-senha" placeholder="Nova Senha Rúnica">
-            <button class="btn-principal" onclick="cadastrar()">Finalizar Registro 📜</button>
-            <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
-                Já possui acesso? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('login')">Voltar ao Portal</span>
-            </p>
         </div>
-    </div>
 
     <div id="interface-reino" style="display: none;">
         <div class="nav-topo">
@@ -150,52 +148,44 @@
             </div>
         </section>
 
+        <section id="aba-keime" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🎧 Keime Beats Studio</h3>
+            <div class="item-card" style="padding: 20px;">
+                <div class="keime-terminal" id="terminal-keime">
+                    > Keime_Bot: "Salve, visão de cria! Pronto pro corre?"<br>
+                    > Status: Aguardando rimas...
+                </div>
+                <button class="btn-principal" onclick="gerarRimaKeime()" style="background: #222; color: var(--keime-neon); border: 1px solid var(--keime-neon);">
+                    🔥 Gerar Rima Hype
+                </button>
+                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn-principal btn-visitante">🥁 Beat Dark</button>
+                    <button class="btn-principal btn-visitante">🎹 Melodia</button>
+                </div>
+            </div>
+        </section>
+
         <section id="aba-cientistas" class="secao-conteudo">
             <h3 style="color: var(--ouro);">🧬 Ala dos Cientistas</h3>
             <div class="item-card" style="padding: 20px; text-align: left;">
-                <p style="color: #aaa;">Bem-vinda à Prometheia. Aqui os segredos do DNA são revelados.</p>
+                <p style="color: #aaa;">Bem-vinda à Prometheia.</p>
                 <div style="margin-top: 20px; border-left: 3px solid var(--ouro); padding-left: 15px;">
-                    <h4>Projeto: Genética Dragão</h4>
-                    <p style="font-size: 0.8rem; margin-top: 5px;">Status: Pesquisando mutações rúnicas...</p>
+                    <h4>Projeto: DNA Dragão</h4>
+                    <p style="font-size: 0.8rem;">Pesquisando mutações...</p>
                 </div>
             </div>
         </section>
 
-        <section id="aba-forja" class="secao-conteudo">
-            <h3 style="color: var(--ouro);">🔨 Forja de Códigos</h3>
-            <div class="item-card" style="padding: 20px;">
-                <p>Compile suas ideias em Python e JavaScript aqui.</p>
-                <div style="background: #000; padding: 15px; border-radius: 10px; font-family: monospace; margin-top: 15px; color: #0f0;">
-                    > Keime_Bot: Online<br>
-                    > Status: Aguardando comandos...
-                </div>
-            </div>
-        </section>
-
-        <section id="aba-videos" class="secao-conteudo">
-            <h3 style="color: var(--ouro);">🎬 Galeria de Vídeos</h3>
-            <div class="item-card" style="padding: 40px;">
-                <p>Nenhum vídeo sagrado encontrado ainda.</p>
-            </div>
-        </section>
-
-        <section id="aba-editor" class="secao-conteudo">
-            <h3 style="color: var(--ouro);">✂️ Editor de Vídeo</h3>
-            <div class="item-card" style="padding: 20px;">
-                <button class="btn-principal" style="background: #444;">📁 Carregar Arquivo</button>
-                <p style="margin-top: 10px; font-size: 0.8rem;">Ferramenta de corte em desenvolvimento...</p>
-            </div>
-        </section>
-    </div>
+        </div>
 
     <div id="menuLateral" class="sidebar">
         <div style="padding: 30px 20px;">
             <div style="text-align: center; margin-bottom: 30px;">
                 <h2 id="nome-perfil" style="color: var(--ouro);">Mestre</h2>
-                <hr style="border: 0; border-top: 1px solid #333; margin-top: 15px;">
             </div>
             
             <a href="#" class="link-menu" onclick="irPara('aba-estante', 'Estante')">📖 Estante Sagrada</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-keime', 'Keime Beats')">🎧 Keime Beats (Música)</a>
             <a href="#" class="link-menu" onclick="irPara('aba-cientistas', 'Cientistas')">🧬 Ala dos Cientistas</a>
             <a href="#" class="link-menu" onclick="irPara('aba-forja', 'Forja')">🔨 Forja de Códigos</a>
             <a href="#" class="link-menu" onclick="irPara('aba-videos', 'Vídeos')">🎬 Galeria de Vídeos</a>
@@ -206,13 +196,25 @@
     </div>
 
     <script>
-        // --- Navegação entre Abas ---
+        // --- Cérebro do Keime ---
+        const keimeConhecimento = {
+            girias: ["progresso", "vivência", "foco no milhão", "visão de cria", "na régua", "sem neurose"],
+            rimas: [
+                "No corre da vida, foco no sucesso, escrevendo o Reino, esse é meu progresso.",
+                "Gelo no pescoço, rima na ponta da língua, Keime tá no comando, a vibe nunca minguia.",
+                "Papo reto mestre, a forja tá fervendo, códigos e batidas, o mundo tá vendo."
+            ]
+        };
+
+        function gerarRimaKeime() {
+            const rima = keimeConhecimento.rimas[Math.floor(Math.random() * keimeConhecimento.rimas.length)];
+            const giria = keimeConhecimento.girias[Math.floor(Math.random() * keimeConhecimento.girias.length)];
+            document.getElementById('terminal-keime').innerHTML = `> Keime_Bot: "${giria}!"<br>> Rima: "${rima}"`;
+        }
+
+        // --- Navegação ---
         function irPara(idAba, titulo) {
-            // Esconde todas as seções
-            document.querySelectorAll('.secao-conteudo').forEach(secao => {
-                secao.style.display = 'none';
-            });
-            // Mostra a selecionada
+            document.querySelectorAll('.secao-conteudo').forEach(secao => secao.style.display = 'none');
             document.getElementById(idAba).style.display = 'block';
             document.getElementById('titulo-aba').innerText = titulo;
             fecharMenu();
@@ -221,26 +223,19 @@
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
         
-        function entrarComoVisitante() {
-            localStorage.setItem('reinoLogado', 'true');
-            localStorage.setItem('usuarioNome', 'Visitante');
-            carregarInterface();
-        }
-
         function carregarInterface() {
             document.getElementById('sessao-auth').style.display = 'none';
             document.getElementById('interface-reino').style.display = 'block';
             document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
         }
 
-        function sair() { localStorage.clear(); location.reload(); }
-
-        function alternarTelas(tipo) {
-            document.getElementById('bloco-login').style.display = tipo === 'login' ? 'block' : 'none';
-            document.getElementById('bloco-cadastro').style.display = tipo === 'cadastro' ? 'block' : 'none';
+        function entrarComoVisitante() {
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('usuarioNome', 'Visitante');
+            carregarInterface();
         }
 
-        function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
+        function sair() { localStorage.clear(); location.reload(); }
 
         window.onload = () => {
             if (localStorage.getItem('reinoLogado') === 'true') carregarInterface();
