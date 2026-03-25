@@ -3,59 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reino Celeste - Home</title>
+    <title>Reino Celeste - v2.0</title>
     
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
     <style>
-        /* CSS ORIGINAL MANTIDO E PROTEGIDO */
-        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
-        body { background-color: #0c0c0c; color: white; font-family: 'Segoe UI', serif; margin: 0; overflow-x: hidden; }
+        /* 2. ESTÉTICA DO REINO (CSS) */
+        :root {
+            --ouro: #d4af37;
+            --fundo: #0c0c0c;
+            --madeira: #1a140d;
+            --perigo: #c0392b;
+        }
+
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; margin: 0; padding: 0; }
         
-        .sidebar { 
-            height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
-            background-color: rgba(26, 20, 13, 0.95); 
+        body { 
+            background-color: var(--fundo); 
+            color: white; 
+            font-family: 'Segoe UI', serif; 
+            overflow-x: hidden; 
+        }
+
+        /* --- Telas e Containers --- */
+        .tela-cheia { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 4000; background: radial-gradient(circle, #1e140d 0%, #0a0a0a 100%);
+        }
+
+        .card-auth {
+            background: rgba(0, 0, 0, 0.6); 
             backdrop-filter: blur(10px); 
-            overflow-x: hidden; transition: 0.5s; 
-            border-left: 5px ridge #d4af37;
-            display: flex; flex-direction: column;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            padding: 30px; 
+            border-radius: 20px; 
+            border: 1px solid var(--ouro); 
+            text-align: center; 
+            width: 90%; max-width: 380px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
         }
-        .card-medieval { 
-            background: rgba(38, 30, 20, 0.7); 
-            border: 1px solid rgba(212, 175, 55, 0.3); 
-            border-radius: 12px; 
-            padding: 15px; width: 90%; margin: 10px auto; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+        /* --- Inputs e Botões --- */
+        input {
+            width: 100%; padding: 12px; margin-bottom: 12px; 
+            background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; 
+            border-radius: 8px; color: var(--ouro); outline: none;
         }
-        .btn-medieval {
-            background: #3d2b1f; border: 1px solid #d4af37; color: #d4af37;
-            padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;
-            text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;
-            width: 100%;
+
+        .btn-principal {
+            width: 100%; padding: 14px; background: var(--ouro); 
+            color: #1a140d; border: none; border-radius: 8px; 
+            font-weight: bold; cursor: pointer; transition: 0.3s;
         }
-        .destaque-real { 
-            border: 2px solid #d4af37 !important; 
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4) !important;
-            animation: flutuar 3s ease-in-out infinite;
+
+        .btn-principal:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        /* --- Estante e Interface --- */
+        .nav-topo { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 20px; background: var(--madeira); 
+            border-bottom: 2px solid var(--ouro); position: sticky; top: 0; z-index: 1000; 
         }
-        @keyframes flutuar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        #tela-entrada { position: fixed; top:0; left:0; width:100%; height:100%; background: radial-gradient(circle, #1e140d 0%, #0a0a0a 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 4000; }
-        .nav-topo { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #1a140d; border-bottom: 2px solid #d4af37; position: sticky; top: 0; z-index: 1000; }
+
         .prateleira-container { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
         .prateleira-madeira { border-bottom: 12px solid #3d2b1f; margin-bottom: 30px; }
-        .item-card { min-width: 260px; flex-shrink: 0; background: #1c1c1c; border-radius: 20px; padding-bottom: 15px; text-align: center; overflow: hidden; }
-        .item-capa { width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
-        .livro { background: linear-gradient(135deg, #4B0082, #00FF00); }
-        .btn-card { flex: 1; padding: 10px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
-        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #d4af37; cursor: pointer; object-fit: cover; }
-        #estante-principal { display: none; }
+        
+        .item-card { 
+            min-width: 260px; background: #1c1c1c; border-radius: 20px; 
+            text-align: center; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2);
+        }
 
-        /* Estilo do Terminal Python Oculto */
+        .destaque-real { 
+            border: 2px solid var(--ouro) !important; 
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            animation: flutuar 3s ease-in-out infinite;
+        }
+
+        @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* --- Sidebar --- */
+        .sidebar { 
+            height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
+            background-color: rgba(26, 20, 13, 0.95); backdrop-filter: blur(10px); 
+            overflow-x: hidden; transition: 0.5s; border-left: 5px ridge var(--ouro);
+        }
+
+        /* --- Utilitários --- */
+        #alerta-celeste {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            z-index: 5000; width: 85%; max-width: 320px; background: #1a1a1a; 
+            border: 2px solid var(--ouro); border-radius: 20px; padding: 25px; text-align: center;
+        }
+
         py-script { display: none; }
     </style>
 </head>
@@ -64,60 +104,64 @@
     <script type="py">
         from pyscript import window
 
-        def validar_runa(email, senha):
-            # Lógica em Python para pré-validar antes de mandar pro Flask
-            if "@" not in email or "." not in email:
-                return "E-mail inválido nas escritas celestes!"
-            if len(senha) < 4:
-                return "Senha rúnica muito curta!"
+        def validar_escrituras(email, senha, nome=None):
+            if "@" not in email: return "E-mail sem o selo '@'!"
+            if len(senha) < 4: return "A senha rúnica é muito curta!"
+            if nome is not None and len(nome) < 2: return "O nome do mestre é muito breve!"
             return "OK"
 
-        # Expondo a função para o JavaScript
-        window.validar_acesso_python = validar_runa
+        window.validar_python = validar_escrituras
     </script>
 
-    <div id="alerta-celeste" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5000; width: 85%; max-width: 320px; background: #1a1a1a; border: 2px solid #d4af37; border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);">
-        <div style="color: #d4af37; font-weight: bold; margin-bottom: 10px;" id="alerta-titulo">📜 Mensagem</div>
+    <div id="alerta-celeste">
+        <div style="color: var(--ouro); font-weight: bold; margin-bottom: 10px;" id="alerta-titulo">📜 Mensagem</div>
         <div style="color: #ccc; font-size: 0.9rem; margin-bottom: 20px;" id="msg-texto"></div>
-        <button style="background: #d4af37; color: #1a140d; border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%;" onclick="fecharAlerta()">Entendido</button>
+        <button class="btn-principal" onclick="fecharAlerta()">Entendido</button>
     </div>
 
-    <div id="tela-entrada">
-        <div style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid #d4af37; text-align: center; width: 90%; max-width: 380px;">
-            <h1 style="color: #d4af37; margin-bottom: 20px;">🛡️ Reino Celeste</h1>
-            <input type="email" id="login-email" placeholder="E-mail do Criador" style="width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
-            
-            <div style="position: relative; width: 100%; margin-bottom: 12px;">
-                <input type="password" id="login-senha" placeholder="Senha Rúnica" style="width: 100%; padding: 12px; padding-right: 40px; background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; border-radius: 8px; color: #d4af37; outline: none;">
-                <span id="toggle-senha" onclick="toggleSenha()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 1.1rem;">👁️</span>
+    <div id="sessao-auth" class="tela-cheia">
+        
+        <div id="bloco-login" class="card-auth">
+            <h1 style="color: var(--ouro); margin-bottom: 20px;">🛡️ Reino Celeste</h1>
+            <input type="email" id="login-email" placeholder="E-mail do Criador">
+            <div style="position: relative;">
+                <input type="password" id="login-senha" placeholder="Senha Rúnica">
+                <span onclick="toggleSenha('login-senha')" style="position: absolute; right: 12px; top: 10px; cursor: pointer;">👁️</span>
             </div>
+            <button class="btn-principal" onclick="entrar()">Entrar no Cofre 🔐</button>
+            <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
+                Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('cadastro')">Aliste-se aqui</span>
+            </p>
+        </div>
 
-            <button style="width: 100%; padding: 14px; background: #d4af37; color: #1a140d; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="entrarComoCriador()">Entrar no Cofre 🔐</button>
-            
-            <p style="font-size: 0.7rem; color: #888; margin-top: 15px; cursor: pointer; text-decoration: underline;" onclick="window.location.href='cadastro.html'">
-               Não tem conta? Aliste-se aqui! 🖋️
+        <div id="bloco-cadastro" class="card-auth" style="display: none;">
+            <h1 style="color: var(--ouro); margin-bottom: 20px;">🖋️ Alistamento</h1>
+            <input type="text" id="cad-nome" placeholder="Nome do Mestre">
+            <input type="email" id="cad-email" placeholder="E-mail rúnico">
+            <input type="password" id="cad-senha" placeholder="Nova Senha Rúnica">
+            <button class="btn-principal" onclick="cadastrar()">Finalizar Registro 📜</button>
+            <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
+                Já possui acesso? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('login')">Voltar ao Portal</span>
             </p>
         </div>
     </div>
 
-    <div id="estante-principal">
+    <div id="estante-principal" style="display: none;">
         <div class="nav-topo">
-            <button style="background:#c0392b; color: white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold;" onclick="sair()">🏠 Sair</button>
-            <h3 style="margin:0; font-size: 1rem; color: #d4af37;">Celeste App</h3>
-            <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()" alt="Perfil">
+            <button style="background: var(--perigo); color: white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor: pointer;" onclick="sair()">Sair</button>
+            <h3 style="color: var(--ouro);">Celeste App</h3>
+            <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()">
         </div>
 
-        <h3 style="margin: 20px 20px 5px; color:#d4af37;">📖 Obras Sagradas</h3>
+        <h3 style="margin: 20px; color: var(--ouro);">📖 Obras Sagradas</h3>
         <div class="prateleira-madeira">
             <div class="prateleira-container">
                 <div class="item-card destaque-real">
-                    <div class="item-capa livro">
-                        <div style="text-align:center;">
-                            <span style="display:block; font-size:1.2rem;">Celeste Dragon 🔥🐲</span>
-                        </div>
+                    <div class="item-capa" style="background: linear-gradient(135deg, #4B0082, #00FF00); height: 120px;">
+                        <span>Celeste Dragon 🔥🐲</span>
                     </div>
-                    <div style="display: flex; gap: 8px; padding: 15px;">
-                        <a href="celeste.html" class="btn-card" style="background: #6a1b9a;">Ler 📖</a>
+                    <div style="padding: 15px;">
+                        <a href="celeste.html" class="btn-principal" style="text-decoration: none; display: block;">Ler Obra</a>
                     </div>
                 </div>
             </div>
@@ -126,95 +170,99 @@
 
     <div id="menuLateral" class="sidebar">
         <div style="padding: 20px;"> 
-            <div class="card-medieval">
-                <h2 id="nome-perfil" style="margin:0; font-size: 1.2rem; color: #d4af37;">Mestre</h2>
-                <button class="btn-medieval" style="margin-top:10px" onclick="fecharMenu()">✖ FECHAR</button>
+            <div style="background: rgba(38, 30, 20, 0.7); padding: 15px; border-radius: 12px; border: 1px solid var(--ouro);">
+                <h2 id="nome-perfil" style="color: var(--ouro);">Mestre</h2>
+                <button class="btn-principal" style="margin-top:20px; background: #3d2b1f; color: var(--ouro);" onclick="fecharMenu()">Fechar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // BLOQUEIO DE TECLAS DE INSPEÇÃO (F12, CTRL+U, CTRL+SHIFT+I)
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) || 
-                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-                return false;
-            }
+        const API_URL = 'https://SUA-URL-DO-CODESPACES-AQUI-5000.app.github.dev'; // <-- COLOQUE SEU LINK AQUI
+
+        // --- Proteção e Utilidades ---
+        document.onkeydown = (e) => {
+            if (e.keyCode == 123 || (e.ctrlKey && (e.key=='u' || e.key=='i' || e.key=='j'))) return false;
         };
 
-        function toggleSenha() {
-            const campo = document.getElementById('login-senha');
-            campo.type = campo.type === 'password' ? 'text' : 'password';
+        function toggleSenha(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        function exibirAlerta(texto, titulo = "📜 Mensagem") {
+        function alternarTelas(tipo) {
+            document.getElementById('bloco-login').style.display = tipo === 'login' ? 'block' : 'none';
+            document.getElementById('bloco-cadastro').style.display = tipo === 'cadastro' ? 'block' : 'none';
+        }
+
+        function exibirAlerta(msg, titulo = "📜 Mensagem") {
             document.getElementById('alerta-titulo').innerText = titulo;
-            document.getElementById('msg-texto').innerText = texto;
+            document.getElementById('msg-texto').innerText = msg;
             document.getElementById('alerta-celeste').style.display = 'block';
         }
 
         function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-        
-        function sair() { 
-            localStorage.clear(); 
-            location.reload(); 
+
+        function sair() { localStorage.clear(); location.reload(); }
+
+        // --- Conexão com o Motor (Flask) ---
+        async function entrar() {
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
+
+            if(window.validar_python) {
+                const check = window.validar_python(email, senha);
+                if(check !== "OK") return exibirAlerta(check);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, senha})
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    localStorage.setItem('reinoLogado', 'true');
+                    localStorage.setItem('usuarioNome', data.usuario);
+                    location.reload();
+                } else {
+                    exibirAlerta(data.msg);
+                }
+            } catch(e) { exibirAlerta("Motor Offline! Verifique o terminal."); }
         }
 
-        window.onload = function() {
+        async function cadastrar() {
+            const nome = document.getElementById('cad-nome').value;
+            const email = document.getElementById('cad-email').value;
+            const senha = document.getElementById('cad-senha').value;
+
+            if(window.validar_python) {
+                const check = window.validar_python(email, senha, nome);
+                if(check !== "OK") return exibirAlerta(check);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/cadastro`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({nome, email, senha})
+                });
+                const data = await res.json();
+                exibirAlerta(data.msg);
+                if(res.ok) alternarTelas('login');
+            } catch(e) { exibirAlerta("Erro ao registrar no portal."); }
+        }
+
+        window.onload = () => {
             if (localStorage.getItem('reinoLogado') === 'true') {
-                document.getElementById('tela-entrada').style.display = 'none';
+                document.getElementById('sessao-auth').style.display = 'none';
                 document.getElementById('estante-principal').style.display = 'block';
                 document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
             }
         };
-
-        async function entrarComoCriador() {
-            const email = document.getElementById('login-email').value.trim();
-            const senha = document.getElementById('login-senha').value.trim();
-            
-            // CHAMANDO O MOTOR PYTHON DO PYSCRIPT PARA VALIDAR
-            if (typeof validar_acesso_python === "function") {
-                const validacao = validar_acesso_python(email, senha);
-                if (validacao !== "OK") return exibirAlerta(validacao, "⚠️ Runa Inválida");
-            }
-
-            try {
-                // LINK DO MOTOR FLASK (VERIFIQUE SE O CODESPACES ESTÁ PUBLICO NA PORTA 5000)
-                const api_url = 'https://bookish-space-invention-694g4j6g4pr725ppr-5000.app.github.dev/login';
-
-                const response = await fetch(api_url, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, senha: senha })
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.status === "sucesso") {
-                    localStorage.setItem('reinoLogado', 'true');
-                    localStorage.setItem('usuarioEmail', result.email);
-                    localStorage.setItem('usuarioNome', result.usuario);
-
-                    document.getElementById('tela-entrada').style.display = 'none';
-                    document.getElementById('estante-principal').style.display = 'block';
-                    document.getElementById('nome-perfil').innerText = result.usuario;
-
-                    exibirAlerta(`Bem-vindo, Mestre ${result.usuario}!`, "✨ Acesso Autorizado");
-                } else {
-                    exibirAlerta(result.msg || "Dados incorretos!", "🚫 Acesso Negado");
-                }
-            } catch (error) {
-                console.error("Erro de conexão:", error);
-                exibirAlerta("O Motor Python está offline! Verifique se o app.py está rodando no Codespaces e se a porta 5000 está em 'Public'.", "⚠️ Erro de Portal");
-            }
-        }
     </script>
 </body>
 </html>
-
