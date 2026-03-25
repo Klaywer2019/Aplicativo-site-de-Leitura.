@@ -26,7 +26,6 @@
             overflow-x: hidden; 
         }
 
-        /* --- Telas e Containers --- */
         .tela-cheia { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
@@ -44,7 +43,6 @@
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
         }
 
-        /* --- Inputs e Botões --- */
         input {
             width: 100%; padding: 12px; margin-bottom: 12px; 
             background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; 
@@ -55,11 +53,17 @@
             width: 100%; padding: 14px; background: var(--ouro); 
             color: #1a140d; border: none; border-radius: 8px; 
             font-weight: bold; cursor: pointer; transition: 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-visitante {
+            background: transparent !important;
+            border: 1px solid var(--ouro) !important;
+            color: var(--ouro) !important;
         }
 
         .btn-principal:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        /* --- Estante e Interface --- */
         .nav-topo { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 15px 20px; background: var(--madeira); 
@@ -82,19 +86,19 @@
 
         @keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* --- Sidebar --- */
         .sidebar { 
             height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
             background-color: rgba(26, 20, 13, 0.95); backdrop-filter: blur(10px); 
             overflow-x: hidden; transition: 0.5s; border-left: 5px ridge var(--ouro);
         }
 
-        /* --- Utilitários --- */
         #alerta-celeste {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             z-index: 5000; width: 85%; max-width: 320px; background: #1a1a1a; 
             border: 2px solid var(--ouro); border-radius: 20px; padding: 25px; text-align: center;
         }
+
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; object-fit: cover; }
 
         py-script { display: none; }
     </style>
@@ -128,7 +132,11 @@
                 <input type="password" id="login-senha" placeholder="Senha Rúnica">
                 <span onclick="toggleSenha('login-senha')" style="position: absolute; right: 12px; top: 10px; cursor: pointer;">👁️</span>
             </div>
+            
             <button class="btn-principal" onclick="entrar()">Entrar no Cofre 🔐</button>
+            
+            <button class="btn-principal btn-visitante" onclick="entrarComoVisitante()">Entrar como Visitante 👤</button>
+
             <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
                 Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('cadastro')">Aliste-se aqui</span>
             </p>
@@ -157,8 +165,8 @@
         <div class="prateleira-madeira">
             <div class="prateleira-container">
                 <div class="item-card destaque-real">
-                    <div class="item-capa" style="background: linear-gradient(135deg, #4B0082, #00FF00); height: 120px;">
-                        <span>Celeste Dragon 🔥🐲</span>
+                    <div class="item-capa" style="background: linear-gradient(135deg, #4B0082, #00FF00); height: 120px; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-weight: bold;">Celeste Dragon 🔥🐲</span>
                     </div>
                     <div style="padding: 15px;">
                         <a href="celeste.html" class="btn-principal" style="text-decoration: none; display: block;">Ler Obra</a>
@@ -178,9 +186,8 @@
     </div>
 
     <script>
-        const API_URL = 'https://SUA-URL-DO-CODESPACES-AQUI-5000.app.github.dev'; // <-- COLOQUE SEU LINK AQUI
+        const API_URL = 'https://SUA-URL-DO-CODESPACES-AQUI-5000.app.github.dev';
 
-        // --- Proteção e Utilidades ---
         document.onkeydown = (e) => {
             if (e.keyCode == 123 || (e.ctrlKey && (e.key=='u' || e.key=='i' || e.key=='j'))) return false;
         };
@@ -204,19 +211,27 @@
         function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-
         function sair() { localStorage.clear(); location.reload(); }
 
-        // --- Conexão com o Motor (Flask) ---
+        // --- FUNÇÃO DO VISITANTE (A MÁGICA) ---
+        function entrarComoVisitante() {
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('usuarioNome', 'Visitante');
+            
+            document.getElementById('sessao-auth').style.display = 'none';
+            document.getElementById('estante-principal').style.display = 'block';
+            document.getElementById('nome-perfil').innerText = 'Visitante';
+            
+            exibirAlerta("Entrou como visitante! O motor Python não é necessário agora.", "🛡️ Modo Preview");
+        }
+
         async function entrar() {
             const email = document.getElementById('login-email').value;
             const senha = document.getElementById('login-senha').value;
-
             if(window.validar_python) {
                 const check = window.validar_python(email, senha);
                 if(check !== "OK") return exibirAlerta(check);
             }
-
             try {
                 const res = await fetch(`${API_URL}/login`, {
                     method: 'POST',
@@ -228,22 +243,18 @@
                     localStorage.setItem('reinoLogado', 'true');
                     localStorage.setItem('usuarioNome', data.usuario);
                     location.reload();
-                } else {
-                    exibirAlerta(data.msg);
-                }
-            } catch(e) { exibirAlerta("Motor Offline! Verifique o terminal."); }
+                } else { exibirAlerta(data.msg); }
+            } catch(e) { exibirAlerta("Motor Offline! Use o modo Visitante."); }
         }
 
         async function cadastrar() {
             const nome = document.getElementById('cad-nome').value;
             const email = document.getElementById('cad-email').value;
             const senha = document.getElementById('cad-senha').value;
-
             if(window.validar_python) {
                 const check = window.validar_python(email, senha, nome);
                 if(check !== "OK") return exibirAlerta(check);
             }
-
             try {
                 const res = await fetch(`${API_URL}/cadastro`, {
                     method: 'POST',
