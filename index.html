@@ -13,6 +13,7 @@
             --perigo: #c0392b;
             --vidro: rgba(255, 255, 255, 0.05);
             --keime-neon: #00ff41;
+            --xp-cor: #00ffcc;
         }
 
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,6 +24,43 @@
             font-family: 'Segoe UI', serif; 
             overflow-x: hidden; 
         }
+
+        /* --- Estilo RPG e XP --- */
+        .xp-container {
+            background: #222;
+            border-radius: 10px;
+            height: 10px;
+            width: 80%;
+            margin: 10px auto;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .xp-bar {
+            background: linear-gradient(90deg, var(--ouro), var(--xp-cor));
+            height: 100%;
+            width: 10%; /* Dinâmico */
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* --- Estante Profissional --- */
+        .livro-capa {
+            width: 160px;
+            height: 230px;
+            background: linear-gradient(135deg, #4B0082, #00FF00);
+            border-radius: 5px 15px 15px 5px;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px;
+            margin: 20px auto;
+            border-left: 8px solid rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .livro-capa:hover { transform: scale(1.05) rotate(2deg); }
 
         /* --- Telas de Autenticação --- */
         .tela-cheia { 
@@ -38,7 +76,7 @@
             text-align: center; width: 90%; max-width: 380px;
         }
 
-        input {
+        input, textarea {
             width: 100%; padding: 12px; margin-bottom: 12px; 
             background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; 
             border-radius: 8px; color: var(--ouro); outline: none;
@@ -64,13 +102,13 @@
             border-bottom: 2px solid var(--ouro); position: sticky; top: 0; z-index: 1000; 
         }
 
-        .secao-conteudo { display: none; padding: 20px; animation: fadeIn 0.5s ease; }
+        .secao-conteudo { display: none; padding: 25px 20px; margin-bottom: 40px; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .item-card { 
-            background: #1c1c1c; border-radius: 20px; 
-            text-align: center; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2);
-            margin-bottom: 20px;
+            background: #151515; border-radius: 20px; 
+            text-align: center; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.1);
+            margin-bottom: 25px; padding: 20px;
         }
 
         .sidebar { 
@@ -93,13 +131,6 @@
         }
 
         .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; background: #222; }
-        
-        .keime-terminal {
-            background: #000; color: var(--keime-neon); 
-            font-family: 'Courier New', Courier, monospace;
-            padding: 15px; border-radius: 10px; font-size: 0.85rem;
-            text-align: left; margin-bottom: 15px; border: 1px solid #111;
-        }
     </style>
 </head>
 <body> 
@@ -117,9 +148,6 @@
             <input type="password" id="login-senha" placeholder="Senha Rúnica">
             <button class="btn-principal" onclick="entrar()">Entrar no Cofre 🔐</button>
             <button class="btn-principal btn-visitante" onclick="entrarComoVisitante()">Entrar como Visitante 👤</button>
-            <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
-                Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;">Aliste-se aqui</span>
-            </p>
         </div>
     </div>
 
@@ -131,60 +159,53 @@
         </div>
 
         <section id="aba-estante" class="secao-conteudo" style="display: block;">
-            <h3 style="margin-bottom: 20px; color: var(--ouro);">📖 Minhas Obras</h3>
+            <h3 style="margin-bottom: 10px; color: var(--ouro); text-align: center;">📖 Estante Sagrada</h3>
+            <div class="item-card" style="background: transparent;">
+                <div class="livro-capa" onclick="irPara('aba-editor-texto', 'Escritório')">
+                    <h2 style="text-shadow: 2px 2px 10px black; font-size: 1.1rem;">CELESTE DRAGON 🔥</h2>
+                </div>
+                <h4 style="color: #fff;">Volume 1: O Despertar</h4>
+                <p style="color: #888; font-size: 0.8rem; margin: 10px 0;">38 Capítulos Escritos</p>
+                <button class="btn-principal" style="width: auto; padding: 10px 30px; margin: 0 auto;">Ler Agora</button>
+            </div>
+        </section>
+
+        <section id="aba-editor-texto" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">✒️ Escritório de Criação</h3>
             <div class="item-card">
-                <div style="background: linear-gradient(135deg, #4B0082, #00FF00); height: 150px; display: flex; align-items: center; justify-content: center;">
-                    <h2 style="text-shadow: 2px 2px 10px black;">Celeste Dragon 🔥</h2>
-                </div>
-                <div style="padding: 20px;">
-                    <button class="btn-principal">Ler Obra</button>
-                </div>
+                <input type="text" placeholder="Título do Capítulo...">
+                <textarea style="min-height: 300px; font-family: serif;" placeholder="As crônicas começam aqui..."></textarea>
+                <button class="btn-principal" onclick="ganharXP(15)">💾 Salvar Manuscrito</button>
             </div>
         </section>
 
         <section id="aba-keime" class="secao-conteudo">
             <h3 style="color: var(--ouro);">🎧 Keime Beats Studio</h3>
-            <div class="item-card" style="padding: 20px;">
-                <div class="keime-terminal" id="terminal-keime">
-                    > Keime_Bot: "Salve, visão de cria! Pronto pro corre?"<br>
-                    > Status: Aguardando rimas...
-                </div>
-                <button class="btn-principal" onclick="gerarRimaKeime()" style="background: #222; color: var(--keime-neon); border: 1px solid var(--keime-neon);">
-                    🔥 Gerar Rima Hype
-                </button>
-            </div>
-        </section>
-
-        <section id="aba-cientistas" class="secao-conteudo">
-            <h3 style="color: var(--ouro);">🧬 Ala dos Cientistas</h3>
-            <div class="item-card" style="padding: 20px; text-align: left;">
-                <p style="color: #aaa;">Bem-vinda à Prometheia.</p>
-                <div style="margin-top: 20px; border-left: 3px solid var(--ouro); padding-left: 15px;">
-                    <h4>Projeto: DNA Dragão</h4>
-                    <p style="font-size: 0.8rem;">Pesquisando mutações rúnicas...</p>
+            <div class="item-card">
+                <div class="keime-terminal" id="terminal-keime">> Keime_Bot: "Salve! Pronto pro hype?"</div>
+                <button class="btn-principal" onclick="gerarRimaKeime()">🔥 Gerar Rima</button>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                    <button class="btn-principal btn-visitante">🥁 Beat 1</button>
+                    <button class="btn-principal btn-visitante">🎹 Beat 2</button>
                 </div>
             </div>
         </section>
 
         <section id="aba-forja" class="secao-conteudo">
             <h3 style="color: var(--ouro);">🔨 Forja de Códigos</h3>
-            <div class="item-card" style="padding: 20px;">
-                <p>Status da Forja: Calibrando Bigorna Digital...</p>
+            <div class="item-card">
+                <textarea style="font-family: monospace; color: var(--keime-neon); min-height: 200px;" placeholder="// Digite seu código JS ou Python..."></textarea>
+                <button class="btn-principal" onclick="ganharXP(20)">▶️ Rodar Script</button>
             </div>
         </section>
 
         <section id="aba-videos" class="secao-conteudo">
             <h3 style="color: var(--ouro);">🎬 Galeria de Vídeos</h3>
-            <div class="item-card" style="padding: 40px;">
-                <p>Nenhum vídeo sagrado encontrado ainda.</p>
-            </div>
-        </section>
-
-        <section id="aba-editor" class="secao-conteudo">
-            <h3 style="color: var(--ouro);">✂️ Editor de Vídeo</h3>
-            <div class="item-card" style="padding: 20px;">
-                <button class="btn-principal" style="background: #333;">📁 Carregar Arquivo</button>
-                <p style="margin-top: 10px; font-size: 0.8rem;">Ferramenta em desenvolvimento...</p>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                <div class="item-card" style="padding: 0;">
+                    <div style="background: #222; height: 120px;"></div>
+                    <p style="padding: 10px;">Trailer: Celeste's Dragons</p>
+                </div>
             </div>
         </section>
     </div>
@@ -193,34 +214,60 @@
         <div style="padding: 30px 20px;">
             <div style="text-align: center; margin-bottom: 30px;">
                 <h2 id="nome-perfil" style="color: var(--ouro);">Mestre</h2>
+                <p id="txt-level" style="color: var(--xp-cor); font-size: 0.8rem; font-weight: bold; margin-top: 5px;">LEVEL 1 - EXPLORADOR</p>
+                <div class="xp-container">
+                    <div id="barra-xp" class="xp-bar"></div>
+                </div>
+                <p style="font-size: 0.6rem; color: #666;">XP: <span id="val-xp">10</span> / 100</p>
             </div>
             
             <a href="#" class="link-menu" onclick="irPara('aba-estante', 'Estante')">📖 Estante Sagrada</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-editor-texto', 'Escritório')">✒️ Escrever Livro</a>
             <a href="#" class="link-menu" onclick="irPara('aba-keime', 'Keime Beats')">🎧 Keime Beats</a>
-            <a href="#" class="link-menu" onclick="irPara('aba-cientistas', 'Cientistas')">🧬 Ala dos Cientistas</a>
             <a href="#" class="link-menu" onclick="irPara('aba-forja', 'Forja')">🔨 Forja de Códigos</a>
             <a href="#" class="link-menu" onclick="irPara('aba-videos', 'Vídeos')">🎬 Galeria de Vídeos</a>
-            <a href="#" class="link-menu" onclick="irPara('aba-editor', 'Editor')">✂️ Editor de Vídeo</a>
             
             <button class="btn-principal" style="margin-top: 40px; background: #222; color: var(--ouro);" onclick="fecharMenu()">Fechar Menu</button>
         </div>
     </div>
 
     <script>
-        // --- Login e Cadastro ---
+        // --- RPG SYSTEM ---
+        let xp = 10;
+        let lvl = 1;
+
+        function ganharXP(qtd) {
+            xp += qtd;
+            if(xp >= 100) {
+                xp = 0;
+                lvl++;
+                mostrarAlerta("🌟 LEVEL UP!", `Parabéns! Você agora é Nível ${lvl}!`);
+            }
+            atualizarRPG();
+        }
+
+        function atualizarRPG() {
+            document.getElementById('barra-xp').style.width = xp + "%";
+            document.getElementById('val-xp').innerText = xp;
+            document.getElementById('txt-level').innerText = `LEVEL ${lvl} - ${lvl > 5 ? 'MESTRE' : 'EXPLORADOR'}`;
+        }
+
+        // --- Navegação ---
+        function irPara(idAba, titulo) {
+            document.querySelectorAll('.secao-conteudo').forEach(s => s.style.display = 'none');
+            document.getElementById(idAba).style.display = 'block';
+            document.getElementById('titulo-aba').innerText = titulo;
+            ganharXP(5); // Ganha XP ao navegar
+            fecharMenu();
+        }
+
         function entrar() {
             const email = document.getElementById('login-email').value;
-            const senha = document.getElementById('login-senha').value;
-
-            if(email === "" || senha === "") {
-                mostrarAlerta("📜 Erro", "Preencha os campos para acessar o cofre!");
-                return;
+            if(email) {
+                localStorage.setItem('reinoLogado', 'true');
+                localStorage.setItem('usuarioNome', email.split('@')[0]);
+                carregarInterface();
             }
-
-            // Permite login se os campos estiverem preenchidos (Simulando sucesso)
-            localStorage.setItem('reinoLogado', 'true');
-            localStorage.setItem('usuarioNome', email.split('@')[0]);
-            carregarInterface();
         }
 
         function entrarComoVisitante() {
@@ -233,29 +280,17 @@
             document.getElementById('sessao-auth').style.display = 'none';
             document.getElementById('interface-reino').style.display = 'block';
             document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
+            atualizarRPG();
         }
 
         function sair() { localStorage.clear(); location.reload(); }
-
-        // --- Navegação ---
-        function irPara(idAba, titulo) {
-            document.querySelectorAll('.secao-conteudo').forEach(s => s.style.display = 'none');
-            const aba = document.getElementById(idAba);
-            if(aba) {
-                aba.style.display = 'block';
-                document.getElementById('titulo-aba').innerText = titulo;
-            }
-            fecharMenu();
-        }
-
         function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
         function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
 
-        // --- Keime Bot ---
         function gerarRimaKeime() {
             const rimas = ["No corre da vida, foco no milhão!", "Visão de cria, Reino em expansão!", "Sem neurose mestre, tamo na missão!"];
-            const rima = rimas[Math.floor(Math.random() * rimas.length)];
-            document.getElementById('terminal-keime').innerHTML = `> Keime_Bot: "Foco no progresso!"<br>> Rima: "${rima}"`;
+            document.getElementById('terminal-keime').innerHTML = `> Keime_Bot: "${rimas[Math.floor(Math.random()*rimas.length)]}"`;
+            ganharXP(10);
         }
 
         function mostrarAlerta(titulo, texto) {
@@ -266,9 +301,7 @@
 
         function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
 
-        window.onload = () => {
-            if (localStorage.getItem('reinoLogado') === 'true') carregarInterface();
-        };
+        window.onload = () => { if (localStorage.getItem('reinoLogado') === 'true') carregarInterface(); };
     </script>
 </body>
 </html>
