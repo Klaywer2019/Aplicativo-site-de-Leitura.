@@ -14,6 +14,10 @@
             --vidro: rgba(255, 255, 255, 0.05);
             --keime-neon: #00ff41;
             --xp-cor: #00ffcc;
+            /* Cores das Maestrias */
+            --cor-escrita: linear-gradient(90deg, #4a00e0, #8e2de2);
+            --cor-codigo: linear-gradient(90deg, #00f2fe, #4facfe);
+            --cor-beats: linear-gradient(90deg, #f093fb, #f5576c);
         }
 
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,26 +43,30 @@
         .xp-bar {
             background: linear-gradient(90deg, var(--ouro), var(--xp-cor));
             height: 100%;
-            width: 10%; /* Dinâmico */
+            width: 10%; 
             transition: width 0.5s ease-in-out;
         }
 
+        /* --- Estilo das Maestrias (Perfil) --- */
+        .stat-item { margin-bottom: 20px; text-align: left; }
+        .label-group { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        .progress-bar-bg { background: #1a1a1a; height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid #333; }
+        .progress-fill { height: 100%; width: 0%; transition: width 0.8s ease; }
+        
+        .fill-escrita { background: var(--cor-escrita); }
+        .fill-codigo { background: var(--cor-codigo); }
+        .fill-beats { background: var(--cor-beats); }
+
         /* --- Estante Profissional --- */
         .livro-capa {
-            width: 160px;
-            height: 230px;
+            width: 160px; height: 230px;
             background: linear-gradient(135deg, #4B0082, #00FF00);
             border-radius: 5px 15px 15px 5px;
             box-shadow: 10px 10px 20px rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 15px;
-            margin: 20px auto;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 15px; margin: 20px auto;
             border-left: 8px solid rgba(0,0,0,0.4);
-            cursor: pointer;
-            transition: 0.3s;
+            cursor: pointer; transition: 0.3s;
         }
         .livro-capa:hover { transform: scale(1.05) rotate(2deg); }
 
@@ -89,11 +97,7 @@
             margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
-        .btn-visitante {
-            background: transparent !important;
-            border: 1px solid var(--ouro) !important;
-            color: var(--ouro) !important;
-        }
+        .btn-visitante { background: transparent !important; border: 1px solid var(--ouro) !important; color: var(--ouro) !important; }
 
         /* --- Navegação --- */
         .nav-topo { 
@@ -130,7 +134,12 @@
             border: 2px solid var(--ouro); border-radius: 20px; padding: 25px; text-align: center;
         }
 
-        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; background: #222; }
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; background: #222; background-size: cover; }
+        
+        .keime-terminal {
+            background: #000; color: var(--keime-neon); font-family: monospace;
+            padding: 15px; border-radius: 10px; font-size: 0.85rem; text-align: left; margin-bottom: 15px;
+        }
     </style>
 </head>
 <body> 
@@ -155,7 +164,7 @@
         <div class="nav-topo">
             <button style="background: var(--perigo); color: white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor: pointer;" onclick="sair()">Sair</button>
             <h3 id="titulo-aba" style="color: var(--ouro);">Estante</h3>
-            <div class="perfil-foto" onclick="abrirMenu()"></div>
+            <div class="perfil-foto" onclick="irPara('aba-perfil', 'Meu Perfil')"></div>
         </div>
 
         <section id="aba-estante" class="secao-conteudo" style="display: block;">
@@ -166,7 +175,26 @@
                 </div>
                 <h4 style="color: #fff;">Volume 1: O Despertar</h4>
                 <p style="color: #888; font-size: 0.8rem; margin: 10px 0;">38 Capítulos Escritos</p>
-                <button class="btn-principal" style="width: auto; padding: 10px 30px; margin: 0 auto;">Ler Agora</button>
+                <button class="btn-principal" style="width: auto; padding: 10px 30px; margin: 0 auto;" onclick="ganharXP('escrita', 5)">Ler Agora</button>
+            </div>
+        </section>
+
+        <section id="aba-perfil" class="secao-conteudo">
+            <h3 style="color: var(--ouro); text-align: center; margin-bottom: 20px;">👤 Status do Criador</h3>
+            <div class="item-card">
+                <div class="stat-item">
+                    <div class="label-group"><span>📚 Maestria em Escrita</span><span id="lvl-escrita">Lv. 1</span></div>
+                    <div class="progress-bar-bg"><div id="bar-escrita" class="progress-fill fill-escrita"></div></div>
+                </div>
+                <div class="stat-item">
+                    <div class="label-group"><span>🔨 Forja de Código</span><span id="lvl-codigo">Lv. 1</span></div>
+                    <div class="progress-bar-bg"><div id="bar-codigo" class="progress-fill fill-codigo"></div></div>
+                </div>
+                <div class="stat-item">
+                    <div class="label-group"><span>🎧 Alquimia de Som</span><span id="lvl-beats">Lv. 1</span></div>
+                    <div class="progress-bar-bg"><div id="bar-beats" class="progress-fill fill-beats"></div></div>
+                </div>
+                <button class="btn-principal btn-visitante" onclick="irPara('aba-estante', 'Estante')">Voltar ao Reino</button>
             </div>
         </section>
 
@@ -175,7 +203,7 @@
             <div class="item-card">
                 <input type="text" placeholder="Título do Capítulo...">
                 <textarea style="min-height: 300px; font-family: serif;" placeholder="As crônicas começam aqui..."></textarea>
-                <button class="btn-principal" onclick="ganharXP(15)">💾 Salvar Manuscrito</button>
+                <button class="btn-principal" onclick="ganharXP('escrita', 20)">💾 Salvar Manuscrito</button>
             </div>
         </section>
 
@@ -185,8 +213,8 @@
                 <div class="keime-terminal" id="terminal-keime">> Keime_Bot: "Salve! Pronto pro hype?"</div>
                 <button class="btn-principal" onclick="gerarRimaKeime()">🔥 Gerar Rima</button>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-                    <button class="btn-principal btn-visitante">🥁 Beat 1</button>
-                    <button class="btn-principal btn-visitante">🎹 Beat 2</button>
+                    <button class="btn-principal btn-visitante" onclick="ganharXP('beats', 5)">🥁 Beat 1</button>
+                    <button class="btn-principal btn-visitante" onclick="ganharXP('beats', 5)">🎹 Beat 2</button>
                 </div>
             </div>
         </section>
@@ -195,69 +223,81 @@
             <h3 style="color: var(--ouro);">🔨 Forja de Códigos</h3>
             <div class="item-card">
                 <textarea style="font-family: monospace; color: var(--keime-neon); min-height: 200px;" placeholder="// Digite seu código JS ou Python..."></textarea>
-                <button class="btn-principal" onclick="ganharXP(20)">▶️ Rodar Script</button>
-            </div>
-        </section>
-
-        <section id="aba-videos" class="secao-conteudo">
-            <h3 style="color: var(--ouro);">🎬 Galeria de Vídeos</h3>
-            <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
-                <div class="item-card" style="padding: 0;">
-                    <div style="background: #222; height: 120px;"></div>
-                    <p style="padding: 10px;">Trailer: Celeste's Dragons</p>
-                </div>
+                <button class="btn-principal" onclick="ganharXP('codigo', 25)">▶️ Rodar Script</button>
             </div>
         </section>
     </div>
 
     <div id="menuLateral" class="sidebar">
         <div style="padding: 30px 20px;">
-            <div style="text-align: center; margin-bottom: 30px;">
+            <div style="text-align: center; margin-bottom: 30px;" onclick="irPara('aba-perfil', 'Meu Perfil')">
                 <h2 id="nome-perfil" style="color: var(--ouro);">Mestre</h2>
-                <p id="txt-level" style="color: var(--xp-cor); font-size: 0.8rem; font-weight: bold; margin-top: 5px;">LEVEL 1 - EXPLORADOR</p>
-                <div class="xp-container">
-                    <div id="barra-xp" class="xp-bar"></div>
-                </div>
-                <p style="font-size: 0.6rem; color: #666;">XP: <span id="val-xp">10</span> / 100</p>
+                <p id="txt-level" style="color: var(--xp-cor); font-size: 0.8rem; font-weight: bold; margin-top: 5px;">LEVEL TOTAL: 1</p>
+                <div class="xp-container"><div id="barra-xp" class="xp-bar"></div></div>
+                <p style="font-size: 0.6rem; color: #666;">Clique para ver Maestrias</p>
             </div>
             
             <a href="#" class="link-menu" onclick="irPara('aba-estante', 'Estante')">📖 Estante Sagrada</a>
             <a href="#" class="link-menu" onclick="irPara('aba-editor-texto', 'Escritório')">✒️ Escrever Livro</a>
             <a href="#" class="link-menu" onclick="irPara('aba-keime', 'Keime Beats')">🎧 Keime Beats</a>
             <a href="#" class="link-menu" onclick="irPara('aba-forja', 'Forja')">🔨 Forja de Códigos</a>
-            <a href="#" class="link-menu" onclick="irPara('aba-videos', 'Vídeos')">🎬 Galeria de Vídeos</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-perfil', 'Meu Perfil')">👤 Meu Perfil / XP</a>
             
             <button class="btn-principal" style="margin-top: 40px; background: #222; color: var(--ouro);" onclick="fecharMenu()">Fechar Menu</button>
         </div>
     </div>
 
     <script>
-        // --- RPG SYSTEM ---
-        let xp = 10;
-        let lvl = 1;
+        // --- RPG SYSTEM ATUALIZADO ---
+        let stats = {
+            escrita: { xp: 0, lvl: 1 },
+            codigo: { xp: 0, lvl: 1 },
+            beats: { xp: 0, lvl: 1 },
+            total: { xp: 10, lvl: 1 }
+        };
 
-        function ganharXP(qtd) {
-            xp += qtd;
-            if(xp >= 100) {
-                xp = 0;
-                lvl++;
-                mostrarAlerta("🌟 LEVEL UP!", `Parabéns! Você agora é Nível ${lvl}!`);
+        function ganharXP(tipo, qtd) {
+            // Sobe XP da ala específica
+            stats[tipo].xp += qtd;
+            if(stats[tipo].xp >= 100) {
+                stats[tipo].xp = 0;
+                stats[tipo].lvl++;
+                mostrarAlerta("🆙 MAESTRIA!", `Sua habilidade em ${tipo.toUpperCase()} subiu para o Nível ${stats[tipo].lvl}!`);
             }
-            atualizarRPG();
+
+            // Sobe o XP Geral (Barra do Menu)
+            stats.total.xp += Math.floor(qtd / 2);
+            if(stats.total.xp >= 100) {
+                stats.total.xp = 0;
+                stats.total.lvl++;
+                mostrarAlerta("🌟 LEVEL UP!", `Nível Geral do Criador subiu para ${stats.total.lvl}!`);
+            }
+            atualizarInterfaceRPG();
         }
 
-        function atualizarRPG() {
-            document.getElementById('barra-xp').style.width = xp + "%";
-            document.getElementById('val-xp').innerText = xp;
-            document.getElementById('txt-level').innerText = `LEVEL ${lvl} - ${lvl > 5 ? 'MESTRE' : 'EXPLORADOR'}`;
+        function atualizarInterfaceRPG() {
+            // Barra Geral
+            document.getElementById('barra-xp').style.width = stats.total.xp + "%";
+            document.getElementById('txt-level').innerText = `LEVEL TOTAL: ${stats.total.lvl}`;
+
+            // Barras de Maestria (Aba Perfil)
+            if(document.getElementById('aba-perfil').style.display === 'block') {
+                document.getElementById('bar-escrita').style.width = stats.escrita.xp + "%";
+                document.getElementById('lvl-escrita').innerText = `Lv. ${stats.escrita.lvl}`;
+                
+                document.getElementById('bar-codigo').style.width = stats.codigo.xp + "%";
+                document.getElementById('lvl-codigo').innerText = `Lv. ${stats.codigo.lvl}`;
+                
+                document.getElementById('bar-beats').style.width = stats.beats.xp + "%";
+                document.getElementById('lvl-beats').innerText = `Lv. ${stats.beats.lvl}`;
+            }
         }
 
-        // --- Navegação ---
         function irPara(idAba, titulo) {
             document.querySelectorAll('.secao-conteudo').forEach(s => s.style.display = 'none');
             document.getElementById(idAba).style.display = 'block';
             document.getElementById('titulo-aba').innerText = titulo;
-            ganharXP(5); // Ganha XP ao navegar
+            atualizarInterfaceRPG();
             fecharMenu();
         }
 
@@ -270,17 +310,11 @@
             }
         }
 
-        function entrarComoVisitante() {
-            localStorage.setItem('reinoLogado', 'true');
-            localStorage.setItem('usuarioNome', 'Visitante');
-            carregarInterface();
-        }
-
         function carregarInterface() {
             document.getElementById('sessao-auth').style.display = 'none';
             document.getElementById('interface-reino').style.display = 'block';
             document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
-            atualizarRPG();
+            atualizarInterfaceRPG();
         }
 
         function sair() { localStorage.clear(); location.reload(); }
@@ -290,7 +324,7 @@
         function gerarRimaKeime() {
             const rimas = ["No corre da vida, foco no milhão!", "Visão de cria, Reino em expansão!", "Sem neurose mestre, tamo na missão!"];
             document.getElementById('terminal-keime').innerHTML = `> Keime_Bot: "${rimas[Math.floor(Math.random()*rimas.length)]}"`;
-            ganharXP(10);
+            ganharXP('beats', 15);
         }
 
         function mostrarAlerta(titulo, texto) {
@@ -300,7 +334,6 @@
         }
 
         function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
-
         window.onload = () => { if (localStorage.getItem('reinoLogado') === 'true') carregarInterface(); };
     </script>
 </body>
