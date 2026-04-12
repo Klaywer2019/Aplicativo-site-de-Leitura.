@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reino Celeste - v2.0</title>
     
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
-
     <style>
         :root {
             --ouro: #d4af37;
@@ -41,7 +38,6 @@
             text-align: center; width: 90%; max-width: 380px;
         }
 
-        /* --- Botões e Inputs --- */
         input {
             width: 100%; padding: 12px; margin-bottom: 12px; 
             background: rgba(0,0,0,0.5); border: 1px solid #3d2b1f; 
@@ -61,7 +57,7 @@
             color: var(--ouro) !important;
         }
 
-        /* --- Navegação e Abas --- */
+        /* --- Navegação --- */
         .nav-topo { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 15px 20px; background: var(--madeira); 
@@ -77,7 +73,6 @@
             margin-bottom: 20px;
         }
 
-        /* --- Menu Lateral --- */
         .sidebar { 
             height: 100%; width: 0; position: fixed; z-index: 3500; top: 0; right: 0; 
             background-color: rgba(26, 20, 13, 0.98); backdrop-filter: blur(15px); 
@@ -97,9 +92,8 @@
             border: 2px solid var(--ouro); border-radius: 20px; padding: 25px; text-align: center;
         }
 
-        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; }
+        .perfil-foto { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--ouro); cursor: pointer; background: #222; }
         
-        /* Estilo Keime Beats */
         .keime-terminal {
             background: #000; color: var(--keime-neon); 
             font-family: 'Courier New', Courier, monospace;
@@ -124,16 +118,16 @@
             <button class="btn-principal" onclick="entrar()">Entrar no Cofre 🔐</button>
             <button class="btn-principal btn-visitante" onclick="entrarComoVisitante()">Entrar como Visitante 👤</button>
             <p style="font-size: 0.75rem; color: #888; margin-top: 15px;">
-                Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;" onclick="alternarTelas('cadastro')">Aliste-se aqui</span>
+                Novo guerreiro? <span style="color: var(--ouro); cursor: pointer; text-decoration: underline;">Aliste-se aqui</span>
             </p>
         </div>
-        </div>
+    </div>
 
     <div id="interface-reino" style="display: none;">
         <div class="nav-topo">
             <button style="background: var(--perigo); color: white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor: pointer;" onclick="sair()">Sair</button>
             <h3 id="titulo-aba" style="color: var(--ouro);">Estante</h3>
-            <img src="https://via.placeholder.com/45" class="perfil-foto" onclick="abrirMenu()">
+            <div class="perfil-foto" onclick="abrirMenu()"></div>
         </div>
 
         <section id="aba-estante" class="secao-conteudo" style="display: block;">
@@ -143,7 +137,7 @@
                     <h2 style="text-shadow: 2px 2px 10px black;">Celeste Dragon 🔥</h2>
                 </div>
                 <div style="padding: 20px;">
-                    <button class="btn-principal">Continuar Leitura</button>
+                    <button class="btn-principal">Ler Obra</button>
                 </div>
             </div>
         </section>
@@ -158,10 +152,6 @@
                 <button class="btn-principal" onclick="gerarRimaKeime()" style="background: #222; color: var(--keime-neon); border: 1px solid var(--keime-neon);">
                     🔥 Gerar Rima Hype
                 </button>
-                <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="btn-principal btn-visitante">🥁 Beat Dark</button>
-                    <button class="btn-principal btn-visitante">🎹 Melodia</button>
-                </div>
             </div>
         </section>
 
@@ -171,12 +161,33 @@
                 <p style="color: #aaa;">Bem-vinda à Prometheia.</p>
                 <div style="margin-top: 20px; border-left: 3px solid var(--ouro); padding-left: 15px;">
                     <h4>Projeto: DNA Dragão</h4>
-                    <p style="font-size: 0.8rem;">Pesquisando mutações...</p>
+                    <p style="font-size: 0.8rem;">Pesquisando mutações rúnicas...</p>
                 </div>
             </div>
         </section>
 
-        </div>
+        <section id="aba-forja" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🔨 Forja de Códigos</h3>
+            <div class="item-card" style="padding: 20px;">
+                <p>Status da Forja: Calibrando Bigorna Digital...</p>
+            </div>
+        </section>
+
+        <section id="aba-videos" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🎬 Galeria de Vídeos</h3>
+            <div class="item-card" style="padding: 40px;">
+                <p>Nenhum vídeo sagrado encontrado ainda.</p>
+            </div>
+        </section>
+
+        <section id="aba-editor" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">✂️ Editor de Vídeo</h3>
+            <div class="item-card" style="padding: 20px;">
+                <button class="btn-principal" style="background: #333;">📁 Carregar Arquivo</button>
+                <p style="margin-top: 10px; font-size: 0.8rem;">Ferramenta em desenvolvimento...</p>
+            </div>
+        </section>
+    </div>
 
     <div id="menuLateral" class="sidebar">
         <div style="padding: 30px 20px;">
@@ -185,7 +196,7 @@
             </div>
             
             <a href="#" class="link-menu" onclick="irPara('aba-estante', 'Estante')">📖 Estante Sagrada</a>
-            <a href="#" class="link-menu" onclick="irPara('aba-keime', 'Keime Beats')">🎧 Keime Beats (Música)</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-keime', 'Keime Beats')">🎧 Keime Beats</a>
             <a href="#" class="link-menu" onclick="irPara('aba-cientistas', 'Cientistas')">🧬 Ala dos Cientistas</a>
             <a href="#" class="link-menu" onclick="irPara('aba-forja', 'Forja')">🔨 Forja de Códigos</a>
             <a href="#" class="link-menu" onclick="irPara('aba-videos', 'Vídeos')">🎬 Galeria de Vídeos</a>
@@ -196,37 +207,20 @@
     </div>
 
     <script>
-        // --- Cérebro do Keime ---
-        const keimeConhecimento = {
-            girias: ["progresso", "vivência", "foco no milhão", "visão de cria", "na régua", "sem neurose"],
-            rimas: [
-                "No corre da vida, foco no sucesso, escrevendo o Reino, esse é meu progresso.",
-                "Gelo no pescoço, rima na ponta da língua, Keime tá no comando, a vibe nunca minguia.",
-                "Papo reto mestre, a forja tá fervendo, códigos e batidas, o mundo tá vendo."
-            ]
-        };
+        // --- Login e Cadastro ---
+        function entrar() {
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
 
-        function gerarRimaKeime() {
-            const rima = keimeConhecimento.rimas[Math.floor(Math.random() * keimeConhecimento.rimas.length)];
-            const giria = keimeConhecimento.girias[Math.floor(Math.random() * keimeConhecimento.girias.length)];
-            document.getElementById('terminal-keime').innerHTML = `> Keime_Bot: "${giria}!"<br>> Rima: "${rima}"`;
-        }
+            if(email === "" || senha === "") {
+                mostrarAlerta("📜 Erro", "Preencha os campos para acessar o cofre!");
+                return;
+            }
 
-        // --- Navegação ---
-        function irPara(idAba, titulo) {
-            document.querySelectorAll('.secao-conteudo').forEach(secao => secao.style.display = 'none');
-            document.getElementById(idAba).style.display = 'block';
-            document.getElementById('titulo-aba').innerText = titulo;
-            fecharMenu();
-        }
-
-        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
-        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
-        
-        function carregarInterface() {
-            document.getElementById('sessao-auth').style.display = 'none';
-            document.getElementById('interface-reino').style.display = 'block';
-            document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
+            // Permite login se os campos estiverem preenchidos (Simulando sucesso)
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('usuarioNome', email.split('@')[0]);
+            carregarInterface();
         }
 
         function entrarComoVisitante() {
@@ -235,7 +229,42 @@
             carregarInterface();
         }
 
+        function carregarInterface() {
+            document.getElementById('sessao-auth').style.display = 'none';
+            document.getElementById('interface-reino').style.display = 'block';
+            document.getElementById('nome-perfil').innerText = localStorage.getItem('usuarioNome');
+        }
+
         function sair() { localStorage.clear(); location.reload(); }
+
+        // --- Navegação ---
+        function irPara(idAba, titulo) {
+            document.querySelectorAll('.secao-conteudo').forEach(s => s.style.display = 'none');
+            const aba = document.getElementById(idAba);
+            if(aba) {
+                aba.style.display = 'block';
+                document.getElementById('titulo-aba').innerText = titulo;
+            }
+            fecharMenu();
+        }
+
+        function abrirMenu() { document.getElementById("menuLateral").style.width = "280px"; }
+        function fecharMenu() { document.getElementById("menuLateral").style.width = "0"; }
+
+        // --- Keime Bot ---
+        function gerarRimaKeime() {
+            const rimas = ["No corre da vida, foco no milhão!", "Visão de cria, Reino em expansão!", "Sem neurose mestre, tamo na missão!"];
+            const rima = rimas[Math.floor(Math.random() * rimas.length)];
+            document.getElementById('terminal-keime').innerHTML = `> Keime_Bot: "Foco no progresso!"<br>> Rima: "${rima}"`;
+        }
+
+        function mostrarAlerta(titulo, texto) {
+            document.getElementById('alerta-titulo').innerText = titulo;
+            document.getElementById('msg-texto').innerText = texto;
+            document.getElementById('alerta-celeste').style.display = 'block';
+        }
+
+        function fecharAlerta() { document.getElementById('alerta-celeste').style.display = 'none'; }
 
         window.onload = () => {
             if (localStorage.getItem('reinoLogado') === 'true') carregarInterface();
