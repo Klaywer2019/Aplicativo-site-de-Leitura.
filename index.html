@@ -219,11 +219,39 @@
             </div>
         </section>
 
+        <section id="aba-cientistas" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🧬 Ala dos Cientistas</h3>
+            <div class="item-card">
+                <p style="color: #ccc; margin-bottom: 15px;">Manipulação de Genes de Dragão.</p>
+                <div style="border: 1px dashed var(--ouro); padding: 20px; border-radius: 10px; color: #888;">
+                    Sequenciamento de DNA Celeste... [85%]
+                </div>
+                <button class="btn-principal" style="margin-top: 15px;" onclick="ganharXP('codigo', 15)">🧪 Iniciar Pesquisa</button>
+            </div>
+        </section>
+
         <section id="aba-forja" class="secao-conteudo">
             <h3 style="color: var(--ouro);">🔨 Forja de Códigos</h3>
             <div class="item-card">
                 <textarea style="font-family: monospace; color: var(--keime-neon); min-height: 200px;" placeholder="// Digite seu código JS ou Python..."></textarea>
                 <button class="btn-principal" onclick="ganharXP('codigo', 25)">▶️ Rodar Script</button>
+            </div>
+        </section>
+
+        <section id="aba-editor-video" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">✂️ Editor de Vídeo</h3>
+            <div class="item-card">
+                <div style="background: #222; height: 150px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <p style="color: #555;">🎞️ Linha do Tempo</p>
+                </div>
+                <button class="btn-principal" style="margin-top: 15px;" onclick="ganharXP('beats', 15)">🎬 Renderizar Clipe</button>
+            </div>
+        </section>
+
+        <section id="aba-videos" class="secao-conteudo">
+            <h3 style="color: var(--ouro);">🎬 Galeria de Vídeos</h3>
+            <div class="item-card">
+                <p style="color: #888;">Nenhum vídeo salvo ainda.</p>
             </div>
         </section>
     </div>
@@ -240,7 +268,10 @@
             <a href="#" class="link-menu" onclick="irPara('aba-estante', 'Estante')">📖 Estante Sagrada</a>
             <a href="#" class="link-menu" onclick="irPara('aba-editor-texto', 'Escritório')">✒️ Escrever Livro</a>
             <a href="#" class="link-menu" onclick="irPara('aba-keime', 'Keime Beats')">🎧 Keime Beats</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-cientistas', 'Cientistas')">🧬 Ala dos Cientistas</a>
             <a href="#" class="link-menu" onclick="irPara('aba-forja', 'Forja')">🔨 Forja de Códigos</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-videos', 'Galeria')">🎬 Galeria de Vídeos</a>
+            <a href="#" class="link-menu" onclick="irPara('aba-editor-video', 'Editor')">✂️ Editor de Vídeo</a>
             <a href="#" class="link-menu" onclick="irPara('aba-perfil', 'Meu Perfil')">👤 Meu Perfil / XP</a>
             
             <button class="btn-principal" style="margin-top: 40px; background: #222; color: var(--ouro);" onclick="fecharMenu()">Fechar Menu</button>
@@ -248,7 +279,6 @@
     </div>
 
     <script>
-        // --- RPG SYSTEM ATUALIZADO ---
         let stats = {
             escrita: { xp: 0, lvl: 1 },
             codigo: { xp: 0, lvl: 1 },
@@ -257,15 +287,12 @@
         };
 
         function ganharXP(tipo, qtd) {
-            // Sobe XP da ala específica
             stats[tipo].xp += qtd;
             if(stats[tipo].xp >= 100) {
                 stats[tipo].xp = 0;
                 stats[tipo].lvl++;
                 mostrarAlerta("🆙 MAESTRIA!", `Sua habilidade em ${tipo.toUpperCase()} subiu para o Nível ${stats[tipo].lvl}!`);
             }
-
-            // Sobe o XP Geral (Barra do Menu)
             stats.total.xp += Math.floor(qtd / 2);
             if(stats.total.xp >= 100) {
                 stats.total.xp = 0;
@@ -276,18 +303,13 @@
         }
 
         function atualizarInterfaceRPG() {
-            // Barra Geral
             document.getElementById('barra-xp').style.width = stats.total.xp + "%";
             document.getElementById('txt-level').innerText = `LEVEL TOTAL: ${stats.total.lvl}`;
-
-            // Barras de Maestria (Aba Perfil)
             if(document.getElementById('aba-perfil').style.display === 'block') {
                 document.getElementById('bar-escrita').style.width = stats.escrita.xp + "%";
                 document.getElementById('lvl-escrita').innerText = `Lv. ${stats.escrita.lvl}`;
-                
                 document.getElementById('bar-codigo').style.width = stats.codigo.xp + "%";
                 document.getElementById('lvl-codigo').innerText = `Lv. ${stats.codigo.lvl}`;
-                
                 document.getElementById('bar-beats').style.width = stats.beats.xp + "%";
                 document.getElementById('lvl-beats').innerText = `Lv. ${stats.beats.lvl}`;
             }
@@ -308,6 +330,12 @@
                 localStorage.setItem('usuarioNome', email.split('@')[0]);
                 carregarInterface();
             }
+        }
+
+        function entrarComoVisitante() {
+            localStorage.setItem('reinoLogado', 'true');
+            localStorage.setItem('usuarioNome', 'Visitante');
+            carregarInterface();
         }
 
         function carregarInterface() {
